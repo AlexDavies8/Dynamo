@@ -6,9 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Model\" />
-    <Folder Include="Converters\" />
     <Folder Include="Controls\" />
+    <Folder Include="Converters\" />
+    <Folder Include="Model\" />
     <Folder Include="Themes\" />
     <Folder Include="ViewModel\" />
     <Folder Include="View\" />
