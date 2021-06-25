@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
-namespace WindowDocker.Model
+namespace WindowDocker.ViewModel
 {
-    public class ModelBase : INotifyPropertyChanged
+    public class ViewModelBase : INotifyPropertyChanged
     {
+
         #region Constructor
 
-        public ModelBase()
+        public ViewModelBase()
         {
 
         }
@@ -26,5 +27,15 @@ namespace WindowDocker.Model
         }
 
         #endregion
+
+        #region ModelPropertyChanged
+
+        protected virtual void ModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+
+        }
+
+        #endregion
+
     }
 }

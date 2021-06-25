@@ -15,4 +15,9 @@
     <Folder Include="View\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\NodeGraph\NodeGraph.csproj" />
+    <ProjectReference Include="..\WindowDocker\WindowDocker.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,17 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Text;
+using System.ComponentModel;
 
-namespace WindowDocker.Model
+namespace NodeGraph.Model
 {
-    public class ModelBase : INotifyPropertyChanged
+    class ModelBase : INotifyPropertyChanged
     {
+        #region Properties
+
+        public Guid Guid { get; private set; }
+
+        #endregion
+
         #region Constructor
 
         public ModelBase()
         {
 
+        }
+
+        public ModelBase(Guid guid)
+        {
+            Guid = guid;
         }
 
         #endregion
