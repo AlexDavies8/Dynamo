@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Reflection;
 using System.Text;
 
 namespace NodeGraph.Model
@@ -11,6 +12,8 @@ namespace NodeGraph.Model
         #region Fields
 
         public readonly Flowchart Owner;
+        protected FieldInfo _fieldInfo;
+        protected PropertyInfo _propertyInfo;
 
         #endregion
 
