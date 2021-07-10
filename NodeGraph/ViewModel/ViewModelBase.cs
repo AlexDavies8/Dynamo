@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NodeGraph.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
@@ -10,9 +11,9 @@ namespace NodeGraph.ViewModel
 
         #region Constructor
 
-        public ViewModelBase()
+        public ViewModelBase(ModelBase model)
         {
-
+            model.PropertyChanged += ModelPropertyChanged;
         }
 
         #endregion

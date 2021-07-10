@@ -9,7 +9,7 @@ namespace NodeGraph.Model
     {
         #region Fields
 
-        public string DisplayName;
+        public string Name;
         public bool IsInput;
 
         #endregion

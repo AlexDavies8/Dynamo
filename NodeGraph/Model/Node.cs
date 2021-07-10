@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NodeGraph.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reflection;
@@ -6,7 +7,7 @@ using System.Text;
 
 namespace NodeGraph.Model
 {
-    class Node : ModelBase
+    public class Node : ModelBase
     {
 
         #region Fields
@@ -18,6 +19,20 @@ namespace NodeGraph.Model
         #endregion
 
         #region Properties
+
+        protected NodeViewModel _viewModel;
+        public NodeViewModel ViewModel
+        {
+            get => _viewModel;
+            set
+            {
+                if (_viewModel != value)
+                {
+                    _viewModel = value;
+                    RaisePropertyChanged("ViewModel");
+                }
+            }
+        }
 
         protected string _header;
         public string Header

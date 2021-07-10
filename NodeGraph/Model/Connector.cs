@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NodeGraph.Model
 {
-    class Connector : ModelBase
+    public class Connector : ModelBase
     {
         #region Fields
 

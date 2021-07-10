@@ -1,11 +1,12 @@
-﻿using System;
+﻿using NodeGraph.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 
 namespace NodeGraph.Model
 {
-    class Port : ModelBase
+    public class Port : ModelBase
     {
         #region Fields
 
@@ -15,6 +16,20 @@ namespace NodeGraph.Model
         #endregion
 
         #region Properties
+
+        private PortViewModel _viewModel;
+        public PortViewModel ViewModel
+        {
+            get => _viewModel;
+            set
+            {
+                if (_viewModel != value)
+                {
+                    _viewModel = value;
+                    RaisePropertyChanged("ViewModel");
+                }
+            }
+        }
 
         private string _name;
         public string Name

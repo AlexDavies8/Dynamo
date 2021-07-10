@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NodeGraph.Model
 {
-    class Flowchart : ModelBase
+    public class Flowchart : ModelBase
     {
         #region Properties
 

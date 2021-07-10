@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 namespace NodeGraph.Model
 {
-    class ModelBase : INotifyPropertyChanged
+    public class ModelBase : INotifyPropertyChanged
     {
         #region Properties
 
