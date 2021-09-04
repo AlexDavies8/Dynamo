@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NodeGraph.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -13,6 +14,20 @@ namespace NodeGraph.Model
         #endregion
 
         #region Properties
+
+        private ConnectorViewModel _viewModel;
+        public ConnectorViewModel ViewModel
+        {
+            get => _viewModel;
+            set
+            {
+                if (_viewModel != value)
+                {
+                    _viewModel = value;
+                    RaisePropertyChanged("ViewModel");
+                }
+            }
+        }
 
         private Port _startPort;
         public Port StartPort

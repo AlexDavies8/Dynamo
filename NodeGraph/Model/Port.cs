@@ -59,14 +59,17 @@ namespace NodeGraph.Model
             }
         }
 
+        public Type ValueType { get; private set; }
+
         #endregion
 
         #region Constructors
 
-        public Port(Guid guid, Node owner, bool isInput) : base(guid)
+        public Port(Guid guid, Node owner, bool isInput, Type valueType) : base(guid)
         {
             Owner = owner;
             IsInput = isInput;
+            ValueType = valueType;
         }
 
         #endregion

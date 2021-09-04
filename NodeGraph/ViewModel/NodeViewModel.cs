@@ -1,4 +1,5 @@
 ﻿using NodeGraph.Model;
+using NodeGraph.View;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,7 +12,7 @@ namespace NodeGraph.ViewModel
     {
         #region Fields
 
-
+        public NodeView View;
 
         #endregion
 
@@ -55,6 +56,20 @@ namespace NodeGraph.ViewModel
                 {
                     _outputPortViewModels = value;
                     RaisePropertyChanged("OutputPortViewModels");
+                }
+            }
+        }
+
+        private bool _isSelected;
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                if (_isSelected != value)
+                {
+                    _isSelected = value;
+                    RaisePropertyChanged("IsSelected");
                 }
             }
         }
