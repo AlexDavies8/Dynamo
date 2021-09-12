@@ -118,6 +118,20 @@ namespace NodeGraph.Model
             }
         }
 
+        protected int _zIndex = 1;
+        public int ZIndex
+        {
+            get => _zIndex;
+            set
+            {
+                if (_zIndex != value)
+                {
+                    _zIndex = value;
+                    RaisePropertyChanged("ZIndex");
+                }
+            }
+        }
+
         #endregion
 
         #region Constructors

@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Data;
 using NodeGraph.Model;
+using NodeGraph.View;
 using NodeGraph.ViewModel;
 
 namespace NodeGraph
@@ -27,7 +28,7 @@ namespace NodeGraph
 
         #region Node
 
-        public Node CreateNode(string header, Guid guid, Flowchart flowchart, Type type, double x, double y)
+        public static Node CreateNode(string header, Guid guid, Flowchart flowchart, Type type, double x, double y)
         {
             // Create Node
             Node node = Activator.CreateInstance(type, new object[] { guid, flowchart }) as Node;
@@ -73,7 +74,7 @@ namespace NodeGraph
             return node;
         }
 
-        public void DestroyNode(Guid guid)
+        public static void DestroyNode(Guid guid)
         {
             if (Nodes.TryGetValue(guid, out Node node))
             {
@@ -419,10 +420,240 @@ namespace NodeGraph
         public static extern void ClipCursor(IntPtr rect);
 
         public static bool IsDragging = false;
+        private static FlowchartView _trappingFlowchartView;
 
-        public static void BeginDragging()
+        public static void BeginDragging(FlowchartView flowchartView)
         {
             IsDragging = true;
+            _trappingFlowchartView = flowchartView;
+
+            Point startPosition = flowchartView.PointToScreen(new Point(0, 0));
+
+            System.Drawing.Rectangle rect = new System.Drawing.Rectangle(
+                (int)startPosition.X,
+                (int)startPosition.Y,
+                (int)(startPosition.X + flowchartView.ActualWidth),
+                (int)(startPosition.Y + flowchartView.ActualHeight));
+
+            ClipCursor(ref rect);
+
+        }
+
+        public static void EndDragging()
+        {
+            if (_trappingFlowchartView != null)
+            {
+                IsDragging = false;
+                _trappingFlowchartView = null;
+            }
+            ClipCursor(IntPtr.Zero);
+        }
+
+        #endregion
+
+        #region Node Selection
+
+        public static Node ClickedNode { get; set; }
+
+        public static ObservableCollection<Guid> GetSelectedNodeGuids(Flowchart flowchart)
+        {
+            if (SelectedNodes.TryGetValue(flowchart.Guid, out ObservableCollection<Guid> nodes))
+                return nodes;
+            return null;
+        }
+
+        public static void TrySelection(Flowchart flowchart, Node node)
+        {
+            // TODO: Add Selection Modes
+            DeselectAllNodes(flowchart);
+
+            if (!node.ViewModel.IsSelected)
+            {
+                SelectNode(node);
+
+                // TODO: Implement History
+            }
+        }
+
+        public static void SelectNode(Node node)
+        {
+            if (node.ViewModel.IsSelected)
+            {
+                return;
+            }
+
+            ObservableCollection<Guid> selected = GetSelectedNodeGuids(node.Owner);
+            if (!selected.Contains(node.Guid))
+            {
+                node.ViewModel.IsSelected = true;
+                selected.Add(node.Guid);
+            }
+
+            MoveNodeToFront(node);
+        }
+
+        public static void DeselectNode(Node node)
+        {
+            ObservableCollection<Guid> selected = GetSelectedNodeGuids(node.Owner);
+            node.ViewModel.IsSelected = false;
+            selected.Remove(node.Guid);
+        }
+
+        public static void DeselectAllNodes(Flowchart flowchart)
+        {
+            ObservableCollection<Guid> selected = GetSelectedNodeGuids(flowchart);
+
+            foreach (var guid in selected)
+            {
+                Node node = FindNode(guid);
+                node.ViewModel.IsSelected = false;
+            }
+            selected.Clear();
+        }
+
+        public static void SelectAllNodes(Flowchart flowchart)
+        {
+            DeselectAllNodes(flowchart);
+
+            ObservableCollection<Guid> selected = GetSelectedNodeGuids(flowchart);
+            foreach (var pair in Nodes)
+            {
+                Node node = pair.Value;
+                if (node.Owner == flowchart)
+                {
+                    node.ViewModel.IsSelected = true;
+                    selected.Add(node.Guid);
+                }
+            }
+        }
+
+        public static bool IsSelecting => _selectingFlowchart != null;
+        private static Flowchart _selectingFlowchart;
+        public static Point SelectStartPosition { get; private set; }
+
+        public static void BeginSelection(Flowchart flowchart, Point start)
+        {
+            FlowchartView flowchartView = flowchart.ViewModel.View;
+            BeginDragging(flowchartView);
+
+            SelectStartPosition = start;
+
+            _selectingFlowchart = flowchart;
+        }
+
+        public static void UpdateSelection(Flowchart flowchart, Point end)
+        {
+            FlowchartView flowchartView = flowchart.ViewModel.View;
+
+            Point start = SelectStartPosition;
+
+            Point selectionMin = new Point(Math.Min(start.X, end.X), Math.Min(start.Y, end.Y));
+            Point selectionMax = new Point(Math.Max(start.X, end.X), Math.Max(start.Y, end.Y));
+        
+            foreach (var pair in Nodes)
+            {
+                Node node = pair.Value;
+                if (node.Owner == _selectingFlowchart)
+                {
+                    Point nodeMin = new Point(node.X, node.Y);
+                    Point nodeMax = new Point(
+                        node.X + node.ViewModel.View.ActualWidth,
+                        node.Y + node.ViewModel.View.ActualHeight
+                    );
+
+                    // TODO: Selection Modes (fully inside selection or partially)
+                    bool isInside = (
+                        nodeMin.X >= selectionMin.X && 
+                        nodeMin.Y >= selectionMin.Y &&
+                        nodeMax.X <= selectionMax.X &&
+                        nodeMax.Y <= selectionMax.Y);
+
+                    if (isInside)
+                    {
+                        SelectNode(node);
+                    }
+                }
+            }
+        }
+
+        public static void EndSelection()
+        {
+            EndDragging();
+
+            _selectingFlowchart = null;
+        }
+
+        #endregion
+
+        #region Z Index
+
+        public static void MoveNodeToFront(Node node)
+        {
+            int maxZIndex = int.MinValue;
+            foreach (var pair in Nodes)
+            {
+                Node currentNode = pair.Value;
+                maxZIndex = Math.Max(maxZIndex, currentNode.ZIndex);
+                currentNode.ZIndex--;
+            }
+
+            node.ZIndex = maxZIndex;
+        }
+
+        #endregion
+
+        #region Delete
+
+        public static void DestroySelectedNodes(Flowchart flowchart)
+        {
+            ObservableCollection<Guid> selected = GetSelectedNodeGuids(flowchart);
+
+            List<Guid> guids = new List<Guid>();
+            foreach (var guid in selected)
+            {
+                guids.Add(guid);
+            }
+
+            foreach (var guid in guids)
+            {
+                DestroyNode(guid);
+            }
+        }
+
+        #endregion
+
+        #region ContentSize
+
+        public static (double minX, double minY, double maxX, double maxY) CalculateContentBounds(Flowchart flowchart)
+        {
+            double minX = double.MaxValue;
+            double minY = double.MaxValue;
+            double maxX = double.MinValue;
+            double maxY = double.MinValue;
+
+            bool found = false;
+
+            foreach (var pair in Nodes)
+            {
+                Node node = pair.Value;
+                NodeView nodeView = node.ViewModel.View;
+                
+                if (node.Owner == flowchart)
+                {
+                    minX = Math.Min(minX, node.X);
+                    minY = Math.Min(minY, node.Y);
+                    maxX = Math.Max(maxX, node.X + node.ViewModel.View.ActualWidth);
+                    maxY = Math.Max(maxY, node.Y + node.ViewModel.View.ActualHeight);
+                    found = true;
+                }
+            }
+
+            if (!found)
+            {
+                minX = minY = maxX = maxY = 0;
+            }
+
+            return (minX, minY, maxX, maxY);
         }
 
         #endregion

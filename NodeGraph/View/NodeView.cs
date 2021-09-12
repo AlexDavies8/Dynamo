@@ -183,7 +183,7 @@ namespace NodeGraph.View
 
                 if ((int)delta.X != 0 && (int)delta.Y != 0)
                 {
-                    ObservableCollection<Guid> selectionList = NodeGraphManager.GetSelectionList(node.Owner);
+                    ObservableCollection<Guid> selectionList = NodeGraphManager.GetSelectedNodeGuids(node.Owner);
                     foreach (var guid in selectionList)
                     {
                         Node currentNode = NodeGraphManager.FindNode(guid);
@@ -202,7 +202,7 @@ namespace NodeGraph.View
             {
                 Node node = ViewModel.Model;
                 Flowchart flowchart = node.Owner;
-                NodeGraphManager.TrySelection(flowchart, node, false, false, false);
+                NodeGraphManager.TrySelection(flowchart, node);
             }
         }
 
