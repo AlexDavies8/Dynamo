@@ -8,6 +8,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <docker:SpanView DataContext="_testSpan"></docker:SpanView>
+        
     </Grid>
 </Window>

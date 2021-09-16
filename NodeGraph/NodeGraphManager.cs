@@ -43,6 +43,8 @@ namespace NodeGraph
             flowchart.Nodes.Add(node);
             Nodes.Add(guid, node);
 
+            /*
+             * 
             // Create Ports from Properties
             PropertyInfo[] propertyInfos = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
             foreach (var propertyInfo in propertyInfos)
@@ -70,6 +72,8 @@ namespace NodeGraph
                     }
                 }
             }
+
+            */
 
             return node;
         }
@@ -110,10 +114,10 @@ namespace NodeGraph
 
         #region Port
 
-        public static Port CreatePort(string name, Guid guid, Node node, Type valueType, bool isInput)
+        public static Port CreatePort(string name, Guid guid, Node node, Type valueType, bool isInput, bool hasEditor)
         {
             // Create Port
-            Port port = new Port(guid, node, isInput, valueType);
+            Port port = new Port(guid, node, isInput, valueType, hasEditor);
             port.Name = name;
 
             // Create ViewModel
@@ -269,40 +273,58 @@ namespace NodeGraph
         // Declare once for better performance
         static List<Node> CheckedNodes = new List<Node>();
 
-        public static bool CanConnect(Port otherPort)
+        public static bool CanConnect(Port otherPort, out string error)
         {
+            error = "";
+
             // Same port check
             if (CurrentPort == otherPort)
+            {
+                error = "Cannot connect to the same port";
                 return false;
+            }
 
             // Type check
             Type firstType = CurrentPort.ValueType;
             Type otherType = otherPort.ValueType;
 
             if (firstType != otherType)
+            {
+                error = "Must connect to a port of the same type";
                 return false; // TODO: Automatic type casting
+            }
 
             // Same node check
             Node firstNode = CurrentPort.Owner;
             Node otherNode = otherPort.Owner;
 
             if (firstNode == otherNode)
+            {
+                error = "Cannot connect to the same Node";
                 return false;
+            }
 
             // Input<->Input or Output<->Output check
             if (CurrentPort.IsInput == otherPort.IsInput)
+            {
+                error = "An input port must be connected to an output port";
                 return false;
+            }
 
             // Already connected check
             foreach (var connector in CurrentPort.Connectors)
             {
                 if (connector.StartPort == otherPort || connector.EndPort == otherPort)
+                {
+                    error = "Ports are already connected";
                     return false;
+                }
             }
 
             // Test for circular connections
             if (IsReachable(CurrentPort.IsInput ? firstNode : otherNode, CurrentPort.IsInput ? otherNode : firstNode))
             {
+                error = "Cannot create a cycle";
                 return false;
             }
 

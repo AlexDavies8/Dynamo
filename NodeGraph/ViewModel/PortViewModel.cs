@@ -1,4 +1,5 @@
 ﻿using NodeGraph.Model;
+using NodeGraph.View;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,7 +11,7 @@ namespace NodeGraph.ViewModel
     {
         #region Fields
 
-
+        public PortView View;
 
         #endregion
 

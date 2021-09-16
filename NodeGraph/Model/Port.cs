@@ -12,10 +12,25 @@ namespace NodeGraph.Model
 
         public readonly Node Owner;
         public readonly bool IsInput;
+        public readonly bool HasEditor;
 
         #endregion
 
         #region Properties
+
+        public object _value;
+        public object Value
+        {
+            get => _value;
+            set
+            {
+                if (_value != value)
+                {
+                    _value = value;
+                    //RaisePropertyChanged("Value"); // TODO: Add observer pattern
+                }
+            }
+        }
 
         private PortViewModel _viewModel;
         public PortViewModel ViewModel
@@ -65,11 +80,12 @@ namespace NodeGraph.Model
 
         #region Constructors
 
-        public Port(Guid guid, Node owner, bool isInput, Type valueType) : base(guid)
+        public Port(Guid guid, Node owner, bool isInput, Type valueType, bool hasEditor) : base(guid)
         {
             Owner = owner;
             IsInput = isInput;
             ValueType = valueType;
+            HasEditor = hasEditor;
         }
 
         #endregion

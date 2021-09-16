@@ -6,8 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controls\" />
-    <Folder Include="Converters\" />
+    <PackageReference Include="PropertyTools.Wpf" Version="3.1.0" />
   </ItemGroup>
 
   <ItemGroup>
