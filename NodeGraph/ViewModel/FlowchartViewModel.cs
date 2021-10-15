@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text;
+using System.Windows;
 
 namespace NodeGraph.ViewModel
 {
@@ -112,6 +113,20 @@ namespace NodeGraph.ViewModel
                 {
                     _selectionHeight = value;
                     RaisePropertyChanged("SelectionHeight");
+                }
+            }
+        }
+
+        private Visibility _selectionVisibility = Visibility.Collapsed;
+        public Visibility SelectionVisibility
+        {
+            get { return _selectionVisibility; }
+            set
+            {
+                if (_selectionVisibility != value)
+                {
+                    _selectionVisibility = value;
+                    RaisePropertyChanged("SelectionVisibility");
                 }
             }
         }

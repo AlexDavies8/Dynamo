@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -14,7 +16,7 @@ namespace NodeGraph
 {
     // This project is based on the NodeGraph project by lifeisforu: https://github.com/lifeisforu/NodeGraph
 
-    class NodeGraphManager
+    public class NodeGraphManager
     {
         #region Fields
 
@@ -23,6 +25,49 @@ namespace NodeGraph
         public static Dictionary<Guid, Port> Ports = new Dictionary<Guid, Port>();
         public static Dictionary<Guid, Connector> Connectors = new Dictionary<Guid, Connector>();
         public static Dictionary<Guid, ObservableCollection<Guid>> SelectedNodes = new Dictionary<Guid, ObservableCollection<Guid>>();
+
+        #endregion
+
+        #region Flowchart
+
+        public static Flowchart CreateFlowchart(Guid guid)
+        {
+            Flowchart flowchart = new Flowchart();
+            Flowcharts.Add(flowchart.Guid, flowchart);
+
+            flowchart.ViewModel = new FlowchartViewModel(flowchart);
+
+            ObservableCollection<Guid> selectionList = new ObservableCollection<Guid>();
+            selectionList.CollectionChanged += NodeSelectionListCollectionChanged;
+            SelectedNodes.Add(flowchart.Guid, selectionList);
+
+            return flowchart;
+        }
+
+        public static void DestroyFlowchart(Guid guid)
+        {
+            if (!Flowcharts.TryGetValue(guid, out Flowchart flowchart))
+                return;
+
+            ObservableCollection<Guid> guids = new ObservableCollection<Guid>();
+            foreach(var node in flowchart.Nodes)
+            {
+                guids.Add(node.Guid);
+            }
+            foreach(var nodeGuid in guids)
+            {
+                DestroyNode(nodeGuid);
+            }
+
+            SelectedNodes.Remove(guid);
+            Flowcharts.Remove(guid);
+        }
+
+        public static Flowchart FindFlowchart(Guid guid)
+        {
+            Flowcharts.TryGetValue(guid, out Flowchart flowchart);
+            return flowchart;
+        }
 
         #endregion
 
@@ -38,13 +83,12 @@ namespace NodeGraph
 
             // Create ViewModel
             node.ViewModel = new NodeViewModel(node);
+            flowchart.ViewModel.NodeViewModels.Add(node.ViewModel);
 
             // Register Node
             flowchart.Nodes.Add(node);
             Nodes.Add(guid, node);
 
-            /*
-             * 
             // Create Ports from Properties
             PropertyInfo[] propertyInfos = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
             foreach (var propertyInfo in propertyInfos)
@@ -54,7 +98,12 @@ namespace NodeGraph
                 {
                     foreach (var attribute in portAttributes)
                     {
-                        CreatePort(attribute.Name, Guid.NewGuid(), node, propertyInfo.PropertyType, attribute.IsInput);
+                        Port port = CreatePort(attribute.Name, Guid.NewGuid(), node, propertyInfo.PropertyType, attribute.IsInput, attribute.HasEditor, () => propertyInfo.GetValue(node));
+                        port.PortValueChanged += (Port port, object prevValue, object newValue) =>
+                        {
+                            node.OnPortChanged?.Invoke(port);
+                            propertyInfo.SetValue(node, newValue);
+                        };
                     }
                 }
             }
@@ -68,12 +117,16 @@ namespace NodeGraph
                 {
                     foreach (var attribute in portAttributes)
                     {
-                        CreatePort(attribute.Name, Guid.NewGuid(), node, fieldInfo.FieldType, attribute.IsInput);
+                        Port port = CreatePort(attribute.Name, Guid.NewGuid(), node, fieldInfo.FieldType, attribute.IsInput, attribute.HasEditor, () => fieldInfo.GetValue(node));
+                        port.PortValueChanged += (Port port, object prevValue, object newValue) =>
+                        {
+                            fieldInfo.SetValue(node, newValue);
+                        };
                     }
                 }
             }
 
-            */
+            node.OnCreate();
 
             return node;
         }
@@ -114,10 +167,10 @@ namespace NodeGraph
 
         #region Port
 
-        public static Port CreatePort(string name, Guid guid, Node node, Type valueType, bool isInput, bool hasEditor)
+        public static Port CreatePort(string name, Guid guid, Node node, Type valueType, bool isInput, bool hasEditor, Func<object> getValue = null)
         {
             // Create Port
-            Port port = new Port(guid, node, isInput, valueType, hasEditor);
+            Port port = new Port(guid, node, isInput, valueType, hasEditor, getValue);
             port.Name = name;
 
             // Create ViewModel
@@ -170,6 +223,8 @@ namespace NodeGraph
             Connectors.Add(connector.Guid, connector);
 
             connector.ViewModel = new ConnectorViewModel(connector);
+            flowchart.ViewModel.ConnectorViewModels.Add(connector.ViewModel);
+
             flowchart.Connectors.Add(connector);
 
             return connector;
@@ -191,6 +246,7 @@ namespace NodeGraph
 
                 Flowchart flowchart = connector.Owner;
                 flowchart.Connectors.Remove(connector);
+                flowchart.ViewModel.ConnectorViewModels.Remove(connector.ViewModel);
 
                 Connectors.Remove(guid);
             }
@@ -243,7 +299,7 @@ namespace NodeGraph
             Node node = port.Owner;
             Flowchart flowchart = node.Owner;
 
-            // TODO: Begin Drag
+            BeginDragging(flowchart.ViewModel.View);
 
             CurrentConnector = CreateConnector(Guid.NewGuid(), flowchart);
             ConnectTo(port, CurrentConnector);
@@ -362,7 +418,7 @@ namespace NodeGraph
 
         public static void EndConnection(Port endPort = null)
         {
-            // TODO: End dragging
+            EndDragging();
 
             if (!IsConnecting)
             {
@@ -390,7 +446,8 @@ namespace NodeGraph
 
         public static void UpdateConnection(Point mousePosition)
         {
-            // TODO: Update Connector Curve Data
+            if (CurrentConnector != null)
+                CurrentConnector.ViewModel.View.BuildCurveData(mousePosition);
         }
 
         #endregion
@@ -402,7 +459,7 @@ namespace NodeGraph
 
         public static void BeginDragNode(Flowchart flowchart)
         {
-            // TODO: Begin Drag
+            BeginDragging(flowchart.ViewModel.View);
 
             IsNodeDragged = true;
             _NodeDraggedFlowchartGuid = flowchart.Guid;
@@ -410,7 +467,7 @@ namespace NodeGraph
 
         public static void EndDragNode()
         {
-            // TODO: End Drag
+            EndDragging();
 
             IsNodeDragged = false;
         }
@@ -449,13 +506,22 @@ namespace NodeGraph
             IsDragging = true;
             _trappingFlowchartView = flowchartView;
 
+            PresentationSource source = PresentationSource.FromVisual(flowchartView);
+
+            double scaleX = 1, scaleY = 1;
+            if (source != null)
+            {
+                scaleX = source.CompositionTarget.TransformToDevice.M11;
+                scaleY = source.CompositionTarget.TransformToDevice.M22;
+            }
+
             Point startPosition = flowchartView.PointToScreen(new Point(0, 0));
 
             System.Drawing.Rectangle rect = new System.Drawing.Rectangle(
                 (int)startPosition.X,
                 (int)startPosition.Y,
-                (int)(startPosition.X + flowchartView.ActualWidth),
-                (int)(startPosition.Y + flowchartView.ActualHeight));
+                (int)(startPosition.X + flowchartView.ActualWidth * scaleX),
+                (int)(startPosition.Y + flowchartView.ActualHeight * scaleY));
 
             ClipCursor(ref rect);
 
@@ -561,6 +627,7 @@ namespace NodeGraph
             SelectStartPosition = start;
 
             _selectingFlowchart = flowchart;
+            _selectingFlowchart.ViewModel.SelectionVisibility = Visibility.Visible;
         }
 
         public static void UpdateSelection(Flowchart flowchart, Point end)
@@ -575,7 +642,7 @@ namespace NodeGraph
             foreach (var pair in Nodes)
             {
                 Node node = pair.Value;
-                if (node.Owner == _selectingFlowchart)
+                if (node.Owner == _selectingFlowchart && node.ViewModel.View != null)
                 {
                     Point nodeMin = new Point(node.X, node.Y);
                     Point nodeMax = new Point(
@@ -602,6 +669,10 @@ namespace NodeGraph
         {
             EndDragging();
 
+            if (_selectingFlowchart == null)
+                return;
+
+            _selectingFlowchart.ViewModel.SelectionVisibility = Visibility.Collapsed;
             _selectingFlowchart = null;
         }
 
@@ -676,6 +747,27 @@ namespace NodeGraph
             }
 
             return (minX, minY, maxX, maxY);
+        }
+
+        #endregion
+
+        #region Selection Events
+
+        public delegate void NodeSelectionChangedDelegate(Flowchart flowchart, ObservableCollection<Guid> nodes, NotifyCollectionChangedEventArgs args);
+        public static event NodeSelectionChangedDelegate NodeSelectionChanged;
+
+        private static void NodeSelectionListCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
+        {
+            Flowchart flowchart = null;
+            foreach (var pair in SelectedNodes)
+            {
+                if (pair.Value == sender)
+                {
+                    flowchart = FindFlowchart(pair.Key);
+                }
+            }
+
+            NodeSelectionChanged?.Invoke(flowchart, sender as ObservableCollection<Guid>, args);
         }
 
         #endregion

@@ -142,5 +142,13 @@ namespace NodeGraph.Model
         }
 
         #endregion
+
+        #region Events
+
+        public Action<Port> OnPortChanged { get; set; }
+
+        public virtual void OnCreate() { }
+
+        #endregion
     }
 }

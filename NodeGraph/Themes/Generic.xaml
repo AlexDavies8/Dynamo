@@ -35,6 +35,22 @@
         </Setter>
     </Style>
 
+    <Style x:Key="DefaultConnectorStyle" TargetType="{x:Type v:ConnectorView}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type v:ConnectorView}">
+                    <Grid>
+                        <Path
+                            Stroke="Transparent"
+                            StrokeThickness="20"
+                            Data="{Binding Path=CurveData, RelativeSource={RelativeSource AncestorType={x:Type v:ConnectorView}}}"/>
+                        <Path x:Name="ConnectorCurve" Stroke="White" StrokeThickness="2" Data="{Binding Path=CurveData, RelativeSource={RelativeSource AncestorType={x:Type v:ConnectorView}}}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="DefaultPortStyle" TargetType="{x:Type v:PortView}">
         <Setter Property="Template">
             <Setter.Value>
@@ -71,7 +87,7 @@
                                 <TextBlock
                                     x:Name="PART_Header"
                                     Grid.Column="1"
-                                    Text="{Binding Model.DislayName, Mode=TwoWay}"
+                                    Text="{Binding Model.Name, Mode=TwoWay}"
                                     Focusable="True"
                                     Foreground="White"
                                     TextAlignment="Left"
@@ -128,7 +144,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <Style x:Key="DefaultNodeStyle" TargetType="{x:Type v:NodeView}">
         <Setter Property="Background" Value="{StaticResource NodeBackgroundColour}"/>
         <Setter Property="BorderBrush" Value="{StaticResource NodeBorderColour}"/>
@@ -142,11 +158,11 @@
                     <Grid>
                         <!-- Background -->
                         <Border
+                            Name="Mask"
                             Background="{TemplateBinding Background}"
                             Margin="{TemplateBinding Margin}"
                             Padding="{TemplateBinding Padding}"
                             CornerRadius="{TemplateBinding CornerRadius}">
-                            
                         </Border>
                         <!-- Selection -->
                         <Border
@@ -164,8 +180,11 @@
                                     <RowDefinition Height="20"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
+                                <Grid.OpacityMask>
+                                    <VisualBrush Visual="{Binding ElementName=Mask}"/>
+                                </Grid.OpacityMask>
                                 <!-- Header -->
-                                <Grid Grid.Row="0" Background="{Binding Model.HeaderBackgroundColour}">
+                                <Grid Grid.Row="0" Background="Black">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="25"/>
                                         <ColumnDefinition Width="*"/>
@@ -179,10 +198,10 @@
                                         VerticalAlignment="Center"
                                         Text="{Binding Model.Header, Mode=TwoWay}"
                                         Focusable="True"
-                                        Foreground="{Binding Model.HeaderFontColor}"
+                                        Foreground="White"
                                         FontWeight="Bold"
                                         FontSize="12"
-                                        IsEnabled="{Binding Model.AllowEditingHeader}"/>
+                                        IsEnabled="True"/>
                                 </Grid>
                                 <Grid Grid.Row="1">
                                     <Grid.ColumnDefinitions>
@@ -190,7 +209,21 @@
                                         <ColumnDefinition Width="50"/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
-                                    <!-- Nodes -->
+                                    <!-- Ports -->
+                                    <v:PortViewsContainer
+                                        Visibility="Visible"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="3"
+                                        IsInput="True"
+                                        HorizontalAlignment="Left"
+                                        ItemsSource="{Binding InputPortViewModels}"/>
+                                    <v:PortViewsContainer
+                                        Visibility="Visible"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="3"
+                                        IsInput="False"
+                                        HorizontalAlignment="Right"
+                                        ItemsSource="{Binding OutputPortViewModels}"/>
                                     <!-- TODO -->
                                 </Grid>
                             </Grid>
@@ -210,6 +243,7 @@
     </Style>
 
     <Style TargetType="{x:Type v:FlowchartView}">
+        <Setter Property="Foreground" Value="BlueViolet"/>
         <Setter Property="Background" Value="{StaticResource FlowchartBackgroundColour}"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -221,7 +255,49 @@
                         Margin="{TemplateBinding Margin}"
                         Padding="0">
                         <Grid ClipToBounds="True">
-                            
+                            <v:ConnectorViewsContainer
+                                x:Name="PART_ConnectorViewsContainer"
+                                Panel.ZIndex="1"
+                                ItemsSource="{Binding ConnectorViewModels}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <Canvas IsHitTestVisible="True"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </v:ConnectorViewsContainer>
+                            <v:NodeViewsContainer
+                                x:Name="PART_NodeViewsContainer"
+                                IsHitTestVisible="True"
+                                ItemsSource="{Binding NodeViewModels}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <Canvas/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </v:NodeViewsContainer>
+                            <Canvas
+                                Name="PART_DragAndSelectionCanvas"
+                                Visibility="{Binding SelectionVisibility}"
+                                IsHitTestVisible="False"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top">
+                                <Border
+                                    Canvas.Left="{Binding SelectionStartX}"
+                                    Canvas.Top="{Binding SelectionStartY}"
+                                    Canvas.ZIndex="1"
+                                    Width="{Binding SelectionWidth}"
+                                    Height="{Binding SelectionHeight}"
+                                    BorderBrush="LightBlue"
+                                    BorderThickness="2"/>
+                                <Border
+                                    Canvas.Left="{Binding SelectionStartX}"
+                                    Canvas.Top="{Binding SelectionStartY}"
+                                    Canvas.ZIndex="1"
+                                    Width="{Binding SelectionWidth}"
+                                    Height="{Binding SelectionHeight}"
+                                    Background="LightBlue"
+                                    Opacity="0.4"/>
+                            </Canvas>
                         </Grid>
                     </Border>
                 </ControlTemplate>

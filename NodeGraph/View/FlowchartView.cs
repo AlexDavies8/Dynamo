@@ -11,7 +11,10 @@ using System.Windows.Media;
 
 namespace NodeGraph.View
 {
-    public class FlowchartView : ContentControl
+	[TemplatePart(Name = "PART_ConnectorViewsContainer", Type = typeof(FrameworkElement))]
+	[TemplatePart(Name = "PART_NodeViewsContainer", Type = typeof(FrameworkElement))]
+	[TemplatePart(Name = "PART_DragAndSelectionCanvas", Type = typeof(FrameworkElement))]
+	public class FlowchartView : ContentControl
     {
         #region Fields
 
@@ -53,6 +56,23 @@ namespace NodeGraph.View
             AllowDrop = true;
 
 			// TODO: Drag Events
+		}
+
+        #endregion
+
+        #region Public Methods
+
+        #endregion
+
+        #region Template
+
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+
+			PartConnectorViewsContainer = GetTemplateChild("PART_ConnectorViewsContainer") as FrameworkElement;
+			PartNodeViewsContainer = GetTemplateChild("PART_NodeViewsContainer") as FrameworkElement;
+			PartDragAndSelectionCanvas = GetTemplateChild("PART_DragAndSelectionCanvas") as FrameworkElement;
         }
 
         #endregion
@@ -75,7 +95,7 @@ namespace NodeGraph.View
 
             if (ConnectorCanvas == null)
             {
-                ConnectorCanvas = ViewUtility.FindChild<Canvas>(PartNodeViewsContainer);
+                ConnectorCanvas = ViewUtility.FindChild<Canvas>(PartConnectorViewsContainer);
             }
 
             if (NodeCanvas == null)
@@ -143,6 +163,7 @@ namespace NodeGraph.View
 
 			NodeGraphManager.EndConnection();
 			NodeGraphManager.EndDragNode();
+			NodeGraphManager.EndSelection();
 
 			// TODO: Implement History
         }
@@ -425,12 +446,6 @@ namespace NodeGraph.View
 			ZoomAndPan.StartX -= delta.X;
 			ZoomAndPan.StartY -= delta.Y;
 		}
-
-        #endregion
-
-        #region
-
-
 
         #endregion
     }

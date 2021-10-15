@@ -59,7 +59,6 @@ namespace NodeGraph.Model
 
         #endregion
 
-
         #region Constructors
 
         public Connector(Guid guid, Flowchart owner) : base(guid)

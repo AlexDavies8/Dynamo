@@ -5,9 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:docker="clr-namespace:WindowDocker.View;assembly=WindowDocker"
         xmlns:local="clr-namespace:Dynamo"
+        xmlns:ngv="clr-namespace:NodeGraph.View;assembly=NodeGraph"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <ngv:FlowchartView DataContext="{Binding Path=FlowchartViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
+        <Button Grid.Row="1" Click="Button_Click">Execute</Button>
     </Grid>
 </Window>

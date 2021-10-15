@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -53,12 +54,12 @@ namespace NodeGraph.View
         }
         public static readonly DependencyProperty SelectionThicknessProperty = DependencyProperty.Register("SelectionThickness", typeof(Thickness), typeof(NodeView), new PropertyMetadata(new Thickness(TargetSelectionThickness)));
 
-        public double CornerRadius
+        public CornerRadius CornerRadius
         {
-            get => (double)GetValue(CornerRadiusProperty);
+            get => (CornerRadius)GetValue(CornerRadiusProperty);
             set => SetValue(CornerRadiusProperty, value);
         }
-        public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register("CornerRadius", typeof(double), typeof(NodeView), new PropertyMetadata(TargetCornerRadius));
+        public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(NodeView), new PropertyMetadata(new CornerRadius(TargetCornerRadius)));
 
         #endregion
 
@@ -138,8 +139,7 @@ namespace NodeGraph.View
                 NodeGraphManager.EndConnection();
             }
 
-            // TODO: Selection
-
+            NodeGraphManager.EndSelection();
             NodeGraphManager.EndDragNode();
 
             e.Handled = true;
@@ -217,7 +217,7 @@ namespace NodeGraph.View
 
             SelectionThickness = new Thickness(TargetSelectionThickness / scale);
 
-            CornerRadius = TargetCornerRadius / scale;
+            CornerRadius = new CornerRadius(TargetCornerRadius / scale);
         }
 
         #endregion

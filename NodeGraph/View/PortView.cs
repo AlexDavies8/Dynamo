@@ -5,6 +5,7 @@ using NodeGraph.ViewModel;
 using PropertyTools.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -262,6 +263,10 @@ namespace NodeGraph.View
 				{
 					PropertyEditor = CreateStringEditor();
 				}
+				else if (type == typeof(int))
+				{
+					PropertyEditor = CreateIntEditor();
+				}
 				else if (type == typeof(double))
 				{
 					PropertyEditor = CreateDoubleEditor();
@@ -293,6 +298,7 @@ namespace NodeGraph.View
 			Port port = ViewModel.Model as Port;
 
 			TextBox textBox = new TextBox();
+			textBox.MinWidth = 50;
 			textBox.Text = (string)port.Value;
 			textBox.SetBinding(TextBox.TextProperty, CreateBinding(port, "Value", null));
 			return textBox;
@@ -303,8 +309,9 @@ namespace NodeGraph.View
 			Port port = ViewModel.Model as Port;
 
 			NumericTextBox textBox = new NumericTextBox();
+			textBox.MinWidth = 50;
 			textBox.IsInteger = true;
-			textBox.Text = port.Value.ToString();
+			textBox.Text = port.Value != null ? port.Value.ToString() : "0";
 			textBox.SetBinding(TextBox.TextProperty, CreateBinding(port, "Value", new IntToStringConverter()));
 			return textBox;
 		}
@@ -314,6 +321,7 @@ namespace NodeGraph.View
 			Port port = ViewModel.Model as Port;
 
 			NumericTextBox textBox = new NumericTextBox();
+			textBox.MinWidth = 50;
 			textBox.IsInteger = false;
 			textBox.Text = port.Value.ToString();
 			textBox.SetBinding(TextBox.TextProperty, CreateBinding(port, "Value", new DoubleToStringConverter()));
@@ -325,7 +333,7 @@ namespace NodeGraph.View
 			Port port = ViewModel.Model as Port;
 
 			ColorPicker picker = new ColorPicker();
-			picker.SelectedColor = (Color)port.Value;
+			picker.SelectedColor = (Color)(port.Value != null ? port.Value : Color.FromRgb(255, 255, 255));
 			picker.SetBinding(TextBox.TextProperty, CreateBinding(port, "Value", null));
 			return picker;
 		}

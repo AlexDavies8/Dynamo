@@ -8,29 +8,58 @@ namespace NodeGraph.Model
 {
     public class Port : ModelBase
     {
+        #region Events
+
+        public delegate void PortValueChangedDelegate(Port port, object prevValue, object newValue);
+        public event PortValueChangedDelegate PortValueChanged;
+
+        protected virtual void OnPortValueChanged(object prevValue, object newValue)
+        {
+            PortValueChanged?.Invoke(this, prevValue, newValue);
+        }
+
+        #endregion
+
         #region Fields
 
         public readonly Node Owner;
         public readonly bool IsInput;
         public readonly bool HasEditor;
 
+        private readonly bool _fromAttribute;
+
         #endregion
 
         #region Properties
 
-        public object _value;
+        private object _value;
         public object Value
         {
-            get => _value;
+            get
+            {
+                if (_fromAttribute)
+                {
+                    object value = _getValue();
+                    if (_value != value)
+                    {
+                        _value = value;
+                        RaisePropertyChanged("Value");
+                    }
+                }
+                return _value;
+            }
             set
             {
                 if (_value != value)
                 {
+                    OnPortValueChanged(_value, value);
                     _value = value;
-                    //RaisePropertyChanged("Value"); // TODO: Add observer pattern
+                    RaisePropertyChanged("Value");
                 }
             }
         }
+
+        private Func<object> _getValue;
 
         private PortViewModel _viewModel;
         public PortViewModel ViewModel
@@ -80,12 +109,22 @@ namespace NodeGraph.Model
 
         #region Constructors
 
-        public Port(Guid guid, Node owner, bool isInput, Type valueType, bool hasEditor) : base(guid)
+        public Port(Guid guid, Node owner, bool isInput, Type valueType, bool hasEditor, Func<object> getValue = null) : base(guid)
         {
             Owner = owner;
             IsInput = isInput;
             ValueType = valueType;
             HasEditor = hasEditor;
+
+            _fromAttribute = getValue != null;
+            _getValue = getValue;
+
+            Connectors.CollectionChanged += ConnectorsCollectionChanged;
+        }
+
+        private void ConnectorsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            RaisePropertyChanged("Connectors");
         }
 
         #endregion

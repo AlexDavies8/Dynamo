@@ -28,7 +28,8 @@ namespace NodeGraph.View
 
         public ConnectorView()
         {
-
+            LayoutUpdated += ConnectorViewLayoutUpdated;
+            DataContextChanged += ConnectorViewDataContextChanged;
         }
 
         #endregion
