@@ -311,7 +311,7 @@ namespace NodeGraph.View
 			NumericTextBox textBox = new NumericTextBox();
 			textBox.MinWidth = 50;
 			textBox.IsInteger = true;
-			textBox.Text = port.Value != null ? port.Value.ToString() : "0";
+			textBox.Text = (port.Value ?? 0).ToString();
 			textBox.SetBinding(TextBox.TextProperty, CreateBinding(port, "Value", new IntToStringConverter()));
 			return textBox;
 		}
@@ -323,7 +323,7 @@ namespace NodeGraph.View
 			NumericTextBox textBox = new NumericTextBox();
 			textBox.MinWidth = 50;
 			textBox.IsInteger = false;
-			textBox.Text = port.Value.ToString();
+			textBox.Text = (port.Value ?? 0).ToString();
 			textBox.SetBinding(TextBox.TextProperty, CreateBinding(port, "Value", new DoubleToStringConverter()));
 			return textBox;
 		}

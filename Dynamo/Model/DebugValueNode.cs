@@ -6,6 +6,7 @@ using System.Text;
 
 namespace Dynamo.Model
 {
+    [Node("Debug/Log")]
     public class DebugValueNode<T> : ExecutableNode
     {
         private object _value;

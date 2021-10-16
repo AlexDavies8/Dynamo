@@ -6,6 +6,7 @@ using NodeGraph;
 
 namespace Dynamo.Model
 {
+    [Node("Math/Add")]
     class MathAddNode : ExecutableNode
     {
         [Port("A", true, typeof(int), 0, false)]

@@ -10,7 +10,11 @@ namespace Dynamo.Model
     {
         public ExecutableNode(Guid guid, Flowchart owner) : base(guid, owner)
         {
-            OnPortChanged += (port) => ExecutionManager.MarkDirty(this);
+            OnPortChanged += (port) =>
+            {
+                if (port.IsInput || port.HasEditor)
+                    ExecutionManager.MarkDirty(this);
+            };
         }
 
         public override void RaisePropertyChanged(string propertyName)

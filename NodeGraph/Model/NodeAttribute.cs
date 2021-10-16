@@ -4,9 +4,14 @@ using System.Text;
 
 namespace NodeGraph.Model
 {
-    [AttributeUsage(AttributeTargets.Struct | AttributeTargets.Class)]
-    class NodeAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Class)]
+    public class NodeAttribute : Attribute
     {
-        
+        public string Path;
+
+        public NodeAttribute(string path)
+        {
+            Path = path;
+        }
     }
 }

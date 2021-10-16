@@ -13,9 +13,12 @@
   <ItemGroup>
     <Folder Include="Controls\" />
     <Folder Include="Converters\" />
-    <Folder Include="Themes\" />
     <Folder Include="ViewModel\" />
     <Folder Include="View\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4" />
   </ItemGroup>
 
   <ItemGroup>
