@@ -542,6 +542,7 @@ namespace NodeGraph
         #region Node Selection
 
         public static Node ClickedNode { get; set; }
+        public static Action<Node> OnSelectionChanged { get; set; }
 
         public static ObservableCollection<Guid> GetSelectedNodeGuids(Flowchart flowchart)
         {
@@ -578,6 +579,8 @@ namespace NodeGraph
             }
 
             MoveNodeToFront(node);
+
+            OnSelectionChanged(node);
         }
 
         public static void DeselectNode(Node node)

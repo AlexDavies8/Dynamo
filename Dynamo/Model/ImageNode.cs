@@ -6,7 +6,7 @@ using SixLabors.ImageSharp;
 
 namespace Dynamo.Model
 {
-    class ImageNode : ExecutableNode
+    public class ImageNode : ExecutableNode
     {
         [Port("Path", true, typeof(string), "", true)]
         public string Path;
@@ -20,7 +20,8 @@ namespace Dynamo.Model
 
         public override void Execute()
         {
-            Image = Image.Load(Path);
+            if (Path != null && Path.Length > 0)
+                Image = Image.Load(Path);
         }
     }
 }

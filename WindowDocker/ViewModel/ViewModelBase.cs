@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using WindowDocker.Model;
 
 namespace WindowDocker.ViewModel
 {
@@ -10,9 +11,9 @@ namespace WindowDocker.ViewModel
 
         #region Constructor
 
-        public ViewModelBase()
+        public ViewModelBase(ModelBase model)
         {
-
+            model.PropertyChanged += ModelPropertyChanged;
         }
 
         #endregion

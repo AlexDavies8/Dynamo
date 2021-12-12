@@ -24,7 +24,8 @@ namespace Dynamo.Model
 
         public override void Execute()
         {
-            Output = Input.Clone(x => x.Resize((int)(Input.Width * double.Parse(Scale)), (int)(Input.Height * double.Parse(Scale))));
+            if (Input != null)
+                Output = Input.Clone(x => x.Resize((int)(Input.Width * double.Parse(Scale)), (int)(Input.Height * double.Parse(Scale))));
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using Dynamo.Model;
 using NodeGraph;
@@ -38,15 +39,19 @@ namespace Dynamo
         // TODO: Possibly change this to synchronise output ports to their connected inputs after
         // their parent node has finished executing so that node's connections are only synced after they
         // have finished executing - only dirty nodes resync properties
-        private static void SynchroniseConnectors(Node node)
+        private static bool SynchroniseConnectors(Node node)
         {
             foreach (var port in node.InputPorts)
             {
                 foreach (var connector in port.Connectors)
                 {
-                    connector.EndPort.Value = connector.StartPort.Value;
+                    if (connector.EndPort != null && connector.StartPort != null) // Dont sync nodes currently being dragged
+                        connector.EndPort.Value = connector.StartPort.Value;
+                    else
+                        return false;
                 }
             }
+            return true;
         }
 
         private static bool HasDirtyDependencies(ExecutableNode node)

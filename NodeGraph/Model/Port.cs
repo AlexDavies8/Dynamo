@@ -89,6 +89,20 @@ namespace NodeGraph.Model
             }
         }
 
+        private bool _exposed;
+        public bool Exposed
+        {
+            get => _exposed;
+            set
+            {
+                if (_exposed != value)
+                {
+                    _exposed = value;
+                    RaisePropertyChanged("Exposed");
+                }
+            }
+        }
+
         private ObservableCollection<Connector> _connectors = new ObservableCollection<Connector>();
         public ObservableCollection<Connector> Connectors
         {

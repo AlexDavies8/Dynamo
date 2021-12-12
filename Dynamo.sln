@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.30711.63
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dynamo", "Dynamo\Dynamo.csproj", "{9B911486-3340-418E-9A44-629579079DC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodeGraph", "NodeGraph\NodeGraph.csproj", "{85AF35F6-4379-43F8-B335-A08D6E2AF5AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodeGraph", "NodeGraph\NodeGraph.csproj", "{85AF35F6-4379-43F8-B335-A08D6E2AF5AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowDocker", "WindowDocker\WindowDocker.csproj", "{6D0502AE-A286-4F88-BF59-0744B3B318F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowDocker", "WindowDocker\WindowDocker.csproj", "{6D0502AE-A286-4F88-BF59-0744B3B318F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

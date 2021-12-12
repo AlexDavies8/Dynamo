@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Reflection;
 using System.Text;
 
@@ -147,7 +149,27 @@ namespace NodeGraph.Model
 
         public Action<Port> OnPortChanged { get; set; }
 
-        public virtual void OnCreate() { }
+        public virtual void OnCreate() 
+        {
+            InputPorts.CollectionChanged += PortCollectionChanged;
+            OutputPorts.CollectionChanged += PortCollectionChanged;
+        }
+
+        private void PortCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null)
+                foreach (var item in e.NewItems)
+                    ((Port)item).PropertyChanged += PortChanged;
+
+            if (e.OldItems != null)
+                foreach (var item in e.OldItems)
+                    ((Port)item).PropertyChanged -= PortChanged;
+        }
+
+        private void PortChanged(object sender, PropertyChangedEventArgs e)
+        {
+            OnPortChanged((Port)sender);
+        }
 
         #endregion
     }

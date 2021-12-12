@@ -1,15 +1,23 @@
 ﻿using NodeGraph.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace NodeGraph.View
 {
-    class PortViewsContainer : ItemsControl
+    public class PortViewsContainer : ItemsControl
     {
         #region Properties
+        public bool ShowPort
+        {
+            get { return (bool)GetValue(ShowPortProperty); }
+            set { SetValue(ShowPortProperty, value); }
+        }
+        public static readonly DependencyProperty ShowPortProperty =
+            DependencyProperty.Register("ShowPort", typeof(bool), typeof(PortViewsContainer), new PropertyMetadata(true));
 
         public bool IsInput
         {
@@ -42,7 +50,9 @@ namespace NodeGraph.View
 
         protected override DependencyObject GetContainerForItemOverride()
         {
-            return new PortView(IsInput);
+            PortView portView = new PortView(IsInput);
+            portView.Interactable = ShowPort;
+            return portView;
         }
 
         #endregion

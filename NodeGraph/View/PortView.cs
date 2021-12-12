@@ -17,8 +17,9 @@ namespace NodeGraph.View
 {
     public class PortView : ContentControl
     {
-        #region Properties
+		#region Properties
 
+		public bool LinkToViewModel { get; set; } = true;
         public PortViewModel ViewModel { get; private set; }
         public FrameworkElement PartPort { get; private set; }
         public TextBlock PartTooltip { get; private set; }
@@ -46,6 +47,14 @@ namespace NodeGraph.View
 		}
 		public static readonly DependencyProperty IsPortEnabledProperty =
 			DependencyProperty.Register("IsPortEnabled", typeof(bool), typeof(PortView), new PropertyMetadata(true));
+
+		public bool Interactable
+		{
+			get { return (bool)GetValue(InteractableProperty); }
+			set { SetValue(InteractableProperty, value); }
+		}
+		public static readonly DependencyProperty InteractableProperty =
+			DependencyProperty.Register("Interactable", typeof(bool), typeof(PortView), new PropertyMetadata(true));
 
 		public bool ToolTipVisibility
 		{
@@ -127,7 +136,7 @@ namespace NodeGraph.View
 		private void PortViewDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
 			ViewModel = DataContext as PortViewModel;
-			ViewModel.View = this;
+			if (LinkToViewModel) ViewModel.View = this;
 			ViewModel.PropertyChanged += ViewModelPropertyChanged;
 
 			SynchronizeProperties();

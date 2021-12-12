@@ -4,16 +4,39 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:docker="clr-namespace:WindowDocker.View;assembly=WindowDocker"
+        xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
         xmlns:local="clr-namespace:Dynamo"
         xmlns:ngv="clr-namespace:NodeGraph.View;assembly=NodeGraph"
+        xmlns:v="clr-namespace:Dynamo.View"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <ngv:FlowchartView DataContext="{Binding Path=FlowchartViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
-        <Button Grid.Row="1" Click="Button_Click">Execute</Button>
+        <StackPanel Grid.Row="0" Background="{StaticResource NodeBackgroundColour}">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Button Style="{StaticResource AppbarButton}">File</Button>
+                <Button Style="{StaticResource AppbarButton}">Edit</Button>
+            </StackPanel>
+        </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <v:PropertyPanelView DataContext="{Binding Path=PropertyPanelViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
+            <GridSplitter Grid.Column="1" Width="2" HorizontalAlignment="Stretch"/>
+            <Grid Grid.Column="2" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+                <ngv:FlowchartView Grid.Row="0" DataContext="{Binding Path=FlowchartViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
+                <Button Grid.Row="1" Click="Button_Click">Execute</Button>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>

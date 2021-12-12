@@ -20,7 +20,8 @@ namespace Dynamo.Model
 
         public override void Execute()
         {
-            Input.Save(Path);
+            if (Input != null)
+                Input.Save(Path);
         }
     }
 }

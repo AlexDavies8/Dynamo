@@ -13,7 +13,9 @@ namespace Dynamo.Model
             OnPortChanged += (port) =>
             {
                 if (port.IsInput || port.HasEditor)
+                {
                     ExecutionManager.MarkDirty(this);
+                }
             };
         }
 

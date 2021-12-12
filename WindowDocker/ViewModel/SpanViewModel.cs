@@ -3,11 +3,18 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using WindowDocker.Model;
+using WindowDocker.View;
 
 namespace WindowDocker.ViewModel
 {
     public class SpanViewModel : ViewModelBase
     {
+        #region Fields
+
+        public SpanView View;
+
+        #endregion
+
         #region Properties
 
         private Span _model;
@@ -22,6 +29,15 @@ namespace WindowDocker.ViewModel
                     RaisePropertyChanged("Model");
                 }
             }
+        }
+
+        #endregion
+
+        #region Constructor
+
+        public SpanViewModel(Span model) : base(model)
+        {
+            Model = model;
         }
 
         #endregion

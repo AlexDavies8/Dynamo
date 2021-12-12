@@ -329,8 +329,10 @@ namespace NodeGraph.View
 			Point newZoomCentre = ZoomAndPan.MatrixInv.Transform(zoomCentre);
 			Point zoomDelta = new Point(zoomCentre.X - newZoomCentre.X, zoomCentre.Y - newZoomCentre.Y);
 
-			ZoomAndPan.StartX -= zoomDelta.X;
-			ZoomAndPan.StartY -= zoomDelta.Y;
+			// TODO: Fix zoom
+
+			ZoomAndPan.StartX += zoomDelta.X;
+			ZoomAndPan.StartY += zoomDelta.Y;
 		}
 
         #endregion

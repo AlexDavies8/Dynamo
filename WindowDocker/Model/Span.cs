@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Controls;
+using WindowDocker.ViewModel;
 
 namespace WindowDocker.Model
 {
@@ -9,29 +11,44 @@ namespace WindowDocker.Model
     {
         #region Properties
 
-        private Grid _childContainer;
-        public Grid ChildContainer
+        private SpanViewModel _viewModel;
+        public SpanViewModel ViewModel
         {
-            get => _childContainer;
+            get => _viewModel;
             set
             {
-                if (_childContainer != value)
+                if (_viewModel != value)
                 {
-                    _childContainer = value;
-                    RaisePropertyChanged("ChildContainer");
+                    RaisePropertyChanged("ViewModel");
+                    _viewModel = value;
                 }
             }
         }
 
-        private float _splitRatio = 1f;
-        public float SplitRatio
+        private ObservableCollection<Span> _children;
+        public ObservableCollection<Span> Children
         {
-            get => _splitRatio;
+            get => _children;
             set
             {
-                if (_splitRatio != value)
+                if (_children != value)
                 {
-                    _splitRatio = value;
+                    RaisePropertyChanged("Children");
+                    _children = value;
+                }
+            }
+        }
+
+        private ObservableCollection<double> _ratios;
+        public ObservableCollection<double> Ratios
+        {
+            get => _ratios;
+            set
+            {
+                if (_ratios != value)
+                {
+                    RaisePropertyChanged("Ratios");
+                    _ratios = value;
                 }
             }
         }
@@ -40,7 +57,7 @@ namespace WindowDocker.Model
 
         #region Constructor
 
-        public Span()
+        public Span() : base()
         {
 
         }
