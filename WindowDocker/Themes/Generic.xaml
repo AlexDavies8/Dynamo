@@ -8,7 +8,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type viewmodel:SpanViewModel}">
                     <Border CornerRadius="4">
-                        <ItemsControl ItemsSource="{TemplateBinding SpanViews}">
+                        <ItemsControl>
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <Grid/>

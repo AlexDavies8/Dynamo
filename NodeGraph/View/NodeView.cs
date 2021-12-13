@@ -1,5 +1,6 @@
 ﻿using NodeGraph.Model;
 using NodeGraph.ViewModel;
+using PropertyTools.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace NodeGraph.View
 {
@@ -19,13 +21,17 @@ namespace NodeGraph.View
         #region Constants
 
         const double TargetSelectionThickness = 2.0;
-        const double TargetCornerRadius = 8.0;
+        const double TargetCornerRadius = 4.0;
+
+        const int DoubleClickTime = 500;
 
         #endregion
 
         #region Fields
 
-        private TextBlock _partHeader; // TODO: Implement Editable Text Block
+        private EditableTextBlock _partHeader; // TODO: Implement Editable Text Block
+        private DispatcherTimer _clickTimer = new DispatcherTimer();
+        private int _clickCount = 0;
 
         #endregion
 
@@ -80,6 +86,9 @@ namespace NodeGraph.View
         {
             SynchronizeProperties();
             OnCanvasRenderTransformChanged();
+
+            _clickTimer.Interval = TimeSpan.FromMilliseconds(DoubleClickTime);
+            _clickTimer.Tick += (sender, e) => ResetClickTimer();
         }
 
         private void NodeViewUnloaded(object sender, RoutedEventArgs e)
@@ -120,7 +129,36 @@ namespace NodeGraph.View
         {
             base.OnApplyTemplate();
 
-            _partHeader = Template.FindName("PART_Header", this) as TextBlock; // TODO: Implement Editable Text Block
+            _partHeader = Template.FindName("PART_Header", this) as EditableTextBlock; // TODO: Implement Editable Text Block
+            if (_partHeader != null)
+            {
+                _partHeader.MouseDown += HeaderMouseDown;
+            }
+        }
+
+        private void ResetClickTimer()
+        {
+            _clickCount = 0;
+            _clickTimer.Stop();
+        }
+
+        private void HeaderMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Keyboard.Focus(_partHeader);
+
+            if (_clickCount == 0)
+            {
+                _clickCount++;
+                _clickTimer.Start();
+            }
+            else if(_clickCount == 1)
+            {
+                _partHeader.IsEditing = true;
+                Keyboard.Focus(_partHeader);
+                ResetClickTimer();
+
+                e.Handled = true;
+            }
         }
 
         #endregion
@@ -160,6 +198,11 @@ namespace NodeGraph.View
             // TODO: End Selection
 
             NodeGraphManager.BeginDragNode(flowchart);
+
+            if (NodeGraphManager.IsNodeDragged && !IsSelected)
+            {
+                NodeGraphManager.TrySelection(flowchart, ViewModel.Model);
+            }
 
             Node node = ViewModel.Model;
             _draggingStartPosition = new Point(node.X, node.Y);
@@ -217,7 +260,7 @@ namespace NodeGraph.View
 
             SelectionThickness = new Thickness(TargetSelectionThickness / scale);
 
-            CornerRadius = new CornerRadius(TargetCornerRadius / scale);
+            //CornerRadius = new CornerRadius(TargetCornerRadius);
         }
 
         #endregion

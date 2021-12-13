@@ -16,13 +16,20 @@ namespace NodeGraph.View
 	[TemplatePart(Name = "PART_DragAndSelectionCanvas", Type = typeof(FrameworkElement))]
 	public class FlowchartView : ContentControl
     {
-        #region Fields
+		#region Constants
 
-        #endregion
+		const double MinZoom = 0.1;
+		const double MaxZoom = 2;
 
-        #region Properties
+		#endregion
 
-        public FlowchartViewModel ViewModel { get; private set; }
+		#region Fields
+
+		#endregion
+
+		#region Properties
+
+		public FlowchartViewModel ViewModel { get; private set; }
 
 		public ZoomAndPan ZoomAndPan { get; private set; } = new ZoomAndPan();
 
@@ -160,6 +167,15 @@ namespace NodeGraph.View
 				return;
 
 			Flowchart flowchart = ViewModel.Model;
+
+			Point mousePosition = e.GetPosition(this);
+
+			Point delta = new Point(
+				mousePosition.X - _prevMousePosition.X,
+				mousePosition.Y - _prevMousePosition.Y
+			);
+
+			UpdateDragging(mousePosition, delta);
 
 			NodeGraphManager.EndConnection();
 			NodeGraphManager.EndDragNode();
@@ -319,20 +335,20 @@ namespace NodeGraph.View
 
 			double newScale = ZoomAndPan.Scale;
 			newScale += (0.0 > e.Delta) ? -0.05 : 0.05;
-			newScale = Math.Max(0.1, Math.Min(1.0, newScale));
+			newScale = Math.Max(MinZoom, Math.Min(MaxZoom, newScale));
 
 			Point mousePosition = e.GetPosition(this);
 			Point zoomCentre = ZoomAndPan.MatrixInv.Transform(mousePosition);
 
 			ZoomAndPan.Scale = newScale;
 			
-			Point newZoomCentre = ZoomAndPan.MatrixInv.Transform(zoomCentre);
-			Point zoomDelta = new Point(zoomCentre.X - newZoomCentre.X, zoomCentre.Y - newZoomCentre.Y);
+			Point newZoomCentre = ZoomAndPan.Matrix.Transform(zoomCentre);
+			Point zoomDelta = new Point(mousePosition.X - newZoomCentre.X, mousePosition.Y - newZoomCentre.Y);
 
 			// TODO: Fix zoom
 
-			ZoomAndPan.StartX += zoomDelta.X;
-			ZoomAndPan.StartY += zoomDelta.Y;
+			ZoomAndPan.StartX -= zoomDelta.X;
+			ZoomAndPan.StartY -= zoomDelta.Y;
 		}
 
         #endregion

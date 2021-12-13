@@ -89,6 +89,8 @@ namespace NodeGraph.View
 
         #region Mouse Events
 
+        // Highlight connected ports on hover
+        /*
         protected override void OnMouseEnter(MouseEventArgs e)
         {
             base.OnMouseEnter(e);
@@ -122,6 +124,7 @@ namespace NodeGraph.View
                 connector.EndPort.ViewModel.View.IsConnectorMouseOver = false;
             }
         }
+        */
 
         protected override void OnMouseDoubleClick(MouseButtonEventArgs e)
         {

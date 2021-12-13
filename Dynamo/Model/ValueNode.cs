@@ -30,7 +30,7 @@ namespace Dynamo.Model
         {
             base.OnCreate();
 
-            Port port = NodeGraphManager.CreatePort(typeof(T).Name, Guid.NewGuid(), this, typeof(T), false, true);
+            Port port = NodeGraphManager.CreatePort("Value", Guid.NewGuid(), this, typeof(T), false, true);
             port.PortValueChanged += PortValueChanged;
         }
 

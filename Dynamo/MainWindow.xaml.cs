@@ -49,7 +49,7 @@ namespace Dynamo
             DebugValueNode<int> debugNode = (DebugValueNode<int>)NodeGraph.NodeGraphManager.CreateNode("Debug Log", Guid.NewGuid(), flowchart, typeof(DebugValueNode<int>), 320, 80);
 
             
-            //ImageNode imageNode = (ImageNode)NodeGraph.NodeGraphManager.CreateNode("Open Image", Guid.NewGuid(), flowchart, typeof(ImageNode), 600, 100);
+            ImageNode imageNode = (ImageNode)NodeGraph.NodeGraphManager.CreateNode("Open Image", Guid.NewGuid(), flowchart, typeof(ImageNode), 600, 100);
             //ResizeImageNode imageResizeNode = (ResizeImageNode)NodeGraph.NodeGraphManager.CreateNode("Resize Image", Guid.NewGuid(), flowchart, typeof(ResizeImageNode), 600, 300);
             //SaveImageNode saveImageNode = (SaveImageNode)NodeGraph.NodeGraphManager.CreateNode("Save Image", Guid.NewGuid(), flowchart, typeof(SaveImageNode), 800, 150);
 

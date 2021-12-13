@@ -4,8 +4,11 @@
                     xmlns:v="clr-namespace:Dynamo.View"
                     xmlns:ctrl="clr-namespace:NodeGraph.Controls;assembly=NodeGraph"
                     xmlns:ngv="clr-namespace:NodeGraph.View;assembly=NodeGraph">
+
+    <SolidColorBrush x:Key="PaperColour" Color="#111111"/>
     <SolidColorBrush x:Key="BackgroundColour" Color="#202020"/>
-    <SolidColorBrush x:Key="LozengeButtonColour" Color="#313131"/>
+    <SolidColorBrush x:Key="LozengeButtonColour" Color="#323232"/>
+    <SolidColorBrush x:Key="BorderColour" Color="#414141"/>
     <SolidColorBrush x:Key="TextColour" Color="#AFAFAF"/>
     <SolidColorBrush x:Key="TextStrongColour" Color="#FFFFFF"/>
     <SolidColorBrush x:Key="ButtonHoverColour" Color="#5177B2"/>
@@ -37,7 +40,7 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-
+    
     <Style TargetType="{x:Type v:ViewportPanelView}">
         <Setter Property="Template">
             <Setter.Value>
@@ -84,39 +87,39 @@
     </Style>
 
     <Style x:Key="PropertyStyle" TargetType="{x:Type ngv:PortView}">
+        <Setter Property="Margin" Value="6 4"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ngv:PortView}">
                     <Grid Height="25">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition x:Name="Column0Width" Width="Auto"/>
                             <ColumnDefinition x:Name="Column1Width" Width="*"/>
                         </Grid.ColumnDefinitions>
                         <ContentControl
                             x:Name="TextAndEditor"
-                            Grid.Column="1"
+                            Grid.Column="0"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition x:Name="InnerColumn0Width" Width="Auto"/>
-                                    <ColumnDefinition x:Name="InnerColumn1Width" Width="*"/>
+                                    <ColumnDefinition x:Name="InnerColumn1Width" Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <ContentPresenter
-                                    x:Name="PortPropertyEditor"
-                                    Grid.Column="0"
-                                    Visibility="{TemplateBinding PropertyEditorVisibility}"
-                                    Content="{TemplateBinding PropertyEditor}"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Left"/>
                                 <TextBlock
                                     x:Name="PART_Header"
-                                    Grid.Column="1"
+                                    Grid.Column="0"
                                     Text="{Binding Model.Name, Mode=TwoWay}"
                                     Focusable="True"
                                     Foreground="White"
                                     TextAlignment="Left"
-                                    Margin="3,0,3,0"
+                                    Margin="0 0 6 0"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Left"/>
+                                <ContentPresenter
+                                    x:Name="PortPropertyEditor"
+                                    Grid.Column="1"
+                                    Visibility="{TemplateBinding PropertyEditorVisibility}"
+                                    Content="{TemplateBinding PropertyEditor}"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Left"/>
                             </Grid>
@@ -126,4 +129,36 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA"/>
+    <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5"/>
+    <Style TargetType="{x:Type TextBox}">
+        <Setter Property="Background" Value="{StaticResource BackgroundColour}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextColour}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource LozengeButtonColour}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBoxBase}">
+                    <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4" SnapsToDevicePixels="True">
+                        <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.MouseOver.Border}"/>
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="true">
+                            <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.Focus.Border}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+
 </ResourceDictionary>
