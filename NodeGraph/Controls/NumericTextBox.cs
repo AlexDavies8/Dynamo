@@ -34,7 +34,7 @@ namespace NodeGraph.Controls
 
 		protected override void OnPreviewTextInput(TextCompositionEventArgs e)
 		{
-			Regex regex = IsInteger ? new Regex("[0-9]") : new Regex("[0-9.]");
+			Regex regex = IsInteger ? new Regex("[0-9-]") : new Regex("[0-9.-]");
 			e.Handled = !regex.IsMatch(e.Text);
 		}
 
@@ -45,7 +45,7 @@ namespace NodeGraph.Controls
 
 		protected override void OnTextChanged(TextChangedEventArgs e)
 		{
-			Regex regex = new Regex("^[0-9]+[.]?[0-9]*$");
+			Regex regex = new Regex("-?^[0-9]+[.]?[0-9]*$");
 			if (!IsInteger && !regex.IsMatch(Text))
 			{
 				string[] tokens = Text.Split('.');
@@ -60,6 +60,8 @@ namespace NodeGraph.Controls
 				}
 				Text = newText;
 			}
+			if (Text.Length == 0)
+				Text = IsInteger ? "0" : "0.0";
 		}
 
 		#endregion // Events

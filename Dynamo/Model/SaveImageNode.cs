@@ -1,6 +1,7 @@
 ﻿using NodeGraph.Model;
 using SixLabors.ImageSharp;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,11 +9,11 @@ namespace Dynamo.Model
 {
     public class SaveImageNode : ExecutableNode
     {
-        [Port("", true, typeof(Image), null, false)]
-        public Image Input;
+        [Port("", true, typeof(Image), false)]
+        public Image Input = null;
 
-        [Port("Path", true, typeof(string), "", true)]
-        public string Path;
+        [Port("Path", true, typeof(string), true)]
+        public string Path = "";
 
         public SaveImageNode(Guid guid, Flowchart owner) : base(guid, owner)
         {
@@ -20,8 +21,10 @@ namespace Dynamo.Model
 
         public override void Execute()
         {
-            if (Input != null)
-                Input.Save(Path);
+            if (Input == null) return;
+            if (!Directory.Exists(System.IO.Path.GetDirectoryName(Path))) return;
+            
+            Input.Save(Path);
         }
     }
 }

@@ -10,15 +10,13 @@ namespace NodeGraph.Model
         public string Name;
         public bool IsInput;
         public Type ValueType;
-        public object DefaultValue;
         public bool HasEditor;
 
-        public PortAttribute(string name, bool isInput, Type valueType, object defaultValue, bool hasEditor)
+        public PortAttribute(string name, bool isInput, Type valueType, bool hasEditor)
         {
             Name = name;
             IsInput = isInput;
             ValueType = valueType;
-            DefaultValue = defaultValue;
             HasEditor = hasEditor;
         }
     }

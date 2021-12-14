@@ -129,8 +129,18 @@ namespace NodeGraph.View
 
 		private void PortViewLoaded(object sender, RoutedEventArgs e)
 		{
-			CreatePropertyEditor();
+			if (ViewModel.Model.HasEditor) CreatePropertyEditor();
 			SynchronizeProperties();
+
+
+			if (PropertyEditor != null && IsInput)
+			{
+				PropertyEditorVisibility = Visibility.Collapsed;
+			}
+			else
+			{
+				PropertyEditorVisibility = Visibility.Visible;
+			}
 		}
 
 		private void PortViewDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -155,7 +165,7 @@ namespace NodeGraph.View
 
 			if (IsInput)
 			{
-				PropertyEditorVisibility = IsFilledPort ? Visibility.Collapsed : Visibility.Visible;
+				//PropertyEditorVisibility = IsFilledPort ? Visibility.Collapsed : Visibility.Visible;
 			}
 		}
 
@@ -283,11 +293,6 @@ namespace NodeGraph.View
 				else if (type == typeof(Color))
 				{
 					PropertyEditor = CreateColourEditor();
-				}
-
-				if (PropertyEditor != null)
-				{
-					PropertyEditorVisibility = Visibility.Visible;
 				}
 			}
 		}

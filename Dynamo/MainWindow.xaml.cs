@@ -50,9 +50,11 @@ namespace Dynamo
 
             
             ImageNode imageNode = (ImageNode)NodeGraph.NodeGraphManager.CreateNode("Open Image", Guid.NewGuid(), flowchart, typeof(ImageNode), 600, 100);
-            //ResizeImageNode imageResizeNode = (ResizeImageNode)NodeGraph.NodeGraphManager.CreateNode("Resize Image", Guid.NewGuid(), flowchart, typeof(ResizeImageNode), 600, 300);
-            //SaveImageNode saveImageNode = (SaveImageNode)NodeGraph.NodeGraphManager.CreateNode("Save Image", Guid.NewGuid(), flowchart, typeof(SaveImageNode), 800, 150);
+            ResizeImageNode imageResizeNode = (ResizeImageNode)NodeGraph.NodeGraphManager.CreateNode("Resize Image", Guid.NewGuid(), flowchart, typeof(ResizeImageNode), 600, 300);
+            SaveImageNode saveImageNode = (SaveImageNode)NodeGraph.NodeGraphManager.CreateNode("Save Image", Guid.NewGuid(), flowchart, typeof(SaveImageNode), 800, 150);
 
+            NodeGraph.NodeGraphManager.CreateNode("String Value", Guid.NewGuid(), flowchart, typeof(ValueNode<string>), 50, 420);
+            NodeGraph.NodeGraphManager.CreateNode("String Value", Guid.NewGuid(), flowchart, typeof(ValueNode<string>), 50, 520);
 
             PropertyPanel propertyPanel = new PropertyPanel();
             ViewModel.PropertyPanelViewModel propertyPanelViewModel = new ViewModel.PropertyPanelViewModel(propertyPanel);

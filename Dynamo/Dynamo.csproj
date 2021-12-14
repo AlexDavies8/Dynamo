@@ -16,16 +16,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Converters\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\NodeGraph\NodeGraph.csproj" />
     <ProjectReference Include="..\WindowDocker\WindowDocker.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Converters\" />
   </ItemGroup>
 
 </Project>

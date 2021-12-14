@@ -57,7 +57,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type v:PortView}">
-                    <Grid Height="26">
+                    <Grid Height="26" Visibility="{TemplateBinding PropertyEditorVisibility}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition x:Name="Column0Width" Width="Auto"/>
                             <ColumnDefinition x:Name="Column1Width" Width="*"/>
@@ -73,7 +73,8 @@
                             x:Name="TextAndEditor"
                             Grid.Column="1"
                             VerticalAlignment="Center"
-                            HorizontalAlignment="Left">
+                            HorizontalAlignment="Left"
+                            Margin="0 0 4 0">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition x:Name="InnerColumn0Width" Width="Auto"/>
@@ -82,7 +83,6 @@
                                 <ContentPresenter
                                     x:Name="PortPropertyEditor"
                                     Grid.Column="0"
-                                    Visibility="{TemplateBinding PropertyEditorVisibility}"
                                     Content="{TemplateBinding PropertyEditor}"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Left"/>
@@ -121,6 +121,7 @@
                             <Setter TargetName="PART_Port" Property="HorizontalAlignment" Value="Right"/>
                             <Setter TargetName="TextAndEditor" Property="Grid.Column" Value="0"/>
                             <Setter TargetName="TextAndEditor" Property="HorizontalAlignment" Value="Right"/>
+                            <Setter TargetName="TextAndEditor" Property="Margin" Value="4 0 0 0"/>
                             <Setter TargetName="InnerColumn0Width" Property="Width" Value="*"/>
                             <Setter TargetName="InnerColumn1Width" Property="Width" Value="Auto"/>
                             <Setter TargetName="PortPropertyEditor" Property="Grid.Column" Value="1"/>
@@ -236,11 +237,11 @@
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
+                        <!--<Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="BorderSelection" Property="BorderBrush" Value="DarkGoldenrod"/>
+                        </Trigger>-->
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="BorderSelection" Property="BorderBrush" Value="Orange"/>
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{StaticResource NodeBackgroundOverColour}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
