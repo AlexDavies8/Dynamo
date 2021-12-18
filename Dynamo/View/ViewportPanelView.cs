@@ -10,6 +10,8 @@ using System.Windows.Media;
 using System.Reflection;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp;
+using System.Windows.Media.Imaging;
+using System.Diagnostics;
 
 namespace Dynamo.View
 {
@@ -19,7 +21,7 @@ namespace Dynamo.View
 
         public ViewportPanelViewModel ViewModel { get; private set; }
 
-        private ImageSource _displayedImage
+        private ImageSource DisplayedImage
         {
             get => (ImageSource)GetValue(DisplayedImageProperty);
             set => SetValue(DisplayedImageProperty, value);
@@ -73,7 +75,37 @@ namespace Dynamo.View
             var port = ViewModel.Model.DisplayedPort;
             if (port != null)
             {
-                _displayedImage = new ImageSharpImageSource<Rgba32>(port.Value as Image<Rgba32>);
+                Debug.WriteLine("Updating ImageSource");
+
+                var image = port.Value as Image<Rgba32>;
+
+                var bmp = new WriteableBitmap(image.Width, image.Height, image.Metadata.HorizontalResolution, image.Metadata.VerticalResolution, PixelFormats.Bgra32, null);
+
+                bmp.Lock();
+                try
+                {
+                    var backBuffer = bmp.BackBuffer;
+
+                    for (var y = 0; y < image.Height; y++)
+                    {
+                        var buffer = image.GetPixelRowSpan(y);
+                        for (var x = 0; x < image.Width; x++)
+                        {
+                            var backBufferPos = backBuffer + (y * image.Width + x) * 4;
+                            var rgba = buffer[x];
+                            var color = rgba.A << 24 | rgba.R << 16 | rgba.G << 8 | rgba.B;
+
+                            System.Runtime.InteropServices.Marshal.WriteInt32(backBufferPos, color);
+                        }
+                    }
+
+                    bmp.AddDirtyRect(new Int32Rect(0, 0, image.Width, image.Height));
+                }
+                finally
+                {
+                    bmp.Unlock();
+                    DisplayedImage = bmp;
+                }
             }
         }
 

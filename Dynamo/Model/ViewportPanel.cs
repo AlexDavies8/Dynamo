@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Controls;
 using NodeGraph.Model;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace Dynamo.Model
 {
@@ -18,7 +19,7 @@ namespace Dynamo.Model
                 DisplayedNode = node;
                 foreach (var port in DisplayedNode.OutputPorts)
                 {
-                    if (port.ValueType == typeof(SixLabors.ImageSharp.Image)) // TODO: Better casting
+                    if (port.ValueType == typeof(SixLabors.ImageSharp.Image<Rgba32>)) // TODO: Better casting
                     {
                         DisplayedPort = port;
                     }

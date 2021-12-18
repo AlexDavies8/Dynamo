@@ -9,7 +9,7 @@ namespace Dynamo.Model
 {
     public class SaveImageNode : ExecutableNode
     {
-        [Port("", true, typeof(Image), false)]
+        [Port("Image", true, typeof(Image), false)]
         public Image Input = null;
 
         [Port("Path", true, typeof(string), true)]

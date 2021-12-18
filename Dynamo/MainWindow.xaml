@@ -20,6 +20,7 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                 <Button Style="{StaticResource AppbarButton}">File</Button>
                 <Button Style="{StaticResource AppbarButton}">Edit</Button>
+                <Button Style="{StaticResource AppbarButton}" Click="Button_Click">Execute</Button>
             </StackPanel>
         </StackPanel>
         <Grid Grid.Row="1">
@@ -27,17 +28,12 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <v:PropertyPanelView DataContext="{Binding Path=PropertyPanelViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
             <GridSplitter Grid.Column="1" Width="2" HorizontalAlignment="Stretch"/>
-            <Grid Grid.Column="2" >
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="40"/>
-                </Grid.RowDefinitions>
-                <ngv:FlowchartView Grid.Row="0" DataContext="{Binding Path=FlowchartViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
-                <Button Grid.Row="1" Click="Button_Click">Execute</Button>
-            </Grid>
+            <ngv:FlowchartView Grid.Column="2" DataContext="{Binding Path=FlowchartViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
+            <v:ViewportPanelView Grid.Column="3" DataContext="{Binding Path=ViewportPanelViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
         </Grid>
     </Grid>
 </Window>

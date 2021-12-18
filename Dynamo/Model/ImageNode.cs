@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace Dynamo.Model
 {
@@ -12,8 +13,8 @@ namespace Dynamo.Model
         [Port("Path", true, typeof(string), true)]
         public string Path = "";
 
-        [Port("", false, typeof(Image), false)]
-        public Image Image = null;
+        [Port("Image", false, typeof(Image<Rgba32>), false)]
+        public Image<Rgba32> Result = null;
 
         public ImageNode(Guid guid, Flowchart owner) : base(guid, owner)
         {
@@ -24,7 +25,7 @@ namespace Dynamo.Model
             if (Path == null) return;
             if (!File.Exists(Path)) return;
 
-            Image = Image.Load(Path);
+            Result = Image.Load<Rgba32>(Path);
         }
     }
 }

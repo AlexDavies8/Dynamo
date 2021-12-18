@@ -26,6 +26,13 @@ namespace Dynamo
         }
         public static readonly DependencyProperty PropertyPanelViewModelProperty = DependencyProperty.Register("PropertyPanelViewModel", typeof(Dynamo.ViewModel.PropertyPanelViewModel), typeof(MainWindow), new PropertyMetadata(null));
 
+        public Dynamo.ViewModel.ViewportPanelViewModel ViewportPanelViewModel
+        {
+            get => (ViewModel.ViewportPanelViewModel)GetValue(ViewportPanelViewModelProperty);
+            set => SetValue(ViewportPanelViewModelProperty, value);
+        }
+        public static readonly DependencyProperty ViewportPanelViewModelProperty = DependencyProperty.Register("ViewportPanelViewModel", typeof(Dynamo.ViewModel.ViewportPanelViewModel), typeof(MainWindow), new PropertyMetadata(null));
+
         public MainWindow()
         {
             // TODO: Move to App.xaml.cs
@@ -52,6 +59,8 @@ namespace Dynamo
             ImageNode imageNode = (ImageNode)NodeGraph.NodeGraphManager.CreateNode("Open Image", Guid.NewGuid(), flowchart, typeof(ImageNode), 600, 100);
             ResizeImageNode imageResizeNode = (ResizeImageNode)NodeGraph.NodeGraphManager.CreateNode("Resize Image", Guid.NewGuid(), flowchart, typeof(ResizeImageNode), 600, 300);
             SaveImageNode saveImageNode = (SaveImageNode)NodeGraph.NodeGraphManager.CreateNode("Save Image", Guid.NewGuid(), flowchart, typeof(SaveImageNode), 800, 150);
+            NodeGraph.NodeGraphManager.CreateNode("Hue Shift", Guid.NewGuid(), flowchart, typeof(HueShiftNode), 200, 200);
+            NodeGraph.NodeGraphManager.CreateNode("Bokeh Blur", Guid.NewGuid(), flowchart, typeof(BokehBlurNode), 200, 350);
 
             NodeGraph.NodeGraphManager.CreateNode("String Value", Guid.NewGuid(), flowchart, typeof(ValueNode<string>), 50, 420);
             NodeGraph.NodeGraphManager.CreateNode("String Value", Guid.NewGuid(), flowchart, typeof(ValueNode<string>), 50, 520);
@@ -59,6 +68,10 @@ namespace Dynamo
             PropertyPanel propertyPanel = new PropertyPanel();
             ViewModel.PropertyPanelViewModel propertyPanelViewModel = new ViewModel.PropertyPanelViewModel(propertyPanel);
             PropertyPanelViewModel = propertyPanelViewModel;
+
+            ViewportPanel viewportPanel = new ViewportPanel();
+            ViewModel.ViewportPanelViewModel viewportPanelViewModel = new ViewModel.ViewportPanelViewModel(viewportPanel);
+            ViewportPanelViewModel = viewportPanelViewModel;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

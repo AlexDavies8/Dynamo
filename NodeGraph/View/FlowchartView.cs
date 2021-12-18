@@ -19,7 +19,8 @@ namespace NodeGraph.View
 		#region Constants
 
 		const double MinZoom = 0.1;
-		const double MaxZoom = 2;
+		const double MaxZoom = 5;
+		const double ZoomSpeed = 0.1;
 
 		#endregion
 
@@ -334,7 +335,7 @@ namespace NodeGraph.View
 			// TODO: Implement History
 
 			double newScale = ZoomAndPan.Scale;
-			newScale += (0.0 > e.Delta) ? -0.05 : 0.05;
+			newScale += (0.0 > e.Delta) ? -ZoomAndPan.Scale * ZoomSpeed : ZoomAndPan.Scale * ZoomSpeed;
 			newScale = Math.Max(MinZoom, Math.Min(MaxZoom, newScale));
 
 			Point mousePosition = e.GetPosition(this);

@@ -78,6 +78,7 @@
                                     IsInput="False"
                                     ShowPort="False"
                                     HorizontalAlignment="Left"
+                                    Padding="6 4"
                                     ItemsSource="{Binding PortViewModels}"/>
                             </Grid>
                         </Grid>

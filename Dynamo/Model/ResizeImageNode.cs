@@ -9,13 +9,13 @@ namespace Dynamo.Model
 {
     public class ResizeImageNode : ExecutableNode
     {
-        [Port("Original", true, typeof(Image), false)]
+        [Port("Image", true, typeof(Image), false)]
         public Image Input;
 
         [Port("Scale", true, typeof(string), true)]
         public string Scale = "1.0";
 
-        [Port("Resized", false, typeof(Image), false)]
+        [Port("Result", false, typeof(Image), false)]
         public Image Output;
 
         public ResizeImageNode(Guid guid, Flowchart owner) : base(guid, owner)
