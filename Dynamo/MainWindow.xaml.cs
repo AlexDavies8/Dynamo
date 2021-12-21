@@ -4,6 +4,11 @@ using System.Windows;
 using WindowDocker.Model;
 using Dynamo.Model;
 using System.Windows.Media;
+using NodeGraph;
+using NodeGraph.Model;
+using System.Windows.Controls;
+using System.Reflection;
+using System.Collections.Generic;
 
 namespace Dynamo
 {
@@ -45,25 +50,9 @@ namespace Dynamo
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            NodeGraph.Model.Flowchart flowchart = NodeGraph.NodeGraphManager.CreateFlowchart(Guid.NewGuid());
+            Flowchart flowchart = NodeGraphManager.CreateFlowchart(Guid.NewGuid());
             FlowchartViewModel = flowchart.ViewModel;
-
-            ValueNode<int> intNodeA = (ValueNode<int>)NodeGraph.NodeGraphManager.CreateNode("Int Value", Guid.NewGuid(), flowchart, typeof(ValueNode<int>), 50, 20);
-            ValueNode<int> intNodeB = (ValueNode<int>)NodeGraph.NodeGraphManager.CreateNode("Int Value", Guid.NewGuid(), flowchart, typeof(ValueNode<int>), 50, 120);
-
-            MathAddNode addNode = (MathAddNode)NodeGraph.NodeGraphManager.CreateNode("Add Integers", Guid.NewGuid(), flowchart, typeof(MathAddNode), 200, 50);
-
-            DebugValueNode<int> debugNode = (DebugValueNode<int>)NodeGraph.NodeGraphManager.CreateNode("Debug Log", Guid.NewGuid(), flowchart, typeof(DebugValueNode<int>), 320, 80);
-
-            
-            ImageNode imageNode = (ImageNode)NodeGraph.NodeGraphManager.CreateNode("Open Image", Guid.NewGuid(), flowchart, typeof(ImageNode), 600, 100);
-            ResizeImageNode imageResizeNode = (ResizeImageNode)NodeGraph.NodeGraphManager.CreateNode("Resize Image", Guid.NewGuid(), flowchart, typeof(ResizeImageNode), 600, 300);
-            SaveImageNode saveImageNode = (SaveImageNode)NodeGraph.NodeGraphManager.CreateNode("Save Image", Guid.NewGuid(), flowchart, typeof(SaveImageNode), 800, 150);
-            NodeGraph.NodeGraphManager.CreateNode("Hue Shift", Guid.NewGuid(), flowchart, typeof(HueShiftNode), 200, 200);
-            NodeGraph.NodeGraphManager.CreateNode("Bokeh Blur", Guid.NewGuid(), flowchart, typeof(BokehBlurNode), 200, 350);
-
-            NodeGraph.NodeGraphManager.CreateNode("String Value", Guid.NewGuid(), flowchart, typeof(ValueNode<string>), 50, 420);
-            NodeGraph.NodeGraphManager.CreateNode("String Value", Guid.NewGuid(), flowchart, typeof(ValueNode<string>), 50, 520);
+            NodeGraphManager.BuildFlowchartContextMenu = BuildFlowchartContextMenu;
 
             PropertyPanel propertyPanel = new PropertyPanel();
             ViewModel.PropertyPanelViewModel propertyPanelViewModel = new ViewModel.PropertyPanelViewModel(propertyPanel);
@@ -72,6 +61,91 @@ namespace Dynamo
             ViewportPanel viewportPanel = new ViewportPanel();
             ViewModel.ViewportPanelViewModel viewportPanelViewModel = new ViewModel.ViewportPanelViewModel(viewportPanel);
             ViewportPanelViewModel = viewportPanelViewModel;
+
+            ExecutionManager.OnPostExecute += () => viewportPanel.RaisePropertyChanged("DisplayedNode");
+        }
+
+        private ContextMenu BuildFlowchartContextMenu(BuildContextMenuArgs args)
+        {
+            ContextMenu menu = NodeGraphManager.DefaultFlowchartContextMenu(args) ?? new ContextMenu();
+
+            menu.Items.Add(GetAddNodeMenuItem(args));
+
+            return menu;
+        }
+
+        private MenuItem GetAddNodeMenuItem(BuildContextMenuArgs args)
+        {
+            Flowchart flowchart = args.Model as Flowchart;
+
+            MenuItem addNodeItem = new MenuItem() { Header = "Add Node" };
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            PathTreeItem root = new PathTreeItem("Add Node", null);
+            foreach (Type type in assembly.GetTypes())
+            {
+                var nodeAttribute = type.GetCustomAttribute<NodeAttribute>();
+                if (nodeAttribute != null)
+                {
+                    PathTreeItem curr = root;
+                    string[] pathArgs = nodeAttribute.Path.Split('/', StringSplitOptions.RemoveEmptyEntries);
+                    for (int i = 0; i < pathArgs.Length - 1; i++)
+                    {
+                        PathTreeItem branch = new PathTreeItem(pathArgs[i], null);
+                        if (!curr.Children.ContainsKey(pathArgs[i]))
+                        {
+                            curr.Children.Add(pathArgs[i], branch);
+                            curr = branch;
+                        }
+                        else
+                            curr = curr.Children[pathArgs[i]];
+
+                        }
+                    curr.Children.Add(
+                        pathArgs[^1],
+                        new PathTreeItem(pathArgs[^1],
+                        () => NodeGraphManager.CreateNode(
+                            pathArgs[^1],
+                            Guid.NewGuid(),
+                            flowchart,
+                            type,
+                            args.ModelSpaceMousePosition.X,
+                            args.ModelSpaceMousePosition.Y
+                            )
+                        ));
+                }
+            }
+
+            RecurseTree(addNodeItem, root);
+
+            return addNodeItem;
+
+            void RecurseTree(MenuItem parentItem, PathTreeItem root)
+            {
+                foreach (var pair in root.Children)
+                {
+                    string header = pair.Key;
+                    Debug.WriteLine(header);
+                    PathTreeItem child = pair.Value;
+                    MenuItem item = new MenuItem() { Header = header };
+                    if (child.Click != null) item.Click += (sender, e) => child.Click();
+                    parentItem.Items.Add(item);
+                    RecurseTree(item, child);
+                }
+            }
+        }
+
+        struct PathTreeItem
+        {
+            public string Header;
+            public Action Click;
+            public Dictionary<string, PathTreeItem> Children;
+
+            public PathTreeItem(string header, Action click)
+            {
+                Header = header;
+                Click = click;
+                Children = new Dictionary<string, PathTreeItem>();
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

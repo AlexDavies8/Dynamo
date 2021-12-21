@@ -5,6 +5,7 @@ using System.Text;
 using Dynamo.Model;
 using System.ComponentModel;
 using Dynamo.View;
+using System.Diagnostics;
 
 namespace Dynamo.ViewModel
 {
@@ -51,6 +52,8 @@ namespace Dynamo.ViewModel
             base.ModelPropertyChanged(sender, e);
 
             RaisePropertyChanged(e.PropertyName);
+
+            Debug.WriteLine(e.PropertyName);
         }
 
         #endregion

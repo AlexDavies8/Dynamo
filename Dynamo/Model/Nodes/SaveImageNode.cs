@@ -4,13 +4,15 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace Dynamo.Model
 {
+    [Node("Output/Image")]
     public class SaveImageNode : ExecutableNode
     {
-        [Port("Image", true, typeof(Image), false)]
-        public Image Input = null;
+        [Port("Image", true, typeof(Image<Rgba32>), false)]
+        public Image<Rgba32> Input = null;
 
         [Port("Path", true, typeof(string), true)]
         public string Path = "";

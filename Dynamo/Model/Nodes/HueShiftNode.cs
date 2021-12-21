@@ -5,19 +5,21 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace Dynamo.Model
 {
+    [Node("Colour/Hue Shift")]
     public class HueShiftNode : ExecutableNode
     {
-        [Port("Image", true, typeof(Image), false)]
-        public Image Input = null;
+        [Port("Image", true, typeof(Image<Rgba32>), false)]
+        public Image<Rgba32> Input = null;
 
         [Port("Hue Shift", true, typeof(string), true)]
         public string Shift = "0.0";
 
-        [Port("Result", false, typeof(Image), false)]
-        public Image Result = null;
+        [Port("Result", false, typeof(Image<Rgba32>), false)]
+        public Image<Rgba32> Result = null;
 
         public HueShiftNode(Guid guid, Flowchart owner) : base(guid, owner)
         {

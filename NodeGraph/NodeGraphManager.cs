@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using NodeGraph.Model;
 using NodeGraph.View;
@@ -151,6 +152,10 @@ namespace NodeGraph
                 Flowchart flowchart = node.Owner;
                 flowchart.Nodes.Remove(node);
 
+                flowchart.ViewModel.NodeViewModels.Remove(node.ViewModel);
+                ObservableCollection<Guid> selectedNodes = GetSelectedNodeGuids(flowchart);
+                selectedNodes.Remove(guid);
+
                 // TODO: Add history
 
                 Nodes.Remove(guid);
@@ -198,7 +203,20 @@ namespace NodeGraph
         {
             if (Ports.TryGetValue(guid, out Port port))
             {
+                Node node = port.Owner;
 
+                DisconnectAll(port);
+
+                if (port.IsInput)
+                {
+                    node.InputPorts.Remove(port);
+                    node.ViewModel.InputPortViewModels.Remove(port.ViewModel);
+                }
+                else
+                {
+                    node.OutputPorts.Remove(port);
+                    node.ViewModel.OutputPortViewModels.Remove(port.ViewModel);
+                }
             }
         }
 
@@ -754,6 +772,78 @@ namespace NodeGraph
 
         #endregion
 
+        #region ContextMenu
+
+        public static Func<BuildContextMenuArgs, ContextMenu> BuildFlowchartContextMenu;
+        public static Func<BuildContextMenuArgs, ContextMenu> BuildNodeContextMenu;
+        public static Func<BuildContextMenuArgs, ContextMenu> BuildPortContextMenu;
+
+        public static Func<BuildContextMenuArgs, ContextMenu> BuildContextMenu(ModelType modelType)
+        {
+            Func<BuildContextMenuArgs, ContextMenu> buildFunc = modelType switch
+            {
+                ModelType.Flowchart => BuildFlowchartContextMenu ?? DefaultFlowchartContextMenu,
+                ModelType.Node => BuildNodeContextMenu ?? DefaultNodeContextMenu,
+                ModelType.Port => BuildPortContextMenu ?? DefaultPortContextMenu,
+                _ => null
+            };
+            return buildFunc;
+        }
+
+        public static ContextMenu DefaultNodeContextMenu(BuildContextMenuArgs args)
+        {
+            Node node = args.Model as Node;
+
+            if (node == null) return null;
+
+            ContextMenu menu = new ContextMenu();
+
+            MenuItem removeNodeItem = new MenuItem() { Header = "Remove Node" };
+            removeNodeItem.Click += (sender, e) => DestroyNode(node.Guid);
+            menu.Items.Add(removeNodeItem);
+
+            return menu;
+        }
+
+        public static ContextMenu DefaultPortContextMenu(BuildContextMenuArgs args)
+        {
+            Port port = args.Model as Port;
+
+            if (port == null) return null;
+
+            ContextMenu menu = new ContextMenu();
+
+            MenuItem disconnectPortItem = new MenuItem() { Header = "Disconnect" };
+            disconnectPortItem.Click += (sender, e) =>
+            {
+                DisconnectAll(port);
+            };
+            menu.Items.Add(disconnectPortItem);
+
+            return menu;
+        }
+
+        public static ContextMenu DefaultFlowchartContextMenu(BuildContextMenuArgs args)
+        {
+            Flowchart flowchart = args.Model as Flowchart;
+
+            if (flowchart == null) return null;
+
+            ContextMenu menu = new ContextMenu();
+
+            MenuItem selectAllItem = new MenuItem() { Header = "Select All" };
+            selectAllItem.Click += (sender, e) => SelectAllNodes(flowchart);
+            menu.Items.Add(selectAllItem);
+
+            MenuItem deselectAllItem = new MenuItem() { Header = "Deselect" };
+            deselectAllItem.Click += (sender, e) => DeselectAllNodes(flowchart);
+            menu.Items.Add(deselectAllItem);
+
+            return menu;
+        }
+
+        #endregion
+
         #region Selection Events
 
         public delegate void NodeSelectionChangedDelegate(Flowchart flowchart, ObservableCollection<Guid> nodes, NotifyCollectionChangedEventArgs args);
@@ -774,5 +864,20 @@ namespace NodeGraph
         }
 
         #endregion
+    }
+
+    public struct BuildContextMenuArgs
+    {
+        public Point ViewSpaceMousePosition;
+        public Point ModelSpaceMousePosition;
+        public ModelType ModelType;
+        public ModelBase Model;
+    }
+
+    public enum ModelType
+    {
+        Flowchart,
+        Node,
+        Port
     }
 }

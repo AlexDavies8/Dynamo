@@ -10,6 +10,7 @@ namespace Dynamo
 {
     public static class ExecutionManager
     {
+        public static Action OnPostExecute;
         private static List<ExecutableNode> _dirtyNodes = new List<ExecutableNode>();
 
         public static void ResolveDirtyNodes()
@@ -33,6 +34,7 @@ namespace Dynamo
                     _dirtyNodes.Remove(node);
                 }
             }
+            OnPostExecute?.Invoke();
         }
 
         // Synchronise inputs with their connected outputs

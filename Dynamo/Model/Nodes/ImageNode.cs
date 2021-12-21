@@ -8,6 +8,7 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace Dynamo.Model
 {
+    [Node("Input/Image")]
     public class ImageNode : ExecutableNode
     {
         [Port("Path", true, typeof(string), true)]

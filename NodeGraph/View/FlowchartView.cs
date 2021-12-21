@@ -70,6 +70,34 @@ namespace NodeGraph.View
 
         #region Public Methods
 
+		public ModelBase FindModelUnderMouse(Point mousePosition, out Point viewSpacePosition, out Point modelSpacePosition, out ModelType modelType)
+        {
+			ModelBase model = ViewModel.Model;
+
+			viewSpacePosition = mousePosition;
+			modelSpacePosition = ZoomAndPan.MatrixInv.Transform(mousePosition);
+			modelType = ModelType.Flowchart;
+
+			HitTestResult hitResult = VisualTreeHelper.HitTest(this, mousePosition);
+			if (hitResult != null && hitResult.VisualHit != null)
+            {
+				DependencyObject hit = hitResult.VisualHit;
+				PortView portView = ViewUtility.FindFirstParent<PortView>(hit);
+				NodeView nodeView = ViewUtility.FindFirstParent<NodeView>(hit);
+				if (portView != null)
+                {
+					model = portView.ViewModel.Model;
+					modelType = ModelType.Port;
+                }
+				else if (nodeView != null)
+                {
+					model = nodeView.ViewModel.Model;
+					modelType = ModelType.Node;
+                }
+            }
+			return model;
+        }
+
         #endregion
 
         #region Template
@@ -215,6 +243,10 @@ namespace NodeGraph.View
 			NodeGraphManager.EndDragNode();
 			NodeGraphManager.EndDragging();
 
+			bool actuallyDraggingCanvas =
+				(Math.Abs(_zoomAndPanStartMatrix.OffsetX - ZoomAndPan.Matrix.OffsetX) > 5) ||
+				(Math.Abs(_zoomAndPanStartMatrix.OffsetY - ZoomAndPan.Matrix.OffsetY) > 5);
+
 			if (_isDraggingCanvas)
             {
 				_isDraggingCanvas = false;
@@ -224,6 +256,24 @@ namespace NodeGraph.View
             }
 
 			// TODO: Context Menu Logic
+			if (!actuallyDraggingCanvas)
+            {
+				var model = FindModelUnderMouse(e.GetPosition(this), out Point viewSpacePosition, out Point modelSpacePosition, out ModelType modelType);
+
+				var contextMenuBuilder = NodeGraphManager.BuildContextMenu(modelType);
+				if (contextMenuBuilder != null)
+                {
+					BuildContextMenuArgs args = new BuildContextMenuArgs();
+					args.Model = model;
+					args.ViewSpaceMousePosition = viewSpacePosition;
+					args.ModelSpaceMousePosition = modelSpacePosition;
+					args.ModelType = modelType;
+
+					var contextMenu = contextMenuBuilder.Invoke(args);
+					if (contextMenu.Items.Count > 0)
+						ContextMenu = contextMenu;
+                }					
+            }
         }
 
 		private void UpdateDragging(Point mousePosition, Point delta)

@@ -25,15 +25,18 @@
         </StackPanel>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <v:PropertyPanelView DataContext="{Binding Path=PropertyPanelViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
-            <GridSplitter Grid.Column="1" Width="2" HorizontalAlignment="Stretch"/>
-            <ngv:FlowchartView Grid.Column="2" DataContext="{Binding Path=FlowchartViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
-            <v:ViewportPanelView Grid.Column="3" DataContext="{Binding Path=ViewportPanelViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
+            <ngv:FlowchartView Grid.Column="0" DataContext="{Binding Path=FlowchartViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <v:PropertyPanelView Grid.Row="0" DataContext="{Binding Path=PropertyPanelViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
+                <v:ViewportPanelView Grid.Row="1" DataContext="{Binding Path=ViewportPanelViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
+            </Grid>
         </Grid>
     </Grid>
 </Window>

@@ -1,5 +1,6 @@
 ﻿using NodeGraph.Model;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Generic;
@@ -9,14 +10,14 @@ namespace Dynamo.Model
 {
     public class ResizeImageNode : ExecutableNode
     {
-        [Port("Image", true, typeof(Image), false)]
-        public Image Input;
+        [Port("Image", true, typeof(Image<Rgba32>), false)]
+        public Image<Rgba32> Input;
 
         [Port("Scale", true, typeof(string), true)]
         public string Scale = "1.0";
 
-        [Port("Result", false, typeof(Image), false)]
-        public Image Output;
+        [Port("Result", false, typeof(Image<Rgba32>), false)]
+        public Image<Rgba32> Output;
 
         public ResizeImageNode(Guid guid, Flowchart owner) : base(guid, owner)
         {

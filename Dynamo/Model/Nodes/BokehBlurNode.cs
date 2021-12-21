@@ -5,13 +5,16 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace Dynamo.Model
 {
+
+    [Node("Blur/Bokeh")]
     public class BokehBlurNode : ExecutableNode
     {
-        [Port("Image", true, typeof(Image), false)]
-        public Image Input = null;
+        [Port("Image", true, typeof(Image<Rgba32>), false)]
+        public Image<Rgba32> Input = null;
 
         [Port("Radius", true, typeof(string), true)]
         public string Radius = "10";
@@ -22,8 +25,8 @@ namespace Dynamo.Model
         [Port("Gamma", true, typeof(string), true)]
         public string Gamma = "1.0";
 
-        [Port("Result", false, typeof(Image), false)]
-        public Image Result = null;
+        [Port("Result", false, typeof(Image<Rgba32>), false)]
+        public Image<Rgba32> Result = null;
 
         public BokehBlurNode(Guid guid, Flowchart owner) : base(guid, owner)
         {
