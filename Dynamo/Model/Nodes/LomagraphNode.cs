@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.PixelFormats;
+using Dynamo.Controls.PropertyEditors;
 
 namespace Dynamo.Model
 {
@@ -13,10 +14,10 @@ namespace Dynamo.Model
     [Node("Filter/Lomagraph")]
     public class LomagraphNode : ExecutableNode
     {
-        [Port("Image", true, typeof(Image<Rgba32>), false)]
+        [Port("Image", true, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Input = null;
 
-        [Port("Result", false, typeof(Image<Rgba32>), false)]
+        [Port("Result", false, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Result = null;
 
         public LomagraphNode(Guid guid, Flowchart owner) : base(guid, owner)

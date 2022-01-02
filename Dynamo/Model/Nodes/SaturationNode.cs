@@ -6,19 +6,20 @@ using System.Collections.Generic;
 using System.Text;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.PixelFormats;
+using Dynamo.Controls.PropertyEditors;
 
 namespace Dynamo.Model
 {
     [Node("Colour/Lightness")]
     public class LightnessNode : ExecutableNode
     {
-        [Port("Image", true, typeof(Image<Rgba32>), false)]
+        [Port("Image", true, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Input = null;
 
-        [Port("Lightness", true, typeof(string), true)]
-        public string Lightness = "1.0";
+        [Port("Lightness", true, typeof(float), typeof(FloatPropertyEditor))]
+        public float Lightness = 1.0f;
 
-        [Port("Result", false, typeof(Image<Rgba32>), false)]
+        [Port("Result", false, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Result = null;
 
         public LightnessNode(Guid guid, Flowchart owner) : base(guid, owner)
@@ -31,7 +32,7 @@ namespace Dynamo.Model
 
             Result = Input.Clone(x =>
             {
-                x.Lightness(float.Parse(Lightness));
+                x.Lightness(Lightness);
             });
         }
     }

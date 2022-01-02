@@ -10,7 +10,13 @@
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Themes\Default.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Themes\Generic.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\PropertyEditors.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

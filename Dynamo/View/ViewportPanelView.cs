@@ -20,7 +20,7 @@ namespace Dynamo.View
 
         public ViewportPanelViewModel ViewModel { get; private set; }
 
-        private ImageSource DisplayedImage
+        public ImageSource DisplayedImage
         {
             get => (ImageSource)GetValue(DisplayedImageProperty);
             set => SetValue(DisplayedImageProperty, value);

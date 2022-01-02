@@ -5,16 +5,17 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using SixLabors.ImageSharp.PixelFormats;
+using Dynamo.Controls.PropertyEditors;
 
 namespace Dynamo.Model
 {
     [Node("Output/Image")]
     public class SaveImageNode : ExecutableNode
     {
-        [Port("Image", true, typeof(Image<Rgba32>), false)]
+        [Port("Image", true, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Input = null;
 
-        [Port("Path", true, typeof(string), true)]
+        [Port("Path", true, typeof(string), typeof(StringPropertyEditor))]
         public string Path = "";
 
         public SaveImageNode(Guid guid, Flowchart owner) : base(guid, owner)

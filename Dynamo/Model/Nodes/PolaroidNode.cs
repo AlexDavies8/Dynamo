@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.PixelFormats;
+using Dynamo.Controls.PropertyEditors;
 
 namespace Dynamo.Model
 {
@@ -13,10 +14,10 @@ namespace Dynamo.Model
     [Node("Filter/Polaroid")]
     public class PolaroidNode : ExecutableNode
     {
-        [Port("Image", true, typeof(Image<Rgba32>), false)]
+        [Port("Image", true, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Input = null;
 
-        [Port("Result", false, typeof(Image<Rgba32>), false)]
+        [Port("Result", false, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Result = null;
 
         public PolaroidNode(Guid guid, Flowchart owner) : base(guid, owner)

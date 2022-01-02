@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using NodeGraph;
 using NodeGraph.Model;
+using Dynamo.Controls.PropertyEditors;
 
 namespace Dynamo.Model
 {

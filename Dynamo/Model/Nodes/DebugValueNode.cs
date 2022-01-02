@@ -3,6 +3,7 @@ using NodeGraph.Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Dynamo.Controls.PropertyEditors;
 
 namespace Dynamo.Model
 {
@@ -31,7 +32,7 @@ namespace Dynamo.Model
         {
             base.OnCreate();
 
-            Port port = NodeGraphManager.CreatePort("Value", Guid.NewGuid(), this, typeof(T), true, false);
+            Port port = NodeGraphManager.CreatePort("Value", Guid.NewGuid(), this, typeof(T), true, typeof(StringPropertyEditor));
             port.PortValueChanged += PortValueChanged;
         }
 

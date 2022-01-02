@@ -13,6 +13,8 @@ namespace Dynamo.ViewModel
 {
     public class PropertyPanelViewModel : ViewModelBase
     {
+        const bool ShowOutputPorts = false;
+
         #region Fields
 
         public PropertyPanelView View;
@@ -90,9 +92,12 @@ namespace Dynamo.ViewModel
                 {
                     PortViewModels.Add(port.ViewModel);
                 }
-                foreach (var port in node.OutputPorts)
+                if (ShowOutputPorts)
                 {
-                    PortViewModels.Add(port.ViewModel);
+                    foreach (var port in node.OutputPorts)
+                    {
+                        PortViewModels.Add(port.ViewModel);
+                    }
                 }
             }
         }

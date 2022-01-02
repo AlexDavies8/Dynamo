@@ -6,19 +6,20 @@ using System.Collections.Generic;
 using System.Text;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.PixelFormats;
+using Dynamo.Controls.PropertyEditors;
 
 namespace Dynamo.Model
 {
     [Node("Colour/Opacity")]
     public class OpacityNode : ExecutableNode
     {
-        [Port("Image", true, typeof(Image<Rgba32>), false)]
+        [Port("Image", true, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Input = null;
 
-        [Port("Opacity", true, typeof(string), true)]
-        public string Opacity = "1.0";
+        [Port("Opacity", true, typeof(float), typeof(FloatPropertyEditor))]
+        public float Opacity = 1.0f;
 
-        [Port("Result", false, typeof(Image<Rgba32>), false)]
+        [Port("Result", false, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Result = null;
 
         public OpacityNode(Guid guid, Flowchart owner) : base(guid, owner)
@@ -31,7 +32,7 @@ namespace Dynamo.Model
 
             Result = Input.Clone(x =>
             {
-                x.Opacity(float.Parse(Opacity));
+                x.Opacity(Opacity);
             });
         }
     }

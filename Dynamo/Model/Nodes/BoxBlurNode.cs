@@ -6,46 +6,34 @@ using System.Collections.Generic;
 using System.Text;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.PixelFormats;
+using Dynamo.Controls.PropertyEditors;
 
 namespace Dynamo.Model
 {
 
-    [Node("Combine/Overlay")]
-    public class OverlayNode : ExecutableNode
+    [Node("Blur/Box")]
+    public class BoxBlurNode : ExecutableNode
     {
-        [Port("Back", true, typeof(Image<Rgba32>), false)]
-        public Image<Rgba32> Back = null;
+        [Port("Image", true, typeof(Image<Rgba32>), null)]
+        public Image<Rgba32> Input = null;
 
-        [Port("Front", true, typeof(Image<Rgba32>), false)]
-        public Image<Rgba32> Front = null;
+        [Port("Radius", true, typeof(int), typeof(IntPropertyEditor))]
+        public int Radius = 10;
 
-        [Port("X", true, typeof(string), true)]
-        public string XOffset = "0.0";
-
-        [Port("Y", true, typeof(string), true)]
-        public string YOffset = "0.0";
-
-        [Port("Result", false, typeof(Image<Rgba32>), false)]
+        [Port("Result", false, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Result = null;
 
-        public OverlayNode(Guid guid, Flowchart owner) : base(guid, owner)
+        public BoxBlurNode(Guid guid, Flowchart owner) : base(guid, owner)
         {
         }
 
         public override void Execute()
         {
-            if (Back == null) return;
-            if (Front == null) return;
+            if (Input == null) return;
 
-            Result = Back.Clone(x =>
+            Result = Input.Clone(x =>
             {
-                x.DrawImage(
-                    Front,
-                    new Point(
-                        (int)(float.Parse(XOffset) * Back.Width),
-                        (int)(float.Parse(YOffset) * Back.Height)),
-                    1f
-                );
+                x.BoxBlur(Radius);
             });
         }
     }

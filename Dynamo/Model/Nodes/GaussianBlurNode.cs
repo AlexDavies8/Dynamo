@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.PixelFormats;
+using Dynamo.Controls.PropertyEditors;
 
 namespace Dynamo.Model
 {
@@ -13,13 +14,13 @@ namespace Dynamo.Model
     [Node("Blur/Gaussian")]
     public class GaussianBlurNode : ExecutableNode
     {
-        [Port("Image", true, typeof(Image<Rgba32>), false)]
+        [Port("Image", true, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Input = null;
 
-        [Port("Radius", true, typeof(string), true)]
-        public string Radius = "10";
+        [Port("Radius", true, typeof(float), typeof(FloatPropertyEditor))]
+        public float Radius = 10.0f;
 
-        [Port("Result", false, typeof(Image<Rgba32>), false)]
+        [Port("Result", false, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Result = null;
 
         public GaussianBlurNode(Guid guid, Flowchart owner) : base(guid, owner)
@@ -32,7 +33,7 @@ namespace Dynamo.Model
 
             Result = Input.Clone(x =>
             {
-                x.GaussianBlur(float.Parse(Radius));
+                x.GaussianBlur(Radius);
             });
         }
     }

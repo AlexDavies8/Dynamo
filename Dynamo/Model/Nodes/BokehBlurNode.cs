@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.PixelFormats;
+using Dynamo.Controls.PropertyEditors;
 
 namespace Dynamo.Model
 {
@@ -13,19 +14,19 @@ namespace Dynamo.Model
     [Node("Blur/Bokeh")]
     public class BokehBlurNode : ExecutableNode
     {
-        [Port("Image", true, typeof(Image<Rgba32>), false)]
+        [Port("Image", true, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Input = null;
 
-        [Port("Radius", true, typeof(string), true)]
-        public string Radius = "10";
+        [Port("Radius", true, typeof(int), typeof(IntPropertyEditor))]
+        public int Radius = 10;
 
-        [Port("Kernel Size", true, typeof(string), true)]
-        public string KernelSize = "1";
+        [Port("Kernel Size", true, typeof(int), typeof(IntPropertyEditor))]
+        public int KernelSize = 1;
 
-        [Port("Gamma", true, typeof(string), true)]
-        public string Gamma = "1.0";
+        [Port("Gamma", true, typeof(float), typeof(FloatPropertyEditor))]
+        public float Gamma = 1.0f;
 
-        [Port("Result", false, typeof(Image<Rgba32>), false)]
+        [Port("Result", false, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Result = null;
 
         public BokehBlurNode(Guid guid, Flowchart owner) : base(guid, owner)
@@ -38,7 +39,7 @@ namespace Dynamo.Model
 
             Result = Input.Clone(x =>
             {
-                x.BokehBlur(int.Parse(Radius), int.Parse(KernelSize), float.Parse(Gamma));
+                x.BokehBlur(Radius, KernelSize, Gamma);
             });
         }
     }

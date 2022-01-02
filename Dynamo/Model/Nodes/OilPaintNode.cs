@@ -11,16 +11,22 @@ using Dynamo.Controls.PropertyEditors;
 namespace Dynamo.Model
 {
 
-    [Node("Filter/Kodachrome")]
-    public class KodachromeNode : ExecutableNode
+    [Node("Filter/Oil Paint")]
+    public class OilPaintNode : ExecutableNode
     {
         [Port("Image", true, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Input = null;
 
+        [Port("Levels", true, typeof(int), typeof(IntPropertyEditor))]
+        public int Levels = 10;
+
+        [Port("Brush Size", true, typeof(int), typeof(IntPropertyEditor))]
+        public int BrushSize = 15;
+
         [Port("Result", false, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Result = null;
 
-        public KodachromeNode(Guid guid, Flowchart owner) : base(guid, owner)
+        public OilPaintNode(Guid guid, Flowchart owner) : base(guid, owner)
         {
         }
 
@@ -30,7 +36,7 @@ namespace Dynamo.Model
 
             Result = Input.Clone(x =>
             {
-                x.Kodachrome();
+                x.OilPaint(Levels, BrushSize);
             });
         }
     }

@@ -6,19 +6,20 @@ using System.Collections.Generic;
 using System.Text;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.PixelFormats;
+using Dynamo.Controls.PropertyEditors;
 
 namespace Dynamo.Model
 {
     [Node("Colour/Saturation")]
     public class SaturationNode : ExecutableNode
     {
-        [Port("Image", true, typeof(Image<Rgba32>), false)]
+        [Port("Image", true, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Input = null;
 
-        [Port("Saturation", true, typeof(string), true)]
-        public string Saturation = "1.0";
+        [Port("Saturation", true, typeof(float), typeof(FloatPropertyEditor))]
+        public float Saturation = 1.0f;
 
-        [Port("Result", false, typeof(Image<Rgba32>), false)]
+        [Port("Result", false, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Result = null;
 
         public SaturationNode(Guid guid, Flowchart owner) : base(guid, owner)
@@ -31,7 +32,7 @@ namespace Dynamo.Model
 
             Result = Input.Clone(x =>
             {
-                x.Saturate(float.Parse(Saturation));
+                x.Saturate(Saturation);
             });
         }
     }

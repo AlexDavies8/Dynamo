@@ -10,14 +10,14 @@ namespace NodeGraph.Model
         public string Name;
         public bool IsInput;
         public Type ValueType;
-        public bool HasEditor;
+        public Type EditorType;
 
-        public PortAttribute(string name, bool isInput, Type valueType, bool hasEditor)
+        public PortAttribute(string name, bool isInput, Type valueType, Type editorType)
         {
             Name = name;
             IsInput = isInput;
             ValueType = valueType;
-            HasEditor = hasEditor;
+            EditorType = editorType;
         }
     }
 }

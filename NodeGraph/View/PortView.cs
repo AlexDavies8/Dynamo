@@ -174,13 +174,17 @@ namespace NodeGraph.View
 			SynchronizeProperties();
 		}
 
-        #endregion
+		#endregion
 
-        #region Mouse Events
+		#region Mouse Events
 
-        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+		public void PortMouseDown(object sender, MouseButtonEventArgs e)
 		{
+			Debug.WriteLine("Mouse Down");
 			base.OnMouseLeftButtonDown(e);
+
+			if (e.LeftButton != MouseButtonState.Pressed)
+				return;
 
 			Node node = ViewModel.Model.Owner;
 			Flowchart flowchart = node.Owner;
@@ -199,8 +203,9 @@ namespace NodeGraph.View
 			e.Handled = true;
 		}
 
-		protected override void OnMouseEnter(MouseEventArgs e)
+		public void PortMouseEnter(object sender, MouseEventArgs e)
 		{
+			Debug.WriteLine("Mouse Enter");
 			base.OnMouseEnter(e);
 
 			if (e.LeftButton == MouseButtonState.Pressed)
@@ -227,8 +232,9 @@ namespace NodeGraph.View
 			}
 		}
 
-		protected override void OnMouseLeave(MouseEventArgs e)
+		public void PortMouseLeave(object sender, MouseEventArgs e)
 		{
+			Debug.WriteLine("Mouse Leave");
 			base.OnMouseLeave(e);
 
 			if (NodeGraphManager.IsConnecting)
@@ -239,8 +245,9 @@ namespace NodeGraph.View
 			ToolTipVisibility = false;
 		}
 
-		protected override void OnLostFocus(RoutedEventArgs e)
+		public void PortLostFocus(object sender, RoutedEventArgs e)
 		{
+			Debug.WriteLine("Lost Focus");
 			base.OnLostFocus(e);
 
 			if (NodeGraphManager.IsConnecting)
@@ -272,28 +279,10 @@ namespace NodeGraph.View
 			Port port = ViewModel.Model as Port;
 			if (port.HasEditor)
 			{
-				Type type = port.ValueType;
-
-				if (type == typeof(bool))
-				{
-					PropertyEditor = CreateBoolEditor();
-				}
-				else if (type == typeof(string))
-				{
-					PropertyEditor = CreateStringEditor();
-				}
-				else if (type == typeof(int))
-				{
-					PropertyEditor = CreateIntEditor();
-				}
-				else if (type == typeof(double))
-				{
-					PropertyEditor = CreateDoubleEditor();
-				}
-				else if (type == typeof(Color))
-				{
-					PropertyEditor = CreateColourEditor();
-				}
+				Type editorType = port.PropertyEditorType;
+				PropertyEditor editor = Activator.CreateInstance(editorType) as PropertyEditor;
+				editor.SetValueBinding(port);
+				PropertyEditor = editor;
 			}
 		}
 
@@ -339,6 +328,18 @@ namespace NodeGraph.View
 			textBox.IsInteger = false;
 			textBox.Text = (port.Value ?? 0).ToString();
 			textBox.SetBinding(TextBox.TextProperty, CreateBinding(port, "Value", new DoubleToStringConverter()));
+			return textBox;
+		}
+
+		private FrameworkElement CreateFloatEditor()
+		{
+			Port port = ViewModel.Model as Port;
+
+			NumericTextBox textBox = new NumericTextBox();
+			textBox.MinWidth = 50;
+			textBox.IsInteger = false;
+			textBox.Text = (port.Value ?? 0).ToString();
+			textBox.SetBinding(TextBox.TextProperty, CreateBinding(port, "Value", new FloatToStringConverter()));
 			return textBox;
 		}
 

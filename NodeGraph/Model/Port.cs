@@ -24,7 +24,9 @@ namespace NodeGraph.Model
 
         public readonly Node Owner;
         public readonly bool IsInput;
-        public readonly bool HasEditor;
+        public bool HasEditor => PropertyEditorType != null;
+
+        public readonly Type PropertyEditorType;
 
         private readonly bool _fromAttribute;
 
@@ -39,12 +41,7 @@ namespace NodeGraph.Model
             {
                 if (_fromAttribute)
                 {
-                    object value = _getValue();
-                    if (_value != value)
-                    {
-                        _value = value;
-                        RaisePropertyChanged("Value");
-                    }
+                    return _getValue();
                 }
                 return _value;
             }
@@ -123,12 +120,12 @@ namespace NodeGraph.Model
 
         #region Constructors
 
-        public Port(Guid guid, Node owner, bool isInput, Type valueType, bool hasEditor, Func<object> getValue = null) : base(guid)
+        public Port(Guid guid, Node owner, bool isInput, Type valueType, Type editorType, Func<object> getValue = null) : base(guid)
         {
             Owner = owner;
             IsInput = isInput;
             ValueType = valueType;
-            HasEditor = hasEditor;
+            PropertyEditorType = editorType;
 
             _fromAttribute = getValue != null;
             _getValue = getValue;

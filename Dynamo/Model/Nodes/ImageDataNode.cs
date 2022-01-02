@@ -10,17 +10,19 @@ using Dynamo.Controls.PropertyEditors;
 
 namespace Dynamo.Model
 {
-
-    [Node("Filter/Kodachrome")]
-    public class KodachromeNode : ExecutableNode
+    [Node("Misc/Image Data")]
+    public class ImageDataNode : ExecutableNode
     {
         [Port("Image", true, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Input = null;
 
-        [Port("Result", false, typeof(Image<Rgba32>), null)]
-        public Image<Rgba32> Result = null;
+        [Port("Width", false, typeof(float), null)]
+        public float Width = 2;
 
-        public KodachromeNode(Guid guid, Flowchart owner) : base(guid, owner)
+        [Port("Height", false, typeof(float), null)]
+        public float Height = 2;
+
+        public ImageDataNode(Guid guid, Flowchart owner) : base(guid, owner)
         {
         }
 
@@ -28,10 +30,8 @@ namespace Dynamo.Model
         {
             if (Input == null) return;
 
-            Result = Input.Clone(x =>
-            {
-                x.Kodachrome();
-            });
+            Width = Input.Width;
+            Height = Input.Height;
         }
     }
 }
