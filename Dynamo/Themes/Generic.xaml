@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:model="clr-namespace:Dynamo.Model"
                     xmlns:v="clr-namespace:Dynamo.View"
-                    xmlns:ngv="clr-namespace:NodeGraph.View;assembly=NodeGraph">
+                    xmlns:ngv="clr-namespace:NodeGraph.View;assembly=NodeGraph"
+    xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
 
     <SolidColorBrush x:Key="PaperColour" Color="#111111"/>
     <SolidColorBrush x:Key="BackgroundColour" Color="#202020"/>
@@ -11,6 +12,8 @@
     <SolidColorBrush x:Key="TextColour" Color="#AFAFAF"/>
     <SolidColorBrush x:Key="TextStrongColour" Color="#FFFFFF"/>
     <SolidColorBrush x:Key="ButtonHoverColour" Color="#5177B2"/>
+
+    <Path x:Key="LockedIcon" Data="M12 2a4 4 0 0 1 4 4v2h2.5A1.5 1.5 0 0 1 20 9.5v11a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 20.5v-11A1.5 1.5 0 0 1 5.5 8H8V6a4 4 0 0 1 4-4Zm0 11.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM12 4a2 2 0 0 0-2 2v2h4V6a2 2 0 0 0-2-2Z" Fill="#212121" />
 
     <Style x:Key="AppbarButton" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="{StaticResource LozengeButtonColour}"/>
@@ -40,13 +43,44 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="LockCheckBox" TargetType="{x:Type CheckBox}">
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Background" Value="{StaticResource LozengeButtonColour}"/>
+        <Setter Property="Opacity" Value="0.8"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CheckBox}">
+                    <Grid Background="Transparent" SnapsToDevicePixels="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="1" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                            <Path Data="{Binding Source={StaticResource LockedIcon}, Path=Data}" Fill="{TemplateBinding Background}" Stretch="UniformToFill"/>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="true">
+                            <Setter Property="Background" Value="{StaticResource TextColour}"/>
+                            <Setter Property="Opacity" Value="1"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Background" Value="{StaticResource ButtonHoverColour}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="{x:Type v:ViewportPanelView}">
         <Setter Property="Background" Value="{StaticResource PaperColour}"/>
+        <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type v:ViewportPanelView}">
                     <Grid Background="{TemplateBinding Background}">
                         <Image Source="{Binding Path=DisplayedImage, RelativeSource={RelativeSource AncestorType={x:Type v:ViewportPanelView}} }"/>
+                        <CheckBox Style="{StaticResource LockCheckBox}" IsChecked="{Binding Path=Model.Locked, Mode=TwoWay}" Width="24" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -55,6 +89,7 @@
 
     <Style TargetType="{x:Type v:PropertyPanelView}">
         <Setter Property="Background" Value="{StaticResource BackgroundColour}"/>
+        <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Padding" Value="6 4"/>
         <Setter Property="Template">
             <Setter.Value>

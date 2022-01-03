@@ -52,8 +52,6 @@ namespace Dynamo.ViewModel
             base.ModelPropertyChanged(sender, e);
 
             RaisePropertyChanged(e.PropertyName);
-
-            Debug.WriteLine(e.PropertyName);
         }
 
         #endregion

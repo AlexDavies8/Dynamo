@@ -16,25 +16,31 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Background="{StaticResource NodeBackgroundColour}">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                <Button Style="{StaticResource AppbarButton}">File</Button>
-                <Button Style="{StaticResource AppbarButton}">Edit</Button>
-                <Button Style="{StaticResource AppbarButton}" Click="Button_Click">Execute</Button>
+        <Border BorderBrush="{StaticResource LozengeButtonColour}" BorderThickness="0 0 0 1">
+            <StackPanel Grid.Row="0" Background="{StaticResource NodeBackgroundColour}">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Button Style="{StaticResource AppbarButton}">File</Button>
+                    <Button Style="{StaticResource AppbarButton}">Edit</Button>
+                    <Button Style="{StaticResource AppbarButton}" Click="Button_Click">Execute</Button>
+                </StackPanel>
             </StackPanel>
-        </StackPanel>
+        </Border>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <ngv:FlowchartView Grid.Column="0" DataContext="{Binding Path=FlowchartViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
+            <Border BorderBrush="{StaticResource LozengeButtonColour}" BorderThickness="0 0 1 0">
+                <ngv:FlowchartView Grid.Column="0" DataContext="{Binding Path=FlowchartViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
+            </Border>
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="2*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <v:PropertyPanelView Grid.Row="0" DataContext="{Binding Path=PropertyPanelViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
+                <Border BorderBrush="{StaticResource LozengeButtonColour}" BorderThickness="0 0 0 1">
+                    <v:PropertyPanelView Grid.Row="0" DataContext="{Binding Path=PropertyPanelViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
+                </Border>
                 <v:ViewportPanelView Grid.Row="1" DataContext="{Binding Path=ViewportPanelViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
             </Grid>
         </Grid>

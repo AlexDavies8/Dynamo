@@ -56,4 +56,14 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="editors:EnumPropertyEditor">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="editors:EnumPropertyEditor">
+                    <ComboBox ItemsSource="{Binding Path=EnumNames}" SelectedValue="{Binding Path=Value, Mode=TwoWay}"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

@@ -8,7 +8,7 @@ using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using Dynamo.Controls.PropertyEditors;
 
-namespace Dynamo.Model
+namespace Dynamo.Model.Nodes
 {
 
     [Node("Combine/Overlay")]
@@ -20,11 +20,20 @@ namespace Dynamo.Model
         [Port("Front", true, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Front = null;
 
+        [Port("Position", true, typeof(PositionType), typeof(EnumPropertyEditor))]
+        public PositionType PositionType = PositionType.Fractional;
+
         [Port("X", true, typeof(float), typeof(FloatPropertyEditor))]
         public float XOffset = 0.0f;
 
         [Port("Y", true, typeof(float), typeof(FloatPropertyEditor))]
         public float YOffset = 0.0f;
+
+        [Port("Blending Mode", true, typeof(PixelColorBlendingMode), typeof(EnumPropertyEditor))]
+        public PixelColorBlendingMode BlendingMode = PixelColorBlendingMode.Normal;
+
+        [Port("Opacity", true, typeof(float), typeof(FloatPropertyEditor))]
+        public float Opacity = 1.0f;
 
         [Port("Result", false, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Result = null;
@@ -43,9 +52,10 @@ namespace Dynamo.Model
                 x.DrawImage(
                     Front,
                     new Point(
-                        (int)(XOffset * Back.Width),
-                        (int)(YOffset * Back.Height)),
-                    1f
+                        PositionType.GetPixelPosition(XOffset, Back.Width),
+                        PositionType.GetPixelPosition(YOffset, Back.Height)),
+                    BlendingMode,
+                    Opacity
                 );
             });
         }

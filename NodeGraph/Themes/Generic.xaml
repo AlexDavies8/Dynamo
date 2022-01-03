@@ -159,7 +159,7 @@
                             <Setter TargetName="PART_Port" Property="Foreground" Value="Orange"/>
                         </MultiDataTrigger>
                         <Trigger Property="IsPortEnabled" Value="False">
-                            <Setter TargetName="PART_Port" Property="Visibility" Value="Hidden"/>
+                            <Setter TargetName="PART_Port" Property="Visibility" Value="Collapsed"/>
                             <Setter Property="IsHitTestVisible" Value="False"/>
                         </Trigger>
                         <Trigger Property="Interactable" Value="False">

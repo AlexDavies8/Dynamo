@@ -40,19 +40,47 @@ namespace Dynamo.Model
             }
         }
 
+        private bool _locked;
+        public bool Locked
+        {
+            get => _locked;
+            set
+            {
+                if (_locked != value)
+                {
+                    _locked = value;
+                    RaisePropertyChanged("Locked");
+                }
+            }
+        }
+
         public ViewportPanel() : base()
         {
-            GlobalState.ActiveNodeChanged += (node) =>
+            GlobalState.ActiveNodeChanged += UpdateDisplayedPort;
+        }
+
+        private void UpdateDisplayedPort(Node node)
+        {
+            if (Locked) return;
+
+            DisplayedNode = node;
+            foreach (var port in node.OutputPorts)
             {
-                DisplayedNode = node;
-                foreach (var port in node.OutputPorts)
+                if (port.ValueType == typeof(Image<Rgba32>) && DisplayedPort != port) // TODO: Better casting
                 {
-                    if (port.ValueType == typeof(Image<Rgba32>)) // TODO: Better casting
-                    {
-                        DisplayedPort = port;
-                    }
+                    DisplayedPort = port;
                 }
-            };
+            }
+        }
+
+        public override void RaisePropertyChanged(string propertyName)
+        {
+            base.RaisePropertyChanged(propertyName);
+
+            if (propertyName == "Locked")
+            {
+                UpdateDisplayedPort(GlobalState.ActiveNode);
+            }
         }
     }
 }

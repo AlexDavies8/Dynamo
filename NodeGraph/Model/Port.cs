@@ -24,7 +24,7 @@ namespace NodeGraph.Model
 
         public readonly Node Owner;
         public readonly bool IsInput;
-        public bool HasEditor => PropertyEditorType != null;
+        public bool HasEditor => PropertyEditorType != null && !Exposed;
 
         public readonly Type PropertyEditorType;
 
@@ -126,6 +126,8 @@ namespace NodeGraph.Model
             IsInput = isInput;
             ValueType = valueType;
             PropertyEditorType = editorType;
+
+            Exposed = false;
 
             _fromAttribute = getValue != null;
             _getValue = getValue;
