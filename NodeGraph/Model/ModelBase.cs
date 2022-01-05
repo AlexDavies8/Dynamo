@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel;
+using System.Xml.Serialization;
+using System.Xml.Schema;
+using System.Xml;
 
 namespace NodeGraph.Model
 {
-    public class ModelBase : INotifyPropertyChanged
+    public class ModelBase : INotifyPropertyChanged, IXmlSerializable
     {
         #region Properties
 
@@ -34,6 +37,26 @@ namespace NodeGraph.Model
         public virtual void RaisePropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
+
+        #region IXmlSerializable
+
+        public virtual XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public virtual void ReadXml(XmlReader reader)
+        {
+            // Type and GUID will always be read before instance is created, so no need to implement readers
+        }
+
+        public virtual void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("Guid", Guid.ToString());
+            writer.WriteAttributeString("Type", GetType().AssemblyQualifiedName);
         }
 
         #endregion

@@ -7,6 +7,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text;
+using System.Xml;
+using System.Xml.Schema;
 
 namespace NodeGraph.Model
 {
@@ -170,6 +172,79 @@ namespace NodeGraph.Model
         private void PortChanged(object sender, PropertyChangedEventArgs e)
         {
             OnPortChanged((Port)sender);
+        }
+
+        #endregion
+
+        #region Serialization
+
+        public override void ReadXml(XmlReader xmlReader)
+        {
+            base.ReadXml(xmlReader);
+
+            Header = xmlReader.GetAttribute("Header");
+            AllowEditHeader = bool.Parse(xmlReader.GetAttribute("AllowEditHeader"));
+
+            X = double.Parse(xmlReader.GetAttribute("X"));
+            Y = double.Parse(xmlReader.GetAttribute("Y"));
+            ZIndex = int.Parse(xmlReader.GetAttribute("ZIndex"));
+
+            xmlReader.ReadMultiple(new string[] { "InputPorts", "OutputPorts" },
+                ("Port",
+                reader =>
+                {
+                    string name = reader.GetAttribute("Name");
+                    Guid guid = Guid.Parse(reader.GetAttribute("Guid"));
+                    Type type = Type.GetType(reader.GetAttribute("Type"));
+                    bool isInput = bool.Parse(reader.GetAttribute("IsInput"));
+                    Type valueType = Type.GetType(reader.GetAttribute("ValueType"));
+                    string editorTypeString = reader.GetAttribute("EditorType");
+                    Type editorType = editorTypeString != null ? Type.GetType(editorTypeString) : null;
+
+                    Guid ownerGuid = Guid.Parse(reader.GetAttribute("Owner"));
+                    Node node = NodeGraphManager.FindNode(ownerGuid);
+
+                    if (node != null)
+                    {
+                        Port port = NodeGraphManager.CreatePort(name, guid, node, valueType, isInput, editorType);
+                        port.ReadXml(reader);
+                    }
+                })
+            );
+        }
+
+        public override void WriteXml(XmlWriter writer)
+        {
+            base.WriteXml(writer);
+
+            // Readonly Data required for creating instance (not read here)
+            writer.WriteAttributeString("Owner", Owner.Guid.ToString());
+            // End of Readonly Data
+
+            writer.WriteAttributeString("Header", Header);
+            writer.WriteAttributeString("AllowEditHeader", AllowEditHeader.ToString());
+
+            writer.WriteAttributeString("X", X.ToString());
+            writer.WriteAttributeString("Y", Y.ToString());
+            writer.WriteAttributeString("ZIndex", ZIndex.ToString());
+
+            writer.WriteStartElement("InputPorts");
+            foreach (var port in InputPorts)
+            {
+                writer.WriteStartElement("Port");
+                port.WriteXml(writer);
+                writer.WriteEndElement();
+            }
+            writer.WriteEndElement();
+
+            writer.WriteStartElement("OutputPorts");
+            foreach (var port in OutputPorts)
+            {
+                writer.WriteStartElement("Port");
+                port.WriteXml(writer);
+                writer.WriteEndElement();
+            }
+            writer.WriteEndElement();
         }
 
         #endregion

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using Dynamo.Controls.PropertyEditors;
 
-namespace Dynamo.Model
+namespace Dynamo.Model.Nodes
 {
     [Node("Transform/Scale")]
     public class ResizeImageNode : ExecutableNode
@@ -15,8 +15,14 @@ namespace Dynamo.Model
         [Port("Image", true, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Input;
 
-        [Port("Scale", true, typeof(float), typeof(FloatPropertyEditor))]
-        public float Scale = 1.0f;
+        [Port("Position", true, typeof(PositionType), typeof(EnumPropertyEditor))]
+        public PositionType PositionType = PositionType.Fractional;
+
+        [Port("X Scale", true, typeof(float), typeof(FloatPropertyEditor))]
+        public float XScale = 1.0f;
+
+        [Port("Y Scale", true, typeof(float), typeof(FloatPropertyEditor))]
+        public float YScale = 1.0f;
 
         [Port("Result", false, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Output;
@@ -29,7 +35,10 @@ namespace Dynamo.Model
         {
             if (Input == null) return;
 
-            Output = Input.Clone(x => x.Resize((int)(Input.Width * Scale), (int)(Input.Height * Scale)));
+            int x = PositionType.GetPixelPosition(XScale, Input.Width);
+            int y = PositionType.GetPixelPosition(YScale, Input.Height);
+
+            Output = Input.Clone(image => image.Resize(x, y));
         }
     }
 }

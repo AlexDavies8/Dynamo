@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml;
 
 namespace NodeGraph.Model
 {
@@ -73,6 +74,32 @@ namespace NodeGraph.Model
         public bool IsConnectedTo(Port port)
         {
             return (port == StartPort) || (port == EndPort);
+        }
+
+        #endregion
+
+        #region Serialization
+
+        public override void ReadXml(XmlReader reader)
+        {
+            base.ReadXml(reader);
+
+            StartPort = NodeGraphManager.FindPort(Guid.Parse(reader.GetAttribute("StartPort")));
+            EndPort = NodeGraphManager.FindPort(Guid.Parse(reader.GetAttribute("EndPort")));
+        }
+
+        public override void WriteXml(XmlWriter writer)
+        {
+            base.WriteXml(writer);
+
+            // Readonly data read before instance is created
+            writer.WriteAttributeString("Owner", Owner.Guid.ToString());
+            // End of readonly data
+
+            if (StartPort != null)
+                writer.WriteAttributeString("StartPort", StartPort.Guid.ToString());
+            if (EndPort != null)
+                writer.WriteAttributeString("EndPort", EndPort.Guid.ToString());
         }
 
         #endregion

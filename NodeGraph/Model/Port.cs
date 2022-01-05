@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Xml;
 
 namespace NodeGraph.Model
 {
@@ -138,6 +139,34 @@ namespace NodeGraph.Model
         private void ConnectorsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             RaisePropertyChanged("Connectors");
+        }
+
+        #endregion
+
+        #region Serialization
+
+        public override void ReadXml(XmlReader reader)
+        {
+            base.ReadXml(reader);
+
+            Name = reader.GetAttribute("Name");
+            Exposed = bool.Parse(reader.GetAttribute("Exposed"));
+        }
+
+        public override void WriteXml(XmlWriter writer)
+        {
+            base.WriteXml(writer);
+
+            // Readonly Data read before instance is created
+            writer.WriteAttributeString("Owner", Owner.Guid.ToString());
+            writer.WriteAttributeString("IsInput", IsInput.ToString());
+            // End of readonly data
+
+            writer.WriteAttributeString("Name", Name);
+            writer.WriteAttributeString("Exposed", Exposed.ToString());
+            writer.WriteAttributeString("ValueType", ValueType.AssemblyQualifiedName);
+            if (PropertyEditorType != null)
+                writer.WriteAttributeString("EditorType", PropertyEditorType.AssemblyQualifiedName);
         }
 
         #endregion

@@ -9,6 +9,7 @@ using NodeGraph.Model;
 using System.Windows.Controls;
 using System.Reflection;
 using System.Collections.Generic;
+using Microsoft.Win32;
 
 namespace Dynamo
 {
@@ -151,6 +152,34 @@ namespace Dynamo
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             ExecutionManager.ResolveDirtyNodes();
+        }
+
+        private void SaveButtonClick(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                var path = saveFileDialog.FileName;
+                if (System.IO.Directory.Exists(System.IO.Path.GetDirectoryName(path)))
+                {
+                    NodeGraphManager.Serialize(path);
+                }
+            }
+        }
+
+        private void OpenButtonClick(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                var path = openFileDialog.FileName;
+                if (System.IO.File.Exists(path))
+                {
+                    NodeGraphManager.Deserialize(path);
+                    foreach (var pair in NodeGraphManager.Flowcharts)
+                        FlowchartViewModel = pair.Value.ViewModel;
+                }
+            }
         }
     }
 }

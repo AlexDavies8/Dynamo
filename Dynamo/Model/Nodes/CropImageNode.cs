@@ -7,13 +7,16 @@ using System.Collections.Generic;
 using System.Text;
 using Dynamo.Controls.PropertyEditors;
 
-namespace Dynamo.Model
+namespace Dynamo.Model.Nodes
 {
     [Node("Transform/Crop")]
     public class CropImageNode : ExecutableNode
     {
         [Port("Image", true, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Input;
+
+        [Port("Position", true, typeof(PositionType), typeof(EnumPropertyEditor))]
+        public PositionType PositionType = PositionType.Fractional;
 
         [Port("X Scale", true, typeof(float), typeof(FloatPropertyEditor))]
         public float XScale = 1.0f;
@@ -38,10 +41,10 @@ namespace Dynamo.Model
         {
             if (Input == null) return;
 
-            int x = (int)(XOffset * Input.Width);
-            int y = (int)(YOffset * Input.Height);
-            int width = (int)(XScale * Input.Width);
-            int height = (int)(YScale * Input.Height);
+            int x = PositionType.GetPixelPosition(XOffset, Input.Width);
+            int y = PositionType.GetPixelPosition(YOffset, Input.Height);
+            int width = PositionType.GetPixelPosition(XScale, Input.Width);
+            int height = PositionType.GetPixelPosition(YScale, Input.Height);
 
             Output = Input.Clone(image => image.Crop(new Rectangle(x, y, width, height)));
         }

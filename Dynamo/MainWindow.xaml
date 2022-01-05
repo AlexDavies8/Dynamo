@@ -20,6 +20,8 @@
             <StackPanel Grid.Row="0" Background="{StaticResource NodeBackgroundColour}">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <Button Style="{StaticResource AppbarButton}">File</Button>
+                    <Button Style="{StaticResource AppbarButton}" Click="SaveButtonClick">Save</Button>
+                    <Button Style="{StaticResource AppbarButton}" Click="OpenButtonClick">Open</Button>
                     <Button Style="{StaticResource AppbarButton}">Edit</Button>
                     <Button Style="{StaticResource AppbarButton}" Click="Button_Click">Execute</Button>
                 </StackPanel>

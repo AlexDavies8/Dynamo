@@ -33,7 +33,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <Style TargetType="editors:OpenPathPropertyEditor">
         <Setter Property="Template">
             <Setter.Value>

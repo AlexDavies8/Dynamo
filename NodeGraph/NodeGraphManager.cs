@@ -9,6 +9,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Xml;
 using NodeGraph.Model;
 using NodeGraph.View;
 using NodeGraph.ViewModel;
@@ -74,7 +75,7 @@ namespace NodeGraph
 
         #region Node
 
-        public static Node CreateNode(string header, Guid guid, Flowchart flowchart, Type type, double x, double y)
+        public static Node CreateNode(string header, Guid guid, Flowchart flowchart, Type type, double x, double y, bool fromXml = false)
         {
             // Create Node
             Node node = Activator.CreateInstance(type, new object[] { guid, flowchart }) as Node;
@@ -90,39 +91,43 @@ namespace NodeGraph
             flowchart.Nodes.Add(node);
             Nodes.Add(guid, node);
 
-            // Create Ports from Properties
-            PropertyInfo[] propertyInfos = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            foreach (var propertyInfo in propertyInfos)
+            if (!fromXml)
             {
-                PortAttribute[] portAttributes = propertyInfo.GetCustomAttributes(typeof(PortAttribute), false) as PortAttribute[];
-                if (portAttributes != null)
+                // Create Ports from Properties
+                PropertyInfo[] propertyInfos = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                foreach (var propertyInfo in propertyInfos)
                 {
-                    foreach (var attribute in portAttributes)
+                    PortAttribute[] portAttributes = propertyInfo.GetCustomAttributes(typeof(PortAttribute), false) as PortAttribute[];
+                    if (portAttributes != null)
                     {
-                        Port port = CreatePort(attribute.Name, Guid.NewGuid(), node, propertyInfo.PropertyType, attribute.IsInput, attribute.EditorType, () => propertyInfo.GetValue(node));
-                        port.PortValueChanged += (Port port, object prevValue, object newValue) =>
+                        foreach (var attribute in portAttributes)
                         {
-                            node.OnPortChanged?.Invoke(port);
-                            propertyInfo.SetValue(node, newValue);
-                        };
+                            Port port = CreatePort(attribute.Name, Guid.NewGuid(), node, propertyInfo.PropertyType, attribute.IsInput, attribute.EditorType, () => propertyInfo.GetValue(node));
+                            port.PortValueChanged += (Port port, object prevValue, object newValue) =>
+                            {
+                                node.OnPortChanged?.Invoke(port);
+                                propertyInfo.SetValue(node, newValue);
+                            };
+                        }
                     }
                 }
-            }
 
-            // Create Ports from Fields
-            FieldInfo[] fieldInfos = type.GetFields(BindingFlags.Public | BindingFlags.Instance);
-            foreach (var fieldInfo in fieldInfos)
-            {
-                PortAttribute[] portAttributes = fieldInfo.GetCustomAttributes(typeof(PortAttribute), false) as PortAttribute[];
-                if (portAttributes != null)
+                // Create Ports from Fields
+                FieldInfo[] fieldInfos = type.GetFields(BindingFlags.Public | BindingFlags.Instance);
+                foreach (var fieldInfo in fieldInfos)
                 {
-                    foreach (var attribute in portAttributes)
+                    PortAttribute[] portAttributes = fieldInfo.GetCustomAttributes(typeof(PortAttribute), false) as PortAttribute[];
+                    if (portAttributes != null)
                     {
-                        Port port = CreatePort(attribute.Name, Guid.NewGuid(), node, fieldInfo.FieldType, attribute.IsInput, attribute.EditorType, () => fieldInfo.GetValue(node));
-                        port.PortValueChanged += (Port port, object prevValue, object newValue) =>
+                        foreach (var attribute in portAttributes)
                         {
-                            fieldInfo.SetValue(node, newValue);
-                        };
+                            Port port = CreatePort(attribute.Name, Guid.NewGuid(), node, fieldInfo.FieldType, attribute.IsInput, attribute.EditorType, () => fieldInfo.GetValue(node));
+                            port.PortValueChanged += (Port port, object prevValue, object newValue) =>
+                            {
+                                node.OnPortChanged?.Invoke(port);
+                                fieldInfo.SetValue(node, newValue);
+                            };
+                        }
                     }
                 }
             }
@@ -218,6 +223,8 @@ namespace NodeGraph
                     node.ViewModel.OutputPortViewModels.Remove(port.ViewModel);
                 }
             }
+
+            Ports.Remove(guid);
         }
 
         public static Port FindPort(Guid guid)
@@ -768,6 +775,71 @@ namespace NodeGraph
             }
 
             return (minX, minY, maxX, maxY);
+        }
+
+        #endregion
+
+        #region Serialization
+
+        public static void Serialize(XmlWriter writer)
+        {
+            writer.WriteStartElement("NodeGraphManager");
+            foreach (var pair in Flowcharts)
+            {
+                writer.WriteStartElement("Flowchart");
+                pair.Value.WriteXml(writer);
+                writer.WriteEndElement();
+            }
+            writer.WriteEndElement();
+        }
+
+        public static void Serialize(string filepath)
+        {
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Indent = true;
+            settings.IndentChars = "\t";
+            settings.NewLineChars = "\n";
+            settings.NewLineHandling = NewLineHandling.Replace;
+            settings.NewLineOnAttributes = false;
+            using (XmlWriter writer = XmlWriter.Create(filepath, settings))
+            {
+                writer.WriteStartDocument();
+
+                Serialize(writer);
+
+                writer.WriteEndDocument();
+
+                writer.Flush();
+                writer.Close();
+            }
+        }
+
+        public static void Deserialize(XmlReader xmlReader)
+        {
+            List<Guid> toDestroy = new List<Guid>();
+            foreach (var pair in Flowcharts)
+                toDestroy.Add(pair.Key);
+            foreach (var guid in toDestroy)
+                DestroyFlowchart(guid);
+
+            xmlReader.ReadMultiple(new string[]{"Flowcharts"},
+                ("Flowchart",
+                reader =>
+                {
+                    Guid guid = Guid.Parse(reader.GetAttribute("Guid"));
+
+                    Flowchart flowchart = CreateFlowchart(guid);
+                    flowchart.ReadXml(reader);
+                })
+            );
+        }
+
+        public static void Deserialize(string filepath)
+        {
+            using (XmlReader reader = XmlReader.Create(filepath))
+            {
+                Deserialize(reader);
+            }
         }
 
         #endregion
