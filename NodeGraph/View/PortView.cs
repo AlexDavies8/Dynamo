@@ -180,7 +180,6 @@ namespace NodeGraph.View
 
 		public void PortMouseDown(object sender, MouseButtonEventArgs e)
 		{
-			Debug.WriteLine("Mouse Down");
 			base.OnMouseLeftButtonDown(e);
 
 			if (e.LeftButton != MouseButtonState.Pressed)
@@ -205,7 +204,6 @@ namespace NodeGraph.View
 
 		public void PortMouseEnter(object sender, MouseEventArgs e)
 		{
-			Debug.WriteLine("Mouse Enter");
 			base.OnMouseEnter(e);
 
 			if (e.LeftButton == MouseButtonState.Pressed)
@@ -234,7 +232,6 @@ namespace NodeGraph.View
 
 		public void PortMouseLeave(object sender, MouseEventArgs e)
 		{
-			Debug.WriteLine("Mouse Leave");
 			base.OnMouseLeave(e);
 
 			if (NodeGraphManager.IsConnecting)
@@ -247,7 +244,6 @@ namespace NodeGraph.View
 
 		public void PortLostFocus(object sender, RoutedEventArgs e)
 		{
-			Debug.WriteLine("Lost Focus");
 			base.OnLostFocus(e);
 
 			if (NodeGraphManager.IsConnecting)

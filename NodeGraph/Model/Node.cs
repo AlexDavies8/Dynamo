@@ -206,7 +206,61 @@ namespace NodeGraph.Model
 
                     if (node != null)
                     {
-                        Port port = NodeGraphManager.CreatePort(name, guid, node, valueType, isInput, editorType);
+                        PropertyInfo matchProperty = null;
+                        FieldInfo matchField = null;
+
+                        Type nodeType = node.GetType();
+
+                        PropertyInfo[] propertyInfos = nodeType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                        foreach (PropertyInfo propertyInfo in propertyInfos)
+                        {
+                            PortAttribute[] portAttributes = propertyInfo.GetCustomAttributes(typeof(PortAttribute), false) as PortAttribute[];
+                            foreach (PortAttribute portAttribute in portAttributes)
+                            {
+                                if (portAttribute.Name == name)
+                                {
+                                    matchProperty = propertyInfo;
+                                }    
+                            }
+                        }
+
+                        FieldInfo[] fieldInfos = nodeType.GetFields(BindingFlags.Public | BindingFlags.Instance);
+                        foreach (FieldInfo fieldInfo in fieldInfos)
+                        {
+                            PortAttribute[] portAttributes = fieldInfo.GetCustomAttributes(typeof(PortAttribute), false) as PortAttribute[];
+                            foreach (PortAttribute portAttribute in portAttributes)
+                            {
+                                if (portAttribute.Name == name)
+                                {
+                                    matchField = fieldInfo;
+                                }
+                            }
+                        }
+
+                        Port port = null;
+                        if (matchField != null)
+                        {
+                            port = NodeGraphManager.CreatePort(name, guid, node, valueType, isInput, editorType, () => matchField.GetValue(node));
+                            port.PortValueChanged += (Port port, object prevValue, object newValue) =>
+                            {
+                                node.OnPortChanged?.Invoke(port);
+                                matchField.SetValue(node, newValue);
+                            };
+                        }
+                        else if (matchProperty != null)
+                        {
+                            port = NodeGraphManager.CreatePort(name, guid, node, valueType, isInput, editorType, () => matchProperty.GetValue(node));
+                            port.PortValueChanged += (Port port, object prevValue, object newValue) =>
+                            {
+                                node.OnPortChanged?.Invoke(port);
+                                matchProperty.SetValue(node, newValue);
+                            };
+                        }
+                        else
+                        {
+                            port = NodeGraphManager.CreatePort(name, guid, node, valueType, isInput, editorType);
+                            Debug.WriteLine($"Could not find Port {name} on Type {nodeType.FullName}");
+                        }
                         port.ReadXml(reader);
                     }
                 })

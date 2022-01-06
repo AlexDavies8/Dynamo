@@ -7,6 +7,7 @@ using System.Text;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using Dynamo.Controls.PropertyEditors;
+using System.Xml;
 
 namespace Dynamo.Model
 {
@@ -16,8 +17,8 @@ namespace Dynamo.Model
         [Port("Image", true, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Input = null;
 
-        [Port("Contrast", true, typeof(string), typeof(StringPropertyEditor))]
-        public string Contrast = "1.0";
+        [Port("Contrast", true, typeof(float), typeof(FloatPropertyEditor))]
+        public float Contrast = 1.0f;
 
         [Port("Result", false, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Result = null;
@@ -32,8 +33,24 @@ namespace Dynamo.Model
 
             Result = Input.Clone(x =>
             {
-                x.Contrast(float.Parse(Contrast));
+                x.Contrast(Contrast);
             });
+        }
+
+
+
+        public override void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("Contrast", Contrast.ToString());
+
+            base.WriteXml(writer);
+        }
+
+        public override void ReadXml(XmlReader reader)
+        {
+            Contrast = float.Parse(reader.GetAttribute("Contrast"));
+
+            base.ReadXml(reader);
         }
     }
 }

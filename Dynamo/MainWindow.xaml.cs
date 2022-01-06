@@ -125,7 +125,6 @@ namespace Dynamo
                 foreach (var pair in root.Children)
                 {
                     string header = pair.Key;
-                    Debug.WriteLine(header);
                     PathTreeItem child = pair.Value;
                     MenuItem item = new MenuItem() { Header = header };
                     if (child.Click != null) item.Click += (sender, e) => child.Click();
@@ -178,6 +177,7 @@ namespace Dynamo
                     NodeGraphManager.Deserialize(path);
                     foreach (var pair in NodeGraphManager.Flowcharts)
                         FlowchartViewModel = pair.Value.ViewModel;
+                    ExecutionManager.ResolveDirtyNodes();
                 }
             }
         }

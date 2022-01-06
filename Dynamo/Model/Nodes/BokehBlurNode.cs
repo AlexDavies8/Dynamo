@@ -7,6 +7,7 @@ using System.Text;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using Dynamo.Controls.PropertyEditors;
+using System.Xml;
 
 namespace Dynamo.Model
 {
@@ -41,6 +42,24 @@ namespace Dynamo.Model
             {
                 x.BokehBlur(Radius, KernelSize, Gamma);
             });
+        }
+
+        public override void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("Radius", Radius.ToString());
+            writer.WriteAttributeString("KernelSize", KernelSize.ToString());
+            writer.WriteAttributeString("Gamma", Gamma.ToString());
+
+            base.WriteXml(writer);
+        }
+
+        public override void ReadXml(XmlReader reader)
+        {
+            Radius = int.Parse(reader.GetAttribute("Radius"));
+            KernelSize = int.Parse(reader.GetAttribute("KernalSize"));
+            Gamma = float.Parse(reader.GetAttribute("Gamma"));
+
+            base.ReadXml(reader);
         }
     }
 }

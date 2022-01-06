@@ -85,7 +85,10 @@ namespace NodeGraph.Model
             base.ReadXml(reader);
 
             StartPort = NodeGraphManager.FindPort(Guid.Parse(reader.GetAttribute("StartPort")));
+            NodeGraphManager.ConnectTo(StartPort, this);
+
             EndPort = NodeGraphManager.FindPort(Guid.Parse(reader.GetAttribute("EndPort")));
+            NodeGraphManager.ConnectTo(EndPort, this);
         }
 
         public override void WriteXml(XmlWriter writer)
