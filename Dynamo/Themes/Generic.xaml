@@ -3,6 +3,7 @@
                     xmlns:model="clr-namespace:Dynamo.Model"
                     xmlns:v="clr-namespace:Dynamo.View"
                     xmlns:ngv="clr-namespace:NodeGraph.View;assembly=NodeGraph"
+                    xmlns:convert="clr-namespace:Dynamo.Converters"
     xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
 
     <SolidColorBrush x:Key="PaperColour" Color="#111111"/>
@@ -14,6 +15,8 @@
     <SolidColorBrush x:Key="ButtonHoverColour" Color="#5177B2"/>
 
     <Path x:Key="LockedIcon" Data="M12 2a4 4 0 0 1 4 4v2h2.5A1.5 1.5 0 0 1 20 9.5v11a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 20.5v-11A1.5 1.5 0 0 1 5.5 8H8V6a4 4 0 0 1 4-4Zm0 11.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM12 4a2 2 0 0 0-2 2v2h4V6a2 2 0 0 0-2-2Z" Fill="#212121" />
+
+    <convert:ImageSharpToWpfConverter x:Key="ImageSharpToWpfConverter"/>
 
     <Style x:Key="AppbarButton" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="{StaticResource LozengeButtonColour}"/>
@@ -79,7 +82,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type v:ViewportPanelView}">
                     <Grid Background="{TemplateBinding Background}">
-                        <Image Source="{Binding Path=DisplayedImage, RelativeSource={RelativeSource AncestorType={x:Type v:ViewportPanelView}} }"/>
+                        <Image Source="{Binding Path=Model.DisplayedImage, Converter={StaticResource ImageSharpToWpfConverter}}"/>
                         <CheckBox Style="{StaticResource LockCheckBox}" IsChecked="{Binding Path=Model.Locked, Mode=TwoWay}" Width="24" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4"/>
                     </Grid>
                 </ControlTemplate>

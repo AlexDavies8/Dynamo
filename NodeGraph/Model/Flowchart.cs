@@ -77,6 +77,7 @@ namespace NodeGraph.Model
                     Flowchart flowchart = NodeGraphManager.FindFlowchart(owner);
                     Node node = NodeGraphManager.CreateNode("", guid, flowchart, type, 0, 0, true);
                     node.ReadXml(reader);
+                    node.OnCreate();
                 }),
                 ("Connector",
                 reader =>

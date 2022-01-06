@@ -7,6 +7,7 @@ using System.Text;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using Dynamo.Controls.PropertyEditors;
+using System.Xml;
 
 namespace Dynamo.Model.Nodes
 {
@@ -58,6 +59,28 @@ namespace Dynamo.Model.Nodes
                     Opacity
                 );
             });
+        }
+
+        public override void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("Position", PositionType.ToString());
+            writer.WriteAttributeString("XOffset", XOffset.ToString());
+            writer.WriteAttributeString("YOffset", YOffset.ToString());
+            writer.WriteAttributeString("BlendingMode", BlendingMode.ToString());
+            writer.WriteAttributeString("Opacity", Opacity.ToString());
+
+            base.WriteXml(writer);
+        }
+
+        public override void ReadXml(XmlReader reader)
+        {
+            PositionType = (PositionType)Enum.Parse(typeof(PositionType), reader.GetAttribute("Position"));
+            XOffset = float.Parse(reader.GetAttribute("XOffset"));
+            YOffset = float.Parse(reader.GetAttribute("YOffset"));
+            BlendingMode = (PixelColorBlendingMode)Enum.Parse(typeof(PixelColorBlendingMode), reader.GetAttribute("BlendingMode"));
+            Opacity = float.Parse(reader.GetAttribute("Opacity"));
+
+            base.ReadXml(reader);
         }
     }
 }

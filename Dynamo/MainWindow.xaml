@@ -17,34 +17,35 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Border BorderBrush="{StaticResource LozengeButtonColour}" BorderThickness="0 0 0 1">
-            <StackPanel Grid.Row="0" Background="{StaticResource NodeBackgroundColour}">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                    <Button Style="{StaticResource AppbarButton}">File</Button>
-                    <Button Style="{StaticResource AppbarButton}" Click="SaveButtonClick">Save</Button>
-                    <Button Style="{StaticResource AppbarButton}" Click="OpenButtonClick">Open</Button>
-                    <Button Style="{StaticResource AppbarButton}">Edit</Button>
-                    <Button Style="{StaticResource AppbarButton}" Click="Button_Click">Execute</Button>
-                </StackPanel>
-            </StackPanel>
+            <DockPanel HorizontalAlignment="Stretch" Background="{StaticResource NodeBackgroundColour}">
+                <Button Style="{StaticResource AppbarButton}" DockPanel.Dock="Left">File</Button>
+                <Button Style="{StaticResource AppbarButton}" DockPanel.Dock="Left" Click="SaveButtonClick">Save</Button>
+                <Button Style="{StaticResource AppbarButton}" DockPanel.Dock="Left" Click="OpenButtonClick">Open</Button>
+                <Button Style="{StaticResource AppbarButton}" DockPanel.Dock="Left">Edit</Button>
+                <CheckBox DockPanel.Dock="Right" HorizontalAlignment="Right" IsChecked="{Binding Path=AutoExecute, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}" VerticalAlignment="Center" Margin="6" Content="Auto Execute" Foreground="{StaticResource TextStrongColour}"/>
+                <Button Style="{StaticResource AppbarButton}" DockPanel.Dock="Right" HorizontalAlignment="Right" Click="Button_Click">Execute</Button>
+            </DockPanel>
         </Border>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="6*"/>
+                <ColumnDefinition Width="8*"/>
                 <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Border BorderBrush="{StaticResource LozengeButtonColour}" BorderThickness="0 0 1 0">
-                <ngv:FlowchartView Grid.Column="0" DataContext="{Binding Path=FlowchartViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
-            </Border>
-            <Grid Grid.Column="1">
+            <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Border BorderBrush="{StaticResource LozengeButtonColour}" BorderThickness="0 0 0 1">
-                    <v:PropertyPanelView Grid.Row="0" DataContext="{Binding Path=PropertyPanelViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
-                </Border>
-                <v:ViewportPanelView Grid.Row="1" DataContext="{Binding Path=ViewportPanelViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
+                <v:ViewportPanelView Grid.Row="0" DataContext="{Binding Path=ViewportPanelViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
+                <v:ViewportPanelView Grid.Row="1" DataContext="{Binding Path=ViewportPanelViewModel2, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
             </Grid>
+            <Border Grid.Column="1" BorderBrush="{StaticResource LozengeButtonColour}" BorderThickness="0 0 1 0">
+                <ngv:FlowchartView Grid.Column="0" DataContext="{Binding Path=FlowchartViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
+            </Border>
+            <Border Grid.Column="2" BorderBrush="{StaticResource LozengeButtonColour}" BorderThickness="0 0 0 1">
+                <v:PropertyPanelView Grid.Row="0" DataContext="{Binding Path=PropertyPanelViewModel, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
+            </Border>
         </Grid>
     </Grid>
 </Window>

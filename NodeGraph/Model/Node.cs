@@ -243,8 +243,8 @@ namespace NodeGraph.Model
                             port = NodeGraphManager.CreatePort(name, guid, node, valueType, isInput, editorType, () => matchField.GetValue(node));
                             port.PortValueChanged += (Port port, object prevValue, object newValue) =>
                             {
-                                node.OnPortChanged?.Invoke(port);
                                 matchField.SetValue(node, newValue);
+                                node.OnPortChanged?.Invoke(port);
                             };
                         }
                         else if (matchProperty != null)
@@ -252,8 +252,8 @@ namespace NodeGraph.Model
                             port = NodeGraphManager.CreatePort(name, guid, node, valueType, isInput, editorType, () => matchProperty.GetValue(node));
                             port.PortValueChanged += (Port port, object prevValue, object newValue) =>
                             {
-                                node.OnPortChanged?.Invoke(port);
                                 matchProperty.SetValue(node, newValue);
+                                node.OnPortChanged?.Invoke(port);
                             };
                         }
                         else

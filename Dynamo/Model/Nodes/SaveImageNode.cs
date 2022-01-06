@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using SixLabors.ImageSharp.PixelFormats;
 using Dynamo.Controls.PropertyEditors;
+using System.Xml;
 
 namespace Dynamo.Model
 {
@@ -28,6 +29,20 @@ namespace Dynamo.Model
             if (!Directory.Exists(System.IO.Path.GetDirectoryName(Path))) return;
             
             Input.Save(Path);
+        }
+
+        public override void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("Path", Path);
+
+            base.WriteXml(writer);
+        }
+
+        public override void ReadXml(XmlReader reader)
+        {
+            Path = reader.GetAttribute("Path");
+
+            base.ReadXml(reader);
         }
     }
 }

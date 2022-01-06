@@ -7,6 +7,7 @@ using System.Text;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using Dynamo.Controls.PropertyEditors;
+using System.Xml;
 
 namespace Dynamo.Model
 {
@@ -38,6 +39,22 @@ namespace Dynamo.Model
             {
                 x.OilPaint(Levels, BrushSize);
             });
+        }
+
+        public override void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("Levels", Levels.ToString());
+            writer.WriteAttributeString("BrushSize", BrushSize.ToString());
+
+            base.WriteXml(writer);
+        }
+
+        public override void ReadXml(XmlReader reader)
+        {
+            Levels = int.Parse(reader.GetAttribute("Levels"));
+            BrushSize = int.Parse(reader.GetAttribute("BrushSize"));
+
+            base.ReadXml(reader);
         }
     }
 }

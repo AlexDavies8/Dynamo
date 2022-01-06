@@ -7,6 +7,7 @@ using System.Text;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using Dynamo.Controls.PropertyEditors;
+using System.Xml;
 
 namespace Dynamo.Model
 {
@@ -34,6 +35,20 @@ namespace Dynamo.Model
             {
                 x.Opacity(Opacity);
             });
+        }
+
+        public override void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("Opacity", Opacity.ToString());
+
+            base.WriteXml(writer);
+        }
+
+        public override void ReadXml(XmlReader reader)
+        {
+            Opacity = float.Parse(reader.GetAttribute("Opacity"));
+
+            base.ReadXml(reader);
         }
     }
 }

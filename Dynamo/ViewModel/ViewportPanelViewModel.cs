@@ -44,7 +44,6 @@ namespace Dynamo.ViewModel
 
         #endregion
 
-
         #region Events
 
         protected override void ModelPropertyChanged(object sender, PropertyChangedEventArgs e)

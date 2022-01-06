@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using NodeGraph.Model;
+using NodeGraph.ViewModel;
 
 namespace NodeGraph.View
 {
-    class NodeViewsContainer : ItemsControl
+    public class NodeViewsContainer : ItemsControl
     {
         #region Overrides
 
@@ -14,17 +17,20 @@ namespace NodeGraph.View
         {
             base.PrepareContainerForItemOverride(element, item);
 
-			FrameworkElement fe = element as FrameworkElement;
+            var attributes = ((NodeViewModel)item).Model.GetType().GetCustomAttributes(typeof(OverrideStyleAttribute), true);
+
+            FrameworkElement fe = element as FrameworkElement;
 
 			ResourceDictionary resourceDictionary = new ResourceDictionary
 			{
 				Source = new Uri("/NodeGraph;component/Themes/Generic.xaml", UriKind.RelativeOrAbsolute)
 			};
 
-			Style style = resourceDictionary["DefaultNodeStyle"] as Style;
+            string styleName = attributes.Length > 0 ? ((OverrideStyleAttribute)attributes[0]).StyleName : "DefaultNodeStyle";
+			Style style = resourceDictionary[styleName] as Style;
 			if (style == null)
 			{
-				style = Application.Current.TryFindResource("DefaultNodeStyle") as Style;
+				style = Application.Current.TryFindResource(styleName) as Style;
 			}
 			fe.Style = style;
 		}

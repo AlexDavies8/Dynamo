@@ -7,22 +7,23 @@ using System.Text;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using Dynamo.Controls.PropertyEditors;
+using System.Xml;
 
 namespace Dynamo.Model
 {
-    [Node("Colour/Saturation")]
-    public class SaturationNode : ExecutableNode
+    [Node("Colour/Lightness")]
+    public class LightnessNode : ExecutableNode
     {
         [Port("Image", true, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Input = null;
 
-        [Port("Saturation", true, typeof(float), typeof(FloatPropertyEditor))]
-        public float Saturation = 1.0f;
+        [Port("Lightness", true, typeof(float), typeof(FloatPropertyEditor))]
+        public float Lightness = 1.0f;
 
         [Port("Result", false, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Result = null;
 
-        public SaturationNode(Guid guid, Flowchart owner) : base(guid, owner)
+        public LightnessNode(Guid guid, Flowchart owner) : base(guid, owner)
         {
         }
 
@@ -32,8 +33,22 @@ namespace Dynamo.Model
 
             Result = Input.Clone(x =>
             {
-                x.Saturate(Saturation);
+                x.Lightness(Lightness);
             });
+        }
+
+        public override void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("Lightness", Lightness.ToString());
+
+            base.WriteXml(writer);
+        }
+
+        public override void ReadXml(XmlReader reader)
+        {
+            Lightness = float.Parse(reader.GetAttribute("Lightness"));
+
+            base.ReadXml(reader);
         }
     }
 }

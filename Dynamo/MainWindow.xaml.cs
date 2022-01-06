@@ -39,6 +39,19 @@ namespace Dynamo
         }
         public static readonly DependencyProperty ViewportPanelViewModelProperty = DependencyProperty.Register("ViewportPanelViewModel", typeof(Dynamo.ViewModel.ViewportPanelViewModel), typeof(MainWindow), new PropertyMetadata(null));
 
+        public Dynamo.ViewModel.ViewportPanelViewModel ViewportPanelViewModel2
+        {
+            get => (ViewModel.ViewportPanelViewModel)GetValue(ViewportPanelViewModel2Property);
+            set => SetValue(ViewportPanelViewModel2Property, value);
+        }
+        public static readonly DependencyProperty ViewportPanelViewModel2Property = DependencyProperty.Register("ViewportPanelViewModel2", typeof(Dynamo.ViewModel.ViewportPanelViewModel), typeof(MainWindow), new PropertyMetadata(null));
+
+        public static bool AutoExecute
+        {
+            get => ExecutionManager.AutoExecute;
+            set => ExecutionManager.AutoExecute = value;
+        }
+
         public MainWindow()
         {
             // TODO: Move to App.xaml.cs
@@ -63,7 +76,12 @@ namespace Dynamo
             ViewModel.ViewportPanelViewModel viewportPanelViewModel = new ViewModel.ViewportPanelViewModel(viewportPanel);
             ViewportPanelViewModel = viewportPanelViewModel;
 
+            ViewportPanel viewportPanel2 = new ViewportPanel();
+            ViewModel.ViewportPanelViewModel viewportPanelViewModel2 = new ViewModel.ViewportPanelViewModel(viewportPanel2);
+            ViewportPanelViewModel2 = viewportPanelViewModel2;
+
             ExecutionManager.OnPostExecute += () => viewportPanel.RaisePropertyChanged("DisplayedNode");
+            ExecutionManager.OnPostExecute += () => viewportPanel2.RaisePropertyChanged("DisplayedNode");
         }
 
         private ContextMenu BuildFlowchartContextMenu(BuildContextMenuArgs args)
@@ -174,10 +192,15 @@ namespace Dynamo
                 var path = openFileDialog.FileName;
                 if (System.IO.File.Exists(path))
                 {
+                    bool temp = ExecutionManager.AutoExecute;
+                    ExecutionManager.AutoExecute = false;
+
                     NodeGraphManager.Deserialize(path);
                     foreach (var pair in NodeGraphManager.Flowcharts)
                         FlowchartViewModel = pair.Value.ViewModel;
                     ExecutionManager.ResolveDirtyNodes();
+
+                    ExecutionManager.AutoExecute = temp;
                 }
             }
         }

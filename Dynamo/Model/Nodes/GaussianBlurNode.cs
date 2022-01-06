@@ -7,6 +7,7 @@ using System.Text;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using Dynamo.Controls.PropertyEditors;
+using System.Xml;
 
 namespace Dynamo.Model
 {
@@ -35,6 +36,20 @@ namespace Dynamo.Model
             {
                 x.GaussianBlur(Radius);
             });
+        }
+
+        public override void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("Radius", Radius.ToString());
+
+            base.WriteXml(writer);
+        }
+
+        public override void ReadXml(XmlReader reader)
+        {
+            Radius = int.Parse(reader.GetAttribute("Radius"));
+
+            base.ReadXml(reader);
         }
     }
 }

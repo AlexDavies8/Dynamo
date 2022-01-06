@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Dynamo.Controls.PropertyEditors;
+using System.Xml;
 
 namespace Dynamo.Model.Nodes
 {
@@ -47,6 +48,28 @@ namespace Dynamo.Model.Nodes
             int height = PositionType.GetPixelPosition(YScale, Input.Height);
 
             Output = Input.Clone(image => image.Crop(new Rectangle(x, y, width, height)));
+        }
+
+        public override void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("Position", PositionType.ToString());
+            writer.WriteAttributeString("XScale", XScale.ToString());
+            writer.WriteAttributeString("YScale", YScale.ToString());
+            writer.WriteAttributeString("XOffset", XOffset.ToString());
+            writer.WriteAttributeString("YOffset", YOffset.ToString());
+
+            base.WriteXml(writer);
+        }
+
+        public override void ReadXml(XmlReader reader)
+        {
+            PositionType = (PositionType)Enum.Parse(typeof(PositionType), reader.GetAttribute("Position"));
+            XScale = float.Parse(reader.GetAttribute("XScale"));
+            YScale = float.Parse(reader.GetAttribute("YScale"));
+            XOffset = float.Parse(reader.GetAttribute("XOffset"));
+            YOffset = float.Parse(reader.GetAttribute("YOffset"));
+
+            base.ReadXml(reader);
         }
     }
 }

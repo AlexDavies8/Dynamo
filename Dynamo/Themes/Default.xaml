@@ -1,6 +1,144 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:ctrl="clr-namespace:NodeGraph.Controls;assembly=NodeGraph">
+                    xmlns:ctrl="clr-namespace:NodeGraph.Controls;assembly=NodeGraph"
+                    xmlns:ngv="clr-namespace:NodeGraph.View;assembly=NodeGraph"
+                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                    xmlns:pt="http://propertytools.org/wpf">
+
+    <Path x:Key="VisibleIcon" Data="M12 9.005a4 4 0 1 1 0 8 4 4 0 0 1 0-8ZM12 5.5c4.613 0 8.596 3.15 9.701 7.564a.75.75 0 1 1-1.455.365 8.503 8.503 0 0 0-16.493.004.75.75 0 0 1-1.455-.363A10.003 10.003 0 0 1 12 5.5Z" />
+
+    <Style x:Key="DropCheckBox" TargetType="{x:Type CheckBox}">
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Background" Value="{StaticResource TextColour}"/>
+        <Setter Property="Opacity" Value="0.6"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CheckBox}">
+                    <Grid Background="Transparent" SnapsToDevicePixels="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="1" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                            <Viewbox Width="13" Height="13">
+                                <Path Data="{Binding Source={StaticResource VisibleIcon}, Path=Data}" Fill="{TemplateBinding Background}" Stretch="Fill"/>
+                            </Viewbox>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="true">
+                            <Setter Property="Background" Value="{StaticResource TextColour}"/>
+                            <Setter Property="Opacity" Value="1"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Background" Value="{StaticResource ButtonHoverColour}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="PreviewNodeStyle" TargetType="{x:Type ngv:NodeView}">
+        <Setter Property="Background" Value="{StaticResource NodeBackgroundColour}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource NodeBorderColour}"/>
+        <Setter Property="Canvas.Left" Value="{Binding Model.X}"/>
+        <Setter Property="Canvas.Top" Value="{Binding Model.Y}"/>
+        <Setter Property="Canvas.ZIndex" Value="{Binding Model.ZIndex}"/>
+        <Setter Property="MinWidth" Value="120"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ngv:NodeView}">
+                    <Grid>
+                        <!-- Background -->
+                        <Border
+                            Name="Mask"
+                            Background="{TemplateBinding Background}"
+                            Margin="{TemplateBinding Margin}"
+                            Padding="{TemplateBinding Padding}"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                        </Border>
+                        <!-- Selection -->
+                        <Border
+                            x:Name="BorderSelection"
+                            Background="Transparent"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding SelectionThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            Margin="{TemplateBinding Margin}"
+                            Padding="{TemplateBinding Padding}"
+                            >
+                            <!-- Content -->
+                            <Grid x:Name="ContentContainer">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="20"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.OpacityMask>
+                                    <VisualBrush Visual="{Binding ElementName=Mask}"/>
+                                </Grid.OpacityMask>
+                                <!-- Header -->
+                                <Grid Grid.Row="0" Background="{StaticResource NodeHeaderColour}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="25"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="25"/>
+                                    </Grid.ColumnDefinitions>
+                                    <!-- Header Text -->
+                                    <pt:EditableTextBlock
+                                        x:Name="PART_Header"
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding Model.Header, Mode=TwoWay}"
+                                        Focusable="True"
+                                        Foreground="White"
+                                        FontWeight="Bold"
+                                        FontSize="12"
+                                        IsEnabled="True"/>
+                                    <CheckBox Style="{StaticResource DropCheckBox}" Grid.Column="2" IsChecked="{Binding Path=Model.PreviewEnabled}" Width="16" Height="16"/>
+                                </Grid>
+                                <Grid Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="50"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <!-- Ports -->
+                                    <ngv:PortViewsContainer
+                                        Visibility="Visible"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="3"
+                                        IsInput="True"
+                                        HorizontalAlignment="Left"
+                                        ItemsSource="{Binding InputPortViewModels}"/>
+                                    <ngv:PortViewsContainer
+                                        Visibility="Visible"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="3"
+                                        IsInput="False"
+                                        HorizontalAlignment="Right"
+                                        ItemsSource="{Binding OutputPortViewModels}"/>
+                                    <!-- TODO -->
+                                </Grid>
+                                <Grid Grid.Row="2" Background="{StaticResource FlowchartBackgroundColour}" Visibility="{Binding Path=Model.PreviewVisibility}">
+                                    <Image Height="{Binding ElementName=ContentContainer, Path=ActualWidth}" Width="{Binding ElementName=ContentContainer, Path=ActualWidth}" Source="{Binding Path=Model.PreviewImage, Converter={StaticResource ImageSharpToWpfConverter}}"/>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <!--<Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="BorderSelection" Property="BorderBrush" Value="DarkGoldenrod"/>
+                        </Trigger>-->
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="BorderSelection" Property="BorderBrush" Value="Orange"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <Style TargetType="{x:Type TextBox}">
         <Setter Property="Background" Value="{StaticResource BackgroundColour}"/>

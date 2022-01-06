@@ -21,8 +21,6 @@ namespace Dynamo.Converters
         object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             Enum myEnum = (Enum)value;
-            if (myEnum == null)
-                return "";
             return myEnum.ToString();
         }
 

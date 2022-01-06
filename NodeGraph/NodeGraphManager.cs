@@ -105,8 +105,8 @@ namespace NodeGraph
                             Port port = CreatePort(attribute.Name, Guid.NewGuid(), node, propertyInfo.PropertyType, attribute.IsInput, attribute.EditorType, () => propertyInfo.GetValue(node));
                             port.PortValueChanged += (Port port, object prevValue, object newValue) =>
                             {
-                                node.OnPortChanged?.Invoke(port);
                                 propertyInfo.SetValue(node, newValue);
+                                node.OnPortChanged?.Invoke(port);
                             };
                         }
                     }
@@ -124,15 +124,15 @@ namespace NodeGraph
                             Port port = CreatePort(attribute.Name, Guid.NewGuid(), node, fieldInfo.FieldType, attribute.IsInput, attribute.EditorType, () => fieldInfo.GetValue(node));
                             port.PortValueChanged += (Port port, object prevValue, object newValue) =>
                             {
-                                node.OnPortChanged?.Invoke(port);
                                 fieldInfo.SetValue(node, newValue);
+                                node.OnPortChanged?.Invoke(port);
                             };
                         }
                     }
                 }
-            }
 
-            node.OnCreate();
+                node.OnCreate();
+            }
 
             return node;
         }

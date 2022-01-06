@@ -26,16 +26,16 @@ namespace Dynamo.Model
             }
         }
 
-        private Port _displayedPort;
-        public Port DisplayedPort
+        private Image<Rgba32> _displayedImage;
+        public Image<Rgba32> DisplayedImage
         {
-            get => _displayedPort;
+            get => _displayedImage;
             set
             {
-                if (_displayedPort != value)
+                if (_displayedImage != value)
                 {
-                    _displayedPort = value;
-                    RaisePropertyChanged("DisplayedPort");
+                    _displayedImage = value;
+                    RaisePropertyChanged("DisplayedImage");
                 }
             }
         }
@@ -63,14 +63,8 @@ namespace Dynamo.Model
         {
             if (Locked) return;
 
-            DisplayedNode = node;
-            foreach (var port in node.OutputPorts)
-            {
-                if (port.ValueType == typeof(Image<Rgba32>) && DisplayedPort != port) // TODO: Better casting
-                {
-                    DisplayedPort = port;
-                }
-            }
+            if (node != null)
+                DisplayedNode = node;
         }
 
         public override void RaisePropertyChanged(string propertyName)

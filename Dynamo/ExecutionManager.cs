@@ -12,9 +12,12 @@ namespace Dynamo
     {
         public static Action OnPostExecute;
         private static List<ExecutableNode> _dirtyNodes = new List<ExecutableNode>();
+        private static bool _executing;
+        public static bool AutoExecute = true;
 
         public static void ResolveDirtyNodes()
         {
+            _executing = true;
             List<ExecutableNode> cleanNodes = new List<ExecutableNode>();
             while (_dirtyNodes.Count > 0) // TODO: Add iteration limit to prevent errors
             {
@@ -32,9 +35,11 @@ namespace Dynamo
                 foreach (var node in cleanNodes)
                 {
                     _dirtyNodes.Remove(node);
+                    node.OnPostExecute();
                 }
             }
             OnPostExecute?.Invoke();
+            _executing = false;
         }
 
         // Synchronise inputs with their connected outputs
@@ -73,6 +78,16 @@ namespace Dynamo
 
         public static void MarkDirty(ExecutableNode node)
         {
+            if (_executing) return;
+
+            MarkDirtyRecurse(node);
+
+            if (AutoExecute)
+                ResolveDirtyNodes();
+        }
+
+        private static void MarkDirtyRecurse(ExecutableNode node)
+        {
             MarkDirtyInternal(node);
             foreach (var port in node.OutputPorts)
             {
@@ -80,7 +95,7 @@ namespace Dynamo
                 {
                     if (connection.EndPort != null)
                     {
-                        MarkDirty(connection.EndPort.Owner as ExecutableNode);
+                        MarkDirtyRecurse(connection.EndPort.Owner as ExecutableNode);
                     }
                 }
             }

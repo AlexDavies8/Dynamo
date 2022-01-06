@@ -8,9 +8,9 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Dynamo;component/Themes/Generic.xaml"/>
+                <ResourceDictionary Source="/NodeGraph;component/Themes/Generic.xaml"/>
                 <ResourceDictionary Source="/Dynamo;component/Themes/Default.xaml"/>
                 <ResourceDictionary Source="/Dynamo;component/Themes/PropertyEditors.xaml"/>
-                <ResourceDictionary Source="/NodeGraph;component/Themes/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
