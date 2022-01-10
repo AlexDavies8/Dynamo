@@ -4,7 +4,7 @@
                     xmlns:v="clr-namespace:Dynamo.View"
                     xmlns:ngv="clr-namespace:NodeGraph.View;assembly=NodeGraph"
                     xmlns:convert="clr-namespace:Dynamo.Converters"
-    xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
+                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors">
 
     <SolidColorBrush x:Key="PaperColour" Color="#111111"/>
     <SolidColorBrush x:Key="BackgroundColour" Color="#202020"/>
@@ -143,6 +143,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition x:Name="InnerColumn0Width" Width="Auto"/>
                                     <ColumnDefinition x:Name="InnerColumn1Width" Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock
                                     x:Name="PART_Header"
@@ -160,6 +161,8 @@
                                     Content="{TemplateBinding PropertyEditor}"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Left"/>
+                                <CheckBox Grid.Column="2" Content="Exposed" IsChecked="{Binding Model.Exposed}">
+                                </CheckBox>
                             </Grid>
                         </ContentControl>
                     </Grid>

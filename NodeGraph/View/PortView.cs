@@ -163,6 +163,15 @@ namespace NodeGraph.View
 			IsPortEnabled = true;
 			IsEnabled = true;
 
+			if (PropertyEditor != null && IsInput)
+			{
+				PropertyEditorVisibility = ViewModel.Model.Exposed ? Visibility.Visible : Visibility.Collapsed;
+			}
+			else
+			{
+				PropertyEditorVisibility = Visibility.Visible;
+			}
+
 			if (IsInput)
 			{
 				//PropertyEditorVisibility = IsFilledPort ? Visibility.Collapsed : Visibility.Visible;
