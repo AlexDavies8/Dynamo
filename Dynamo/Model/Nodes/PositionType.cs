@@ -13,6 +13,8 @@ namespace Dynamo.Model.Nodes
 
     public static class PositionTypeExtensions
     {
+        public const int MaxPixelSize = 1024 * 8;
+
         public static float GetPosition(this PositionType type, float position, float size)
         {
             if (type == PositionType.Pixels) return position;
@@ -22,9 +24,9 @@ namespace Dynamo.Model.Nodes
 
         public static int GetPixelPosition(this PositionType type, float position, int size)
         {
-            if (type == PositionType.Pixels) return (int)position;
-            if (type == PositionType.Fractional) return (int)(position * size);
-            return (int)(position * size / 0.01f); // Percentage
+            if (type == PositionType.Pixels) return (int)Math.Min(position, MaxPixelSize);
+            if (type == PositionType.Fractional) return (int)Math.Min(position * size, MaxPixelSize);
+            return (int)Math.Min(position * size / 0.01f, MaxPixelSize); // Percentage
         }
     }
 }

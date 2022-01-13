@@ -162,6 +162,9 @@
                             <Setter TargetName="PART_Port" Property="Visibility" Value="Collapsed"/>
                             <Setter Property="IsHitTestVisible" Value="False"/>
                         </Trigger>
+                        <Trigger Property="IsPortEnabled" Value="True">
+                            <Setter TargetName="PortPropertyEditor" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
                         <Trigger Property="Interactable" Value="False">
                             <Setter TargetName="PART_Port" Property="Visibility" Value="Collapsed"/>
                             <Setter Property="IsHitTestVisible" Value="False"/>
