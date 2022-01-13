@@ -10,10 +10,10 @@ using Dynamo.Controls.PropertyEditors;
 
 namespace Dynamo.Model
 {
-    [Node("Misc/Image Data")]
+    [Node("Misc/Image Data", 800)]
     public class ImageDataNode : ExecutableNode
     {
-        [Port("Image", true, typeof(Image<Rgba32>), null)]
+        [Port("Image", true, typeof(Image<Rgba32>), null, false)]
         public Image<Rgba32> Input = null;
 
         [Port("Width", false, typeof(float), null)]

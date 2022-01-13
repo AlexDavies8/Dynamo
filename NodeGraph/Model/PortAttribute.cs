@@ -11,13 +11,15 @@ namespace NodeGraph.Model
         public bool IsInput;
         public Type ValueType;
         public Type EditorType;
+        public bool Exposable;
 
-        public PortAttribute(string name, bool isInput, Type valueType, Type editorType)
+        public PortAttribute(string name, bool isInput, Type valueType, Type editorType, bool exposable = true)
         {
             Name = name;
             IsInput = isInput;
             ValueType = valueType;
             EditorType = editorType;
+            Exposable = exposable;
         }
     }
 }

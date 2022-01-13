@@ -11,10 +11,10 @@ using System.Xml;
 
 namespace Dynamo.Model
 {
-    [Node("Colour/Hue Shift")]
+    [Node("Colour/Hue Shift", 503)]
     public class HueShiftNode : ExecutableNode
     {
-        [Port("Image", true, typeof(Image<Rgba32>), null)]
+        [Port("Image", true, typeof(Image<Rgba32>), null, false)]
         public Image<Rgba32> Input = null;
 
         [Port("Hue Shift", true, typeof(float), typeof(FloatPropertyEditor))]

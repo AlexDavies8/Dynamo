@@ -12,10 +12,10 @@ using System.Xml;
 namespace Dynamo.Model
 {
 
-    [Node("Blur/Gaussian")]
+    [Node("Blur/Gaussian", 601)]
     public class GaussianBlurNode : ExecutableNode
     {
-        [Port("Image", true, typeof(Image<Rgba32>), null)]
+        [Port("Image", true, typeof(Image<Rgba32>), null, false)]
         public Image<Rgba32> Input = null;
 
         [Port("Radius", true, typeof(float), typeof(FloatPropertyEditor))]

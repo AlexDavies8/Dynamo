@@ -102,7 +102,7 @@ namespace NodeGraph
                     {
                         foreach (var attribute in portAttributes)
                         {
-                            Port port = CreatePort(attribute.Name, Guid.NewGuid(), node, propertyInfo.PropertyType, attribute.IsInput, attribute.EditorType, () => propertyInfo.GetValue(node));
+                            Port port = CreatePort(attribute.Name, Guid.NewGuid(), node, propertyInfo.PropertyType, attribute.IsInput, attribute.EditorType, () => propertyInfo.GetValue(node), attribute.Exposable);
                             port.PortValueChanged += (Port port, object prevValue, object newValue) =>
                             {
                                 propertyInfo.SetValue(node, newValue);
@@ -121,7 +121,7 @@ namespace NodeGraph
                     {
                         foreach (var attribute in portAttributes)
                         {
-                            Port port = CreatePort(attribute.Name, Guid.NewGuid(), node, fieldInfo.FieldType, attribute.IsInput, attribute.EditorType, () => fieldInfo.GetValue(node));
+                            Port port = CreatePort(attribute.Name, Guid.NewGuid(), node, fieldInfo.FieldType, attribute.IsInput, attribute.EditorType, () => fieldInfo.GetValue(node), attribute.Exposable);
                             port.PortValueChanged += (Port port, object prevValue, object newValue) =>
                             {
                                 fieldInfo.SetValue(node, newValue);
@@ -177,10 +177,10 @@ namespace NodeGraph
 
         #region Port
 
-        public static Port CreatePort(string name, Guid guid, Node node, Type valueType, bool isInput, Type editorType, Func<object> getValue = null)
+        public static Port CreatePort(string name, Guid guid, Node node, Type valueType, bool isInput, Type editorType, Func<object> getValue = null, bool exposable = true)
         {
             // Create Port
-            Port port = new Port(guid, node, isInput, valueType, editorType, getValue);
+            Port port = new Port(guid, node, isInput, valueType, editorType, getValue, exposable);
             port.Name = name;
 
             // Create ViewModel

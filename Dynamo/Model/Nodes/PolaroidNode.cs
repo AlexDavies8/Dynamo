@@ -11,10 +11,10 @@ using Dynamo.Controls.PropertyEditors;
 namespace Dynamo.Model
 {
 
-    [Node("Filter/Polaroid")]
+    [Node("Filter/Colour/Polaroid", 701)]
     public class PolaroidNode : ExecutableNode
     {
-        [Port("Image", true, typeof(Image<Rgba32>), null)]
+        [Port("Image", true, typeof(Image<Rgba32>), null, false)]
         public Image<Rgba32> Input = null;
 
         [Port("Result", false, typeof(Image<Rgba32>), null)]

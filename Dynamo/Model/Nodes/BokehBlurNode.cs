@@ -11,11 +11,10 @@ using System.Xml;
 
 namespace Dynamo.Model
 {
-
-    [Node("Blur/Bokeh")]
+    [Node("Blur/Bokeh", 602)]
     public class BokehBlurNode : ExecutableNode
     {
-        [Port("Image", true, typeof(Image<Rgba32>), null)]
+        [Port("Image", true, typeof(Image<Rgba32>), null, false)]
         public Image<Rgba32> Input = null;
 
         [Port("Radius", true, typeof(int), typeof(IntPropertyEditor))]

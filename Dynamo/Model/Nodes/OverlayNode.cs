@@ -12,16 +12,16 @@ using System.Xml;
 namespace Dynamo.Model.Nodes
 {
 
-    [Node("Combine/Overlay")]
+    [Node("Combine/Overlay", 400)]
     public class OverlayNode : ExecutableNode
     {
-        [Port("Back", true, typeof(Image<Rgba32>), null)]
+        [Port("Back", true, typeof(Image<Rgba32>), null, false)]
         public Image<Rgba32> Back = null;
 
-        [Port("Front", true, typeof(Image<Rgba32>), null)]
+        [Port("Front", true, typeof(Image<Rgba32>), null, false)]
         public Image<Rgba32> Front = null;
 
-        [Port("Position", true, typeof(PositionType), typeof(EnumPropertyEditor))]
+        [Port("Position", true, typeof(PositionType), typeof(EnumPropertyEditor), false)]
         public PositionType PositionType = PositionType.Fractional;
 
         [Port("X", true, typeof(float), typeof(FloatPropertyEditor))]
@@ -30,7 +30,7 @@ namespace Dynamo.Model.Nodes
         [Port("Y", true, typeof(float), typeof(FloatPropertyEditor))]
         public float YOffset = 0.0f;
 
-        [Port("Blending Mode", true, typeof(PixelColorBlendingMode), typeof(EnumPropertyEditor))]
+        [Port("Blending Mode", true, typeof(PixelColorBlendingMode), typeof(EnumPropertyEditor), false)]
         public PixelColorBlendingMode BlendingMode = PixelColorBlendingMode.Normal;
 
         [Port("Opacity", true, typeof(float), typeof(FloatPropertyEditor))]

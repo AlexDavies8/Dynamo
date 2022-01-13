@@ -11,10 +11,10 @@ using Dynamo.Controls.PropertyEditors;
 namespace Dynamo.Model
 {
 
-    [Node("Filter/Kodachrome")]
+    [Node("Filter/Colour/Kodachrome", 703)]
     public class KodachromeNode : ExecutableNode
     {
-        [Port("Image", true, typeof(Image<Rgba32>), null)]
+        [Port("Image", true, typeof(Image<Rgba32>), null, false)]
         public Image<Rgba32> Input = null;
 
         [Port("Result", false, typeof(Image<Rgba32>), null)]

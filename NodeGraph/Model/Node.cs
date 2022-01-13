@@ -208,6 +208,7 @@ namespace NodeGraph.Model
                     {
                         PropertyInfo matchProperty = null;
                         FieldInfo matchField = null;
+                        PortAttribute matchAttribute = null;
 
                         Type nodeType = node.GetType();
 
@@ -220,6 +221,7 @@ namespace NodeGraph.Model
                                 if (portAttribute.Name == name)
                                 {
                                     matchProperty = propertyInfo;
+                                    matchAttribute = portAttribute;
                                 }    
                             }
                         }
@@ -233,6 +235,7 @@ namespace NodeGraph.Model
                                 if (portAttribute.Name == name)
                                 {
                                     matchField = fieldInfo;
+                                    matchAttribute = portAttribute;
                                 }
                             }
                         }
@@ -240,7 +243,7 @@ namespace NodeGraph.Model
                         Port port = null;
                         if (matchField != null)
                         {
-                            port = NodeGraphManager.CreatePort(name, guid, node, valueType, isInput, editorType, () => matchField.GetValue(node));
+                            port = NodeGraphManager.CreatePort(name, guid, node, valueType, isInput, editorType, () => matchField.GetValue(node), matchAttribute.Exposable);
                             port.PortValueChanged += (Port port, object prevValue, object newValue) =>
                             {
                                 matchField.SetValue(node, newValue);
@@ -249,7 +252,7 @@ namespace NodeGraph.Model
                         }
                         else if (matchProperty != null)
                         {
-                            port = NodeGraphManager.CreatePort(name, guid, node, valueType, isInput, editorType, () => matchProperty.GetValue(node));
+                            port = NodeGraphManager.CreatePort(name, guid, node, valueType, isInput, editorType, () => matchProperty.GetValue(node), matchAttribute.Exposable);
                             port.PortValueChanged += (Port port, object prevValue, object newValue) =>
                             {
                                 matchProperty.SetValue(node, newValue);
@@ -258,7 +261,7 @@ namespace NodeGraph.Model
                         }
                         else
                         {
-                            port = NodeGraphManager.CreatePort(name, guid, node, valueType, isInput, editorType);
+                            port = NodeGraphManager.CreatePort(name, guid, node, valueType, isInput, editorType, exposable: matchAttribute.Exposable);
                             Debug.WriteLine($"Could not find Port {name} on Type {nodeType.FullName}");
                         }
                         port.ReadXml(reader);

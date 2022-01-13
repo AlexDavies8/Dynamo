@@ -11,10 +11,10 @@ using Dynamo.Controls.PropertyEditors;
 namespace Dynamo.Model
 {
 
-    [Node("Filter/Sepia")]
+    [Node("Filter/Colour/Sepia", 700)]
     public class SepiaNode : ExecutableNode
     {
-        [Port("Image", true, typeof(Image<Rgba32>), null)]
+        [Port("Image", true, typeof(Image<Rgba32>), null, false)]
         public Image<Rgba32> Input = null;
 
         [Port("Result", false, typeof(Image<Rgba32>), null)]

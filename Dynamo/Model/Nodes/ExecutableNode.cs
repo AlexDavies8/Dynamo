@@ -8,34 +8,25 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using System.Diagnostics;
 using System.Windows;
+using System.Xml;
 
 namespace Dynamo.Model
 {
     [OverrideStyle("PreviewNodeStyle")]
     public class ExecutableNode : Node
     {
+        private bool _previewEnabled = true;
         public bool PreviewEnabled
         {
-            get => _previewPort != null && PreviewVisibility == Visibility.Visible;
+            get => _previewEnabled;
             set
             {
-                PreviewVisibility = value && _previewPort != null ? Visibility.Visible : Visibility.Collapsed;
+                _previewEnabled = value;
+                RaisePropertyChanged("PreviewVisibility");
             }
         }
 
-        private Visibility _previewVisibility;
-        public Visibility PreviewVisibility
-        {
-            get => _previewVisibility;
-            set
-            {
-                if (_previewVisibility != value)
-                {
-                    _previewVisibility = value;
-                    RaisePropertyChanged("PreviewVisibility");
-                }
-            }
-        }
+        public Visibility PreviewVisibility => PreviewEnabled && _previewPort != null ? Visibility.Visible : Visibility.Collapsed;
 
         private Image<Rgba32> _previewImage;
         public Image<Rgba32> PreviewImage
@@ -89,8 +80,6 @@ namespace Dynamo.Model
                 }
             }
 
-            PreviewVisibility = _previewPort == null ? Visibility.Collapsed : Visibility.Visible;
-
             ExecutionManager.MarkDirty(this);
         }
 
@@ -108,6 +97,20 @@ namespace Dynamo.Model
         {
             if (_previewPort != null)
                 PreviewImage = (Image<Rgba32>)_previewPort.Value;
+        }
+
+        public override void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("ShowPreview", PreviewEnabled.ToString());
+
+            base.WriteXml(writer);
+        }
+
+        public override void ReadXml(XmlReader reader)
+        {
+            PreviewEnabled = bool.Parse(reader.GetAttribute("ShowPreview"));
+
+            base.ReadXml(reader);
         }
     }
 }

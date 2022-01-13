@@ -12,10 +12,10 @@ using System.Xml;
 namespace Dynamo.Model
 {
 
-    [Node("Filter/Oil Paint")]
+    [Node("Filter/Oil Paint", 710)]
     public class OilPaintNode : ExecutableNode
     {
-        [Port("Image", true, typeof(Image<Rgba32>), null)]
+        [Port("Image", true, typeof(Image<Rgba32>), null, false)]
         public Image<Rgba32> Input = null;
 
         [Port("Levels", true, typeof(int), typeof(IntPropertyEditor))]

@@ -10,13 +10,13 @@ using System.Xml;
 
 namespace Dynamo.Model.Nodes
 {
-    [Node("Transform/Scale")]
+    [Node("Transform/Scale", 300)]
     public class ResizeImageNode : ExecutableNode
     {
-        [Port("Image", true, typeof(Image<Rgba32>), null)]
+        [Port("Image", true, typeof(Image<Rgba32>), null, false)]
         public Image<Rgba32> Input;
 
-        [Port("Position", true, typeof(PositionType), typeof(EnumPropertyEditor))]
+        [Port("Position", true, typeof(PositionType), typeof(EnumPropertyEditor), false)]
         public PositionType PositionType = PositionType.Fractional;
 
         [Port("X Scale", true, typeof(float), typeof(FloatPropertyEditor))]
@@ -25,7 +25,7 @@ namespace Dynamo.Model.Nodes
         [Port("Y Scale", true, typeof(float), typeof(FloatPropertyEditor))]
         public float YScale = 1.0f;
 
-        [Port("Resize Mode", true, typeof(ResizeMode), typeof(EnumPropertyEditor))]
+        [Port("Resize Mode", true, typeof(ResizeMode), typeof(EnumPropertyEditor), false)]
         public ResizeMode ResizeMode = ResizeMode.Stretch;
 
         [Port("Result", false, typeof(Image<Rgba32>), null)]

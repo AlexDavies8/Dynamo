@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Reflection;
 using System.Collections.Generic;
 using Microsoft.Win32;
+using System.Linq;
 
 namespace Dynamo
 {
@@ -117,8 +118,7 @@ namespace Dynamo
                         }
                         else
                             curr = curr.Children[pathArgs[i]];
-
-                        }
+                    }
                     curr.Children.Add(
                         pathArgs[^1],
                         new PathTreeItem(pathArgs[^1],
@@ -129,18 +129,26 @@ namespace Dynamo
                             type,
                             args.ModelSpaceMousePosition.X,
                             args.ModelSpaceMousePosition.Y
-                            )
-                        ));
+                            ), nodeAttribute.Order)
+                        );
                 }
             }
 
+            RecurseOrder(root);
             RecurseTree(addNodeItem, root);
 
             return addNodeItem;
 
+            int RecurseOrder(PathTreeItem root)
+            {
+                int order = root.Children.Count == 0 ? root.Order : root.Children.Min(x => RecurseOrder(x.Value));
+                root.Order = order;
+                return order;
+            }
+
             void RecurseTree(MenuItem parentItem, PathTreeItem root)
             {
-                foreach (var pair in root.Children)
+                foreach (var pair in root.Children.OrderBy(x => x.Value.Order))
                 {
                     string header = pair.Key;
                     PathTreeItem child = pair.Value;
@@ -152,17 +160,19 @@ namespace Dynamo
             }
         }
 
-        struct PathTreeItem
+        class PathTreeItem
         {
             public string Header;
             public Action Click;
             public Dictionary<string, PathTreeItem> Children;
+            public int Order;
 
-            public PathTreeItem(string header, Action click)
+            public PathTreeItem(string header, Action click, int order = int.MaxValue)
             {
                 Header = header;
                 Click = click;
                 Children = new Dictionary<string, PathTreeItem>();
+                Order = order;
             }
         }
 

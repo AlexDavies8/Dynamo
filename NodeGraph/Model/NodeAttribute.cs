@@ -8,10 +8,12 @@ namespace NodeGraph.Model
     public class NodeAttribute : Attribute
     {
         public string Path;
+        public int Order;
 
-        public NodeAttribute(string path)
+        public NodeAttribute(string path, int order = int.MaxValue)
         {
             Path = path;
+            Order = order;
         }
     }
 }

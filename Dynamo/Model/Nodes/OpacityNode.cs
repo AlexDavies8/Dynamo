@@ -11,10 +11,10 @@ using System.Xml;
 
 namespace Dynamo.Model
 {
-    [Node("Colour/Opacity")]
+    [Node("Colour/Opacity", 504)]
     public class OpacityNode : ExecutableNode
     {
-        [Port("Image", true, typeof(Image<Rgba32>), null)]
+        [Port("Image", true, typeof(Image<Rgba32>), null, false)]
         public Image<Rgba32> Input = null;
 
         [Port("Opacity", true, typeof(float), typeof(FloatPropertyEditor))]

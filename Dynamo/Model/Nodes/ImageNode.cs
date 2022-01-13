@@ -10,7 +10,7 @@ using System.Xml;
 
 namespace Dynamo.Model
 {
-    [Node("Input/Image")]
+    [Node("Input/Image", 100)]
     public class ImageNode : ExecutableNode
     {
         [Port("Path", true, typeof(string), typeof(OpenPathPropertyEditor))]

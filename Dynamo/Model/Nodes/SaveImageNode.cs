@@ -10,10 +10,10 @@ using System.Xml;
 
 namespace Dynamo.Model
 {
-    [Node("Output/Image")]
+    [Node("Output/Image", 200)]
     public class SaveImageNode : ExecutableNode
     {
-        [Port("Image", true, typeof(Image<Rgba32>), null)]
+        [Port("Image", true, typeof(Image<Rgba32>), null, false)]
         public Image<Rgba32> Input = null;
 
         [Port("Path", true, typeof(string), typeof(StringPropertyEditor))]

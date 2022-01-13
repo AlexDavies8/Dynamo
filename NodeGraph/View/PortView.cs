@@ -131,22 +131,15 @@ namespace NodeGraph.View
 		{
 			if (ViewModel.Model.HasEditor) CreatePropertyEditor();
 			SynchronizeProperties();
-
-
-			if (PropertyEditor != null && IsInput)
-			{
-				PropertyEditorVisibility = Visibility.Collapsed;
-			}
-			else
-			{
-				PropertyEditorVisibility = Visibility.Visible;
-			}
 		}
 
 		private void PortViewDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
 			ViewModel = DataContext as PortViewModel;
-			if (LinkToViewModel) ViewModel.View = this;
+			if (LinkToViewModel)
+			{
+				ViewModel.View = this;
+			}
 			ViewModel.PropertyChanged += ViewModelPropertyChanged;
 
 			SynchronizeProperties();
@@ -163,6 +156,11 @@ namespace NodeGraph.View
 			IsPortEnabled = true;
 			IsEnabled = true;
 
+			UpdatePropertyEditorVisibility();
+		}
+
+		private void UpdatePropertyEditorVisibility()
+		{
 			if (PropertyEditor != null && IsInput)
 			{
 				PropertyEditorVisibility = ViewModel.Model.Exposed ? Visibility.Visible : Visibility.Collapsed;
@@ -170,11 +168,6 @@ namespace NodeGraph.View
 			else
 			{
 				PropertyEditorVisibility = Visibility.Visible;
-			}
-
-			if (IsInput)
-			{
-				//PropertyEditorVisibility = IsFilledPort ? Visibility.Collapsed : Visibility.Visible;
 			}
 		}
 

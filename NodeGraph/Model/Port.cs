@@ -25,7 +25,8 @@ namespace NodeGraph.Model
 
         public readonly Node Owner;
         public readonly bool IsInput;
-        public bool HasEditor => PropertyEditorType != null && !Exposed;
+        public readonly bool Exposable;
+        public bool HasEditor => PropertyEditorType != null;
 
         public readonly Type PropertyEditorType;
 
@@ -121,7 +122,7 @@ namespace NodeGraph.Model
 
         #region Constructors
 
-        public Port(Guid guid, Node owner, bool isInput, Type valueType, Type editorType, Func<object> getValue = null) : base(guid)
+        public Port(Guid guid, Node owner, bool isInput, Type valueType, Type editorType, Func<object> getValue = null, bool exposable = true) : base(guid)
         {
             Owner = owner;
             IsInput = isInput;

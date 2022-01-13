@@ -12,10 +12,10 @@ using System.Xml;
 namespace Dynamo.Model
 {
 
-    [Node("Blur/Box")]
+    [Node("Blur/Box", 600)]
     public class BoxBlurNode : ExecutableNode
     {
-        [Port("Image", true, typeof(Image<Rgba32>), null)]
+        [Port("Image", true, typeof(Image<Rgba32>), null, false)]
         public Image<Rgba32> Input = null;
 
         [Port("Radius", true, typeof(int), typeof(IntPropertyEditor))]
