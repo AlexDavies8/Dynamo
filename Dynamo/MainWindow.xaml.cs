@@ -122,14 +122,18 @@ namespace Dynamo
                     curr.Children.Add(
                         pathArgs[^1],
                         new PathTreeItem(pathArgs[^1],
-                        () => NodeGraphManager.CreateNode(
-                            pathArgs[^1],
-                            Guid.NewGuid(),
-                            flowchart,
-                            type,
-                            args.ModelSpaceMousePosition.X,
-                            args.ModelSpaceMousePosition.Y
-                            ), nodeAttribute.Order)
+                        () => {
+                            Node node = NodeGraphManager.CreateNode(
+                                pathArgs[^1],
+                                Guid.NewGuid(),
+                                flowchart,
+                                type,
+                                args.ModelSpaceMousePosition.X,
+                                args.ModelSpaceMousePosition.Y
+                                );
+                            if (node is ExecutableNode executableNode)
+                                ExecutionManager.MarkDirty(executableNode);
+                            }, nodeAttribute.Order)
                         );
                 }
             }

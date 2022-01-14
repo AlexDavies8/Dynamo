@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Text;
 using System.Xml;
 
@@ -140,6 +141,7 @@ namespace NodeGraph.Model
         private void ConnectorsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             RaisePropertyChanged("Connectors");
+            OnPortValueChanged(Value, Value);
         }
 
         #endregion
