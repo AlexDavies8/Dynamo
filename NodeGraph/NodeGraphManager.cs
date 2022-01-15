@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -105,7 +106,7 @@ namespace NodeGraph
                             Port port = CreatePort(attribute.Name, Guid.NewGuid(), node, propertyInfo.PropertyType, attribute.IsInput, attribute.EditorType, () => propertyInfo.GetValue(node), attribute.Exposable);
                             port.PortValueChanged += (Port port, object prevValue, object newValue) =>
                             {
-                                propertyInfo.SetValue(node, newValue);
+                                propertyInfo.SetValue(node, Convert.ChangeType(newValue, port.ValueType));
                                 node.OnPortChanged?.Invoke(port);
                             };
                         }
@@ -124,7 +125,7 @@ namespace NodeGraph
                             Port port = CreatePort(attribute.Name, Guid.NewGuid(), node, fieldInfo.FieldType, attribute.IsInput, attribute.EditorType, () => fieldInfo.GetValue(node), attribute.Exposable);
                             port.PortValueChanged += (Port port, object prevValue, object newValue) =>
                             {
-                                fieldInfo.SetValue(node, newValue);
+                                fieldInfo.SetValue(node, Convert.ChangeType(newValue, port.ValueType));
                                 node.OnPortChanged?.Invoke(port);
                             };
                         }
@@ -369,7 +370,7 @@ namespace NodeGraph
             Type firstType = CurrentPort.ValueType;
             Type otherType = otherPort.ValueType;
 
-            if (firstType != otherType)
+            if (firstType != otherType && !TypeDescriptor.GetConverter(firstType).CanConvertTo(otherType))
             {
                 error = "Must connect to a port of the same type";
                 return false; // TODO: Automatic type casting

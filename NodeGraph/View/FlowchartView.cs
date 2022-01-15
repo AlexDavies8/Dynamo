@@ -3,6 +3,7 @@ using NodeGraph.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -211,10 +212,56 @@ namespace NodeGraph.View
 			NodeGraphManager.EndSelection();
 
 			// TODO: Implement History
-        }
+		}
 
+		protected override void OnMouseDown(MouseButtonEventArgs e)
+		{
+			base.OnMouseDown(e);
 
-        protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
+			if (ViewModel == null)
+				return;
+
+			if (e.ChangedButton == MouseButton.Middle && e.ButtonState == MouseButtonState.Pressed)
+            {
+				Keyboard.Focus(this);
+				_zoomAndPanStartMatrix = ZoomAndPan.Matrix;
+
+				if (!NodeGraphManager.IsDragging)
+				{
+					_isDraggingCanvas = true;
+					Mouse.Capture(this, CaptureMode.SubTree);
+
+					// TODO: Implement History
+				}
+            }
+
+		}
+
+        protected override void OnMouseUp(MouseButtonEventArgs e)
+        {
+            base.OnMouseUp(e);
+
+			if (ViewModel == null)
+				return;
+
+			if (e.ChangedButton == MouseButton.Middle && e.ButtonState == MouseButtonState.Released)
+			{
+				NodeGraphManager.EndConnection();
+				NodeGraphManager.EndDragNode();
+				NodeGraphManager.EndDragging();
+
+				if (_isDraggingCanvas)
+				{
+					_isDraggingCanvas = false;
+					Mouse.Capture(null);
+
+					// TODO: Implement History
+				}
+			}
+		}
+
+        /*
+		protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
         {
             base.OnMouseRightButtonDown(e);
 
@@ -231,6 +278,7 @@ namespace NodeGraph.View
 				Mouse.Capture(this, CaptureMode.SubTree);
             }
         }
+		*/
 
         protected override void OnMouseRightButtonUp(MouseButtonEventArgs e)
         {
@@ -239,44 +287,24 @@ namespace NodeGraph.View
 			if (ViewModel == null)
 				return;
 
-			NodeGraphManager.EndConnection();
-			NodeGraphManager.EndDragNode();
-			NodeGraphManager.EndDragging();
+			var model = FindModelUnderMouse(e.GetPosition(this), out Point viewSpacePosition, out Point modelSpacePosition, out ModelType modelType);
 
-			bool actuallyDraggingCanvas =
-				(Math.Abs(_zoomAndPanStartMatrix.OffsetX - ZoomAndPan.Matrix.OffsetX) > 5) ||
-				(Math.Abs(_zoomAndPanStartMatrix.OffsetY - ZoomAndPan.Matrix.OffsetY) > 5);
+			var contextMenuBuilder = NodeGraphManager.BuildContextMenu(modelType);
+			if (contextMenuBuilder != null)
+			{
+				BuildContextMenuArgs args = new BuildContextMenuArgs();
+				args.Model = model;
+				args.ViewSpaceMousePosition = viewSpacePosition;
+				args.ModelSpaceMousePosition = modelSpacePosition;
+				args.ModelType = modelType;
 
-			if (_isDraggingCanvas)
-            {
-				_isDraggingCanvas = false;
-				Mouse.Capture(null);
-
-				// TODO: Implement History
-            }
-
-			// TODO: Context Menu Logic
-			if (!actuallyDraggingCanvas)
-            {
-				var model = FindModelUnderMouse(e.GetPosition(this), out Point viewSpacePosition, out Point modelSpacePosition, out ModelType modelType);
-
-				var contextMenuBuilder = NodeGraphManager.BuildContextMenu(modelType);
-				if (contextMenuBuilder != null)
-                {
-					BuildContextMenuArgs args = new BuildContextMenuArgs();
-					args.Model = model;
-					args.ViewSpaceMousePosition = viewSpacePosition;
-					args.ModelSpaceMousePosition = modelSpacePosition;
-					args.ModelType = modelType;
-
-					var contextMenu = contextMenuBuilder.Invoke(args);
-					if (contextMenu.Items.Count > 0)
-						ContextMenu = contextMenu;
-                }					
-            }
+				var contextMenu = contextMenuBuilder.Invoke(args);
+				if (contextMenu.Items.Count > 0)
+					ContextMenu = contextMenu;
+			}
         }
 
-		private void UpdateDragging(Point mousePosition, Point delta)
+        private void UpdateDragging(Point mousePosition, Point delta)
         {
 			if (NodeGraphManager.IsConnecting)
             {

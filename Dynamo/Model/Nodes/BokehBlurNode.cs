@@ -55,7 +55,7 @@ namespace Dynamo.Model
         public override void ReadXml(XmlReader reader)
         {
             Radius = int.Parse(reader.GetAttribute("Radius"));
-            KernelSize = int.Parse(reader.GetAttribute("KernalSize"));
+            KernelSize = int.Parse(reader.GetAttribute("KernelSize"));
             Gamma = float.Parse(reader.GetAttribute("Gamma"));
 
             base.ReadXml(reader);
