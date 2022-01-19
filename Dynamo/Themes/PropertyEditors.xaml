@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:editors="clr-namespace:Dynamo.Controls.PropertyEditors"
-                    xmlns:convert="clr-namespace:Dynamo.Converters">
+                    xmlns:convert="clr-namespace:Dynamo.Converters"
+                    xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker">
 
     <Style TargetType="editors:StringPropertyEditor">
         <Setter Property="Template">
@@ -62,6 +63,16 @@
             <Setter.Value>
                 <ControlTemplate TargetType="editors:EnumPropertyEditor">
                     <ComboBox ItemsSource="{Binding Path=EnumNames}" SelectedValue="{Binding Path=Value, Mode=TwoWay}"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="editors:ColourPropertyEditor">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="editors:ColourPropertyEditor">
+                    <colorpicker:PortableColorPicker SelectedColor="{Binding Path=Value, Mode=TwoWay}"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
