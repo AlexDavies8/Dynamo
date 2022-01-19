@@ -163,13 +163,13 @@ namespace NodeGraph.Model
             // Readonly Data read before instance is created
             writer.WriteAttributeString("Owner", Owner.Guid.ToString());
             writer.WriteAttributeString("IsInput", IsInput.ToString());
+            writer.WriteAttributeString("ValueType", ValueType.AssemblyQualifiedName);
+            if (PropertyEditorType != null)
+                writer.WriteAttributeString("EditorType", PropertyEditorType.AssemblyQualifiedName);
             // End of readonly data
 
             writer.WriteAttributeString("Name", Name);
             writer.WriteAttributeString("Exposed", Exposed.ToString());
-            writer.WriteAttributeString("ValueType", ValueType.AssemblyQualifiedName);
-            if (PropertyEditorType != null)
-                writer.WriteAttributeString("EditorType", PropertyEditorType.AssemblyQualifiedName);
         }
 
         #endregion

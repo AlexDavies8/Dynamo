@@ -86,9 +86,6 @@ namespace Dynamo.Model
         public override void RaisePropertyChanged(string propertyName)
         {
             base.RaisePropertyChanged(propertyName);
-
-            //Debug.WriteLine($"Marked {Header} Dirty from Property {propertyName}");
-            //ExecutionManager.MarkDirty(this);
         }
 
         public virtual void Execute() { }

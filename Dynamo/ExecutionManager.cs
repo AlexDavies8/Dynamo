@@ -19,7 +19,7 @@ namespace Dynamo
         {
             _executing = true;
             List<ExecutableNode> cleanNodes = new List<ExecutableNode>();
-            while (_dirtyNodes.Count > 0) // TODO: Add iteration limit to prevent errors
+            while (_dirtyNodes.Count > 0)
             {
                 foreach(var node in _dirtyNodes)
                 {

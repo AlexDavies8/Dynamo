@@ -284,6 +284,7 @@ namespace NodeGraph.View
 			}
 		}
 
+		/*
 		private FrameworkElement CreateBoolEditor()
 		{
 			Port port = ViewModel.Model as Port;
@@ -366,6 +367,7 @@ namespace NodeGraph.View
 
 			return binding;
 		}
+		*/
 
 		#endregion
 	}
