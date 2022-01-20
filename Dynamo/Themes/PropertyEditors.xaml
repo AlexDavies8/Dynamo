@@ -72,7 +72,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="editors:ColourPropertyEditor">
-                    <colorpicker:PortableColorPicker SelectedColor="{Binding Path=Value, Mode=TwoWay}"/>
+                    <colorpicker:PortableColorPicker SelectedColor="{Binding Path=Value, Mode=TwoWay}" Style="{StaticResource DefaultColorPickerStyle}"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

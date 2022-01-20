@@ -11,11 +11,11 @@ using System.Xml;
 
 namespace Dynamo.Model
 {
-    [Node("Generator/Noise/Value Noise", 910)]
-    public class ValueNoiseNode : ExecutableNode
+    [Node("Generator/Colour", 900)]
+    public class ColourNode : ExecutableNode
     {
-        [Port("Seed", true, typeof(int), typeof(IntPropertyEditor))]
-        public int Seed = 0;
+        [Port("Colour", true, typeof(Color), typeof(ColourPropertyEditor))]
+        public Color Colour = Color.White;
 
         [Port("Width", true, typeof(int), typeof(IntPropertyEditor))]
         public int Width = 128;
@@ -26,7 +26,7 @@ namespace Dynamo.Model
         [Port("Image", false, typeof(Image<Rgba32>), null)]
         public Image<Rgba32> Result = null;
 
-        public ValueNoiseNode(Guid guid, Flowchart owner) : base(guid, owner)
+        public ColourNode(Guid guid, Flowchart owner) : base(guid, owner)
         {
         }
 
@@ -35,23 +35,21 @@ namespace Dynamo.Model
             if (Width <= 0 || Height <= 0)
                 return;
 
-            Random random = new Random(Seed);
-
+            var colour = Colour.ToPixel<Rgba32>();
             Result = new Image<Rgba32>(Width, Height);
             for (int y = 0; y < Result.Height; y++)
             {
                 Span<Rgba32> pixelRowSpan = Result.GetPixelRowSpan(y);
                 for (int x = 0; x < Result.Width; x++)
                 {
-                    float v = (float)random.NextDouble();
-                    pixelRowSpan[x] = new Rgba32(v, v, v, 1f);
+                    pixelRowSpan[x] = colour;
                 }
             }
         }
 
         public override void WriteXml(XmlWriter writer)
         {
-            writer.WriteAttributeString("Seed", Seed.ToString());
+            writer.WriteAttributeString("Colour", Colour.ToHex());
             writer.WriteAttributeString("Width", Width.ToString());
             writer.WriteAttributeString("Height", Height.ToString());
 
@@ -60,7 +58,7 @@ namespace Dynamo.Model
 
         public override void ReadXml(XmlReader reader)
         {
-            Seed = int.Parse(reader.GetAttribute("Seed"));
+            Colour = Color.ParseHex(reader.GetAttribute("Colour"));
             Width = int.Parse(reader.GetAttribute("Width"));
             Height = int.Parse(reader.GetAttribute("Height"));
 

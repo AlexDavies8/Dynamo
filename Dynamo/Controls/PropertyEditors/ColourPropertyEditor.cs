@@ -10,9 +10,9 @@ namespace Dynamo.Controls.PropertyEditors
 {
     public class ColourPropertyEditor : PropertyEditor
     {
-        public string Value
+        public System.Windows.Media.Color Value
         {
-            get { return (string)GetValue(ValueProperty); }
+            get { return (System.Windows.Media.Color)GetValue(ValueProperty); }
             set { SetValue(ValueProperty, value); }
         }
         public static readonly DependencyProperty ValueProperty =
@@ -62,7 +62,7 @@ namespace Dynamo.Controls.PropertyEditors
 
         public override void SetValueBinding(Port port)
         {
-            SetBinding(ValueProperty, GetBinding(port));
+            SetBinding(ValueProperty, GetBinding(port, new ColourConverter()));
         }
     }
 }
