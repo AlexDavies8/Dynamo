@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Diagnostics;
 
 namespace Dynamo.Converters
 {
@@ -30,13 +31,12 @@ namespace Dynamo.Converters
 
                     for (var y = 0; y < image.Height; y++)
                     {
-                        var buffer = image.GetPixelRowSpan(y);
+                        Span<Rgba32> buffer = image.GetPixelRowSpan(y);
                         for (var x = 0; x < image.Width; x++)
                         {
                             var backBufferPos = backBuffer + (y * image.Width + x) * 4;
-                            var rgba = buffer[x];
-                            var color = rgba.A << 24 | rgba.R << 16 | rgba.G << 8 | rgba.B;
-
+                            Rgba32 rgba = buffer[x];
+                            int color = rgba.A << 24 | rgba.R << 16 | rgba.G << 8 | rgba.B;
                             System.Runtime.InteropServices.Marshal.WriteInt32(backBufferPos, color);
                         }
                     }

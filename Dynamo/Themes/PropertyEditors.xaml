@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:editors="clr-namespace:Dynamo.Controls.PropertyEditors"
+                    xmlns:v="clr-namespace:Dynamo.View"
                     xmlns:convert="clr-namespace:Dynamo.Converters"
                     xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker">
 
@@ -73,6 +74,16 @@
             <Setter.Value>
                 <ControlTemplate TargetType="editors:ColourPropertyEditor">
                     <colorpicker:PortableColorPicker SelectedColor="{Binding Path=Value, Mode=TwoWay}" Style="{StaticResource DefaultColorPickerStyle}"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="editors:GradientPropertyEditor">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="editors:GradientPropertyEditor">
+                    <v:GradientView DataContext="{Binding Value}"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

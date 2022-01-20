@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Text;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -25,9 +26,9 @@ namespace Dynamo.Model
 
         public Gradient() : base()
         {
+            _tags = new ObservableCollection<GradientTag>();
             Tags.CollectionChanged += (sender, e) => RaisePropertyChanged("Tags");
 
-            _tags = new ObservableCollection<GradientTag>();
             CreateTag(Color.Black, 0f);
             CreateTag(Color.White, 1f);
         }
@@ -61,7 +62,7 @@ namespace Dynamo.Model
             float g = colA.G * frac + colB.G * (1f - frac);
             float b = colA.B * frac + colB.B * (1f - frac);
             float a = colA.A * frac + colB.A * (1f - frac);
-            return new Color(new Rgba32(r, g, b, a));
+            return new Color(new Rgba32((byte)r, (byte)g, (byte)b, (byte)a));
         }
     }
 

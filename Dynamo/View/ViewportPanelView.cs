@@ -20,6 +20,7 @@ namespace Dynamo.View
         #region Properties
 
         public ViewportPanelViewModel ViewModel { get; private set; }
+
         #endregion
 
         #region Constructor

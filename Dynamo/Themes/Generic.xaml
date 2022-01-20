@@ -19,6 +19,7 @@
     <Path x:Key="FlowchartIcon" Data="M13.999,2.003C9.58,2.003 6.001,5.581 6.001,10C6.001,14.419 9.58,17.998 13.999,17.998C18.418,17.998 22.003,14.419 22.003,10C22.003,5.581 18.418,2.003 13.999,2.003ZM4.926,5.82C3.076,7.339 2.003,9.605 2.003,12.003C2.003,16.416 5.581,20 10,20C10.635,19.995 11.265,19.918 11.88,19.765C10.118,19.38 8.491,18.525 7.173,17.29C5.22,16.245 3.999,14.214 3.999,12.003C4.004,11.704 4.029,11.406 4.072,11.109C4.029,10.743 4.004,10.371 3.999,10C4.004,8.555 4.321,7.129 4.926,5.82Z" />
 
     <convert:ImageSharpToWpfConverter x:Key="ImageSharpToWpfConverter"/>
+    <convert:ColourConverter x:Key="ColourConverter"/>
 
     <Style x:Key="AppbarButton" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="{StaticResource LozengeButtonColour}"/>
