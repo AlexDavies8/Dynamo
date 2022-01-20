@@ -4,15 +4,36 @@
                     xmlns:ngv="clr-namespace:NodeGraph.View;assembly=NodeGraph"
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:v="clr-namespace:Dynamo.View"
-                    xmlns:pt="http://propertytools.org/wpf">
+                    xmlns:pt="http://propertytools.org/wpf"
+                    xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker">
 
     <Path x:Key="VisibleIcon" Data="M12 9.005a4 4 0 1 1 0 8 4 4 0 0 1 0-8ZM12 5.5c4.613 0 8.596 3.15 9.701 7.564a.75.75 0 1 1-1.455.365 8.503 8.503 0 0 0-16.493.004.75.75 0 0 1-1.455-.363A10.003 10.003 0 0 1 12 5.5Z" />
+
+    <LinearGradientBrush MappingMode="Absolute" x:Key="BlackWhiteStripe" StartPoint="0,0" EndPoint="0,12" SpreadMethod="Repeat">
+        <GradientStop Offset="0" Color="Black"/>
+        <GradientStop Offset="0.5" Color="Black"/>
+        <GradientStop Offset="0.5" Color="White"/>
+        <GradientStop Offset="1" Color="White"/>
+    </LinearGradientBrush>
 
     <Style x:Key="GradientTagStyle" TargetType="{x:Type v:GradientTagView}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type v:GradientTagView}">
-                    <Rectangle Width="16" Height="16" Fill="{Binding Colour, Converter={StaticResource ColourConverter}}"/>
+                    <Grid Width="12">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="32"/>
+                            <RowDefinition Height="16"/>
+                        </Grid.RowDefinitions>
+                        <Rectangle Grid.Row="0" Width="2" Fill="{StaticResource BlackWhiteStripe}"/>
+                        <Border Grid.Row="1" BorderBrush="{StaticResource TextColour}" BorderThickness="2">
+                            <Rectangle>
+                                <Rectangle.Fill>
+                                    <SolidColorBrush Color="{Binding Colour, Mode=OneWay, Converter={StaticResource ColourConverter}}"/>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                        </Border>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -22,17 +43,94 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type v:GradientView}">
-                    <Border CornerRadius="4">
+                    <Grid>
+                        <Border
+                            Name="Mask"
+                            CornerRadius="4"
+                            Background="White"
+                            Height="18"
+                            Width="100"
+                            BorderThickness="1"
+                            BorderBrush="{StaticResource LozengeButtonColour}"/>
                         <Grid>
-                            <v:GradientTagsContainer ItemsSource="{Binding Tags}"/>
+                            <Grid.OpacityMask>
+                                <VisualBrush Visual="{Binding ElementName=Mask}"/>
+                            </Grid.OpacityMask>
                             <Image Width="100" Height="18" Stretch="Fill" Source="{Binding Path=GradientImage, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type v:GradientView}}, Converter={StaticResource ImageSharpToWpfConverter}}"/>
+                            <v:GradientTagsContainer ItemsSource="{Binding Tags}"/>
                         </Grid>
-                    </Border>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    
+
+    <Style x:Key="GradientEditor" TargetType="{x:Type v:GradientView}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type v:GradientView}">
+                    <Grid>
+                        <ToggleButton x:Name="EditorToggle" Height="20" Width="80" Background="Transparent" BorderThickness="0">
+                            <Grid>
+                                <Border
+                                Name="Mask"
+                                CornerRadius="4"
+                                Background="White"
+                                Width="{Binding ElementName=EditorToggle, Path=Width}"
+                                Height="{Binding ElementName=EditorToggle, Path=Height}"
+                                BorderThickness="1"
+                                BorderBrush="{StaticResource LozengeButtonColour}"/>
+                                <Grid>
+                                    <Grid.OpacityMask>
+                                        <VisualBrush Visual="{Binding ElementName=Mask}"/>
+                                    </Grid.OpacityMask>
+                                    <Image Width="100" Height="18" Stretch="Fill" Source="{Binding Path=GradientImage, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type v:GradientView}}, Converter={StaticResource ImageSharpToWpfConverter}}"/>
+                                </Grid>
+                            </Grid>
+                        </ToggleButton>
+                        <Popup StaysOpen="False" IsOpen="{Binding ElementName=EditorToggle, Path=IsChecked, Mode=TwoWay}" Width="220">
+                            <Border Background="{StaticResource BackgroundColour}" BorderBrush="{StaticResource LozengeButtonColour}" BorderThickness="1">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="16"/>
+                                        <RowDefinition Height="32"/>
+                                        <RowDefinition Height="16"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="16"/>
+                                    </Grid.RowDefinitions>
+                                    <Image Width="180" Grid.Row="1" Stretch="Fill" Source="{Binding Path=GradientImage, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type v:GradientView}}, Converter={StaticResource ImageSharpToWpfConverter}}"/>
+                                    <v:GradientTagsContainer Grid.Row="1" Grid.RowSpan="2" ItemsSource="{Binding Tags}" Width="180" Owner="{Binding Path=., RelativeSource={RelativeSource AncestorType={x:Type v:GradientView}}}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <Canvas/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </v:GradientTagsContainer>
+                                    <Grid Grid.Row="3" Width="180">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="30"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="30"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Grid.Column="0" Foreground="{StaticResource TextStrongColour}">Colour</Label>
+                                        <colorpicker:PortableColorPicker Grid.Column="2" Style="{StaticResource DefaultColorPickerStyle}" SelectedColor="{Binding Path=SelectedTag.Colour, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type v:GradientView}}, Converter={StaticResource ColourConverter}}"/>
+                                        <Button Grid.Column="4" Content="-"/>
+                                        <Button Grid.Column="6" Content="+"/>
+                                        <!-- TODO: Bind Add and Remove Buttons -->
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="DropCheckBox" TargetType="{x:Type CheckBox}">
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Background" Value="{StaticResource TextColour}"/>

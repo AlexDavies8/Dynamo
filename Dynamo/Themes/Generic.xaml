@@ -207,9 +207,16 @@
                         </Trigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Model.Exposable}" Value="False"/>
+                                <Condition Binding="{Binding Model.IsExposable}" Value="False"/>
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="ExposeButton" Property="Visibility" Value="Collapsed"/>
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Model.IsExposable}" Value="False"/>
+                                <Condition Binding="{Binding Model.HasEditor}" Value="False"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Visibility" Value="Collapsed"/>
                         </MultiDataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

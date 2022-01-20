@@ -12,7 +12,6 @@ namespace Dynamo.View
 {
     public class GradientView : ContentControl
     {
-        
         public Image<Rgba32> GradientImage
         {
             get => (Image<Rgba32>)GetValue(GradientImageProperty);
@@ -20,6 +19,13 @@ namespace Dynamo.View
         }
         public static readonly DependencyProperty GradientImageProperty = DependencyProperty.Register("GradientImage", typeof(Image<Rgba32>), typeof(GradientView), new PropertyMetadata(null));
         
+        public GradientTag SelectedTag
+        {
+            get => (GradientTag)GetValue(SelectedTagProperty);
+            set => SetValue(SelectedTagProperty, value);
+        }
+        public static readonly DependencyProperty SelectedTagProperty = DependencyProperty.Register("SelectedTag", typeof(GradientTag), typeof(GradientView), new PropertyMetadata(null));
+
         public Gradient Model;
 
         public GradientView() : base()
@@ -47,7 +53,9 @@ namespace Dynamo.View
         {
             if (Model == null) return;
 
-            Image<Rgba32> newImage = new Image<Rgba32>(128, 20);
+            if (SelectedTag == null) SelectedTag = Model.Tags[0];
+
+            Image<Rgba32> newImage = new Image<Rgba32>(128, 1);
             for (int y = 0; y < newImage.Height; y++)
             {
                 Span<Rgba32> pixels = newImage.GetPixelRowSpan(y);

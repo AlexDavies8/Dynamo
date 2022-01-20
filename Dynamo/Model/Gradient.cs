@@ -27,10 +27,39 @@ namespace Dynamo.Model
         public Gradient() : base()
         {
             _tags = new ObservableCollection<GradientTag>();
-            Tags.CollectionChanged += (sender, e) => RaisePropertyChanged("Tags");
+            Tags.CollectionChanged += TagsCollectionChanged;
 
             CreateTag(Color.Black, 0f);
+            CreateTag(Color.Red, 0.7f);
             CreateTag(Color.White, 1f);
+        }
+
+        private void TagsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            RaisePropertyChanged("Tags");
+            if (e.OldItems != null)
+            {
+                foreach (var obj in e.OldItems)
+                {
+                    var tag = obj as GradientTag;
+                    if (tag != null)
+                        tag.PropertyChanged -= TagPropertyChanged;
+                }
+            }
+            if (e.NewItems != null)
+            {
+                foreach (var obj in e.NewItems)
+                {
+                    var tag = obj as GradientTag;
+                    if (tag != null)
+                        tag.PropertyChanged += TagPropertyChanged;
+                }
+            }
+        }
+
+        private void TagPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            RaisePropertyChanged("Tags");
         }
 
         public void CreateTag(Color colour, float time)
@@ -48,7 +77,7 @@ namespace Dynamo.Model
                     float max = Tags[i + 1].Time;
                     float min = Tags[i].Time;
                     float frac = (time - min) / (max - min);
-                    return BlendColours(Tags[i].Colour, Tags[i + 1].Colour, frac);
+                    return BlendColours(Tags[i + 1].Colour, Tags[i].Colour, frac);
                 }
             }
             return Color.Black;
@@ -66,12 +95,37 @@ namespace Dynamo.Model
         }
     }
 
-    public class GradientTag
+    public class GradientTag : ModelBase
     {
-        public Color Colour { get; set; }
-        public float Time { get; set; }
+        private Color _colour;
+        public Color Colour
+        {
+            get => _colour;
+            set
+            {
+                if (_colour != value)
+                {
+                    _colour = value;
+                    RaisePropertyChanged("Colour");
+                }
+            }
+        }
 
-        public GradientTag(Color colour, float time)
+        private float _time;
+        public float Time
+        {
+            get => _time;
+            set
+            {
+                if (_time != value)
+                {
+                    _time = value;
+                    RaisePropertyChanged("Time");
+                }
+            }
+        }
+
+        public GradientTag(Color colour, float time) : base()
         {
             Colour = colour;
             Time = time;

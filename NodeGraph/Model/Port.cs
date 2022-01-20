@@ -33,6 +33,8 @@ namespace NodeGraph.Model
 
         private readonly bool _fromAttribute;
 
+        public bool IsExposable => Exposable;
+
         #endregion
 
         #region Properties

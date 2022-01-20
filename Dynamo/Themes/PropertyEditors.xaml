@@ -83,7 +83,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="editors:GradientPropertyEditor">
-                    <v:GradientView DataContext="{Binding Value}"/>
+                    <v:GradientView Style="{StaticResource GradientEditor}" DataContext="{Binding Value}"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
