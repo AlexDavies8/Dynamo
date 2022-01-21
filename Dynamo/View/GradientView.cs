@@ -67,5 +67,30 @@ namespace Dynamo.View
             }
             GradientImage = newImage;
         }
+
+        public void RemoveSelected()
+        {
+            if (Model.Tags.Count > 1 && SelectedTag != null)
+                Model.Tags.Remove(SelectedTag);
+            SelectedTag = Model.Tags[0];
+            Model.TryUpdateTags();
+        }
+
+        public void AddTag()
+        {
+            int index = Model.Tags.IndexOf(SelectedTag);
+            GradientTag next = null;
+            if (index < Model.Tags.Count - 1) // If there is tag above
+            {
+                next = Model.Tags[index + 1];
+            }
+            else if (Model.Tags.Count > 1)
+                next = Model.Tags[index - 1];
+
+            if (next == null)
+                Model.CreateTag(SelectedTag.Colour, 0f);
+            else
+                Model.CreateTag(Gradient.BlendColours(next.Colour, SelectedTag.Colour, 0.5f), (next.Time + SelectedTag.Time) * 0.5f);
+        }
     }
 }

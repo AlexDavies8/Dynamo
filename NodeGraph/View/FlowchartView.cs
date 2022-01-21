@@ -159,7 +159,6 @@ namespace NodeGraph.View
 		#region Mouse Events
 
 		private bool _isDraggingCanvas;
-		private Matrix _zoomAndPanStartMatrix;
 		private Point _prevMousePosition;
 
 		protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
@@ -170,8 +169,6 @@ namespace NodeGraph.View
 				return;
 
 			Keyboard.Focus(this);
-
-			_zoomAndPanStartMatrix = ZoomAndPan.Matrix;
 
 			Point mousePosition = e.GetPosition(this);
 			_prevMousePosition = mousePosition;
@@ -224,7 +221,6 @@ namespace NodeGraph.View
 			if (e.ChangedButton == MouseButton.Middle && e.ButtonState == MouseButtonState.Pressed)
             {
 				Keyboard.Focus(this);
-				_zoomAndPanStartMatrix = ZoomAndPan.Matrix;
 
 				if (!NodeGraphManager.IsDragging)
 				{
@@ -424,8 +420,6 @@ namespace NodeGraph.View
 			Point newZoomCentre = ZoomAndPan.Matrix.Transform(zoomCentre);
 			Point zoomDelta = new Point(mousePosition.X - newZoomCentre.X, mousePosition.Y - newZoomCentre.Y);
 
-			// TODO: Fix zoom
-
 			ZoomAndPan.StartX -= zoomDelta.X;
 			ZoomAndPan.StartY -= zoomDelta.Y;
 		}
@@ -513,8 +507,6 @@ namespace NodeGraph.View
             }
 
 			Flowchart flowchart = ViewModel.Model;
-
-			_zoomAndPanStartMatrix = ZoomAndPan.Matrix;
 
 			double width = ZoomAndPan.ViewWidth;
 			double height = ZoomAndPan.ViewHeight;

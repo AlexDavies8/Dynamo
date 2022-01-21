@@ -12,6 +12,13 @@ namespace Dynamo.View
 {
     public class GradientTagView : ContentControl
     {
+        public bool InFront
+        {
+            get => (bool)GetValue(InFrontProperty);
+            set => SetValue(InFrontProperty, value);
+        }
+        public static readonly DependencyProperty InFrontProperty = DependencyProperty.Register("InFront", typeof(bool), typeof(GradientTagView), new PropertyMetadata(false));
+
         public readonly GradientView Owner;
         public GradientTag Model;
 
@@ -44,6 +51,8 @@ namespace Dynamo.View
 
             Canvas.SetTop(this, (Container.ActualHeight - ActualHeight) * 0.5f);
             Canvas.SetLeft(this, TimeToPosition(Model.Time));
+
+            InFront = Owner.SelectedTag == Model;
         }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
@@ -83,6 +92,7 @@ namespace Dynamo.View
         private void DragTag()
         {
             Model.Time = MouseToTime(_offset);
+            Owner.Model.TryUpdateTags();
         }
 
         float MouseToTime(float offset = 0)

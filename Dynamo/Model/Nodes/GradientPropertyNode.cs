@@ -31,14 +31,14 @@ namespace Dynamo.Model
 
         public override void WriteXml(XmlWriter writer)
         {
-            //writer.WriteAttributeString("Colour", Colour.ToHex());
+            writer.WriteAttributeString("Gradient", Gradient.ToString());
 
             base.WriteXml(writer);
         }
 
         public override void ReadXml(XmlReader reader)
         {
-            //Colour = Color.ParseHex(reader.GetAttribute("Colour"));
+            Gradient = Gradient.Parse(reader.GetAttribute("Gradient"));
 
             base.ReadXml(reader);
         }

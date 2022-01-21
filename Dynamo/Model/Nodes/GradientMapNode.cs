@@ -49,14 +49,14 @@ namespace Dynamo.Model
 
         public override void WriteXml(XmlWriter writer)
         {
-            //writer.WriteAttributeString("Saturation", Saturation.ToString());
+            writer.WriteAttributeString("Gradient", Gradient.ToString());
 
             base.WriteXml(writer);
         }
 
         public override void ReadXml(XmlReader reader)
         {
-            //Saturation = float.Parse(reader.GetAttribute("Saturation"));
+            Gradient = Gradient.Parse(reader.GetAttribute("Gradient"));
 
             base.ReadXml(reader);
         }

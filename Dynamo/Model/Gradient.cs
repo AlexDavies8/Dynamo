@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -30,8 +31,16 @@ namespace Dynamo.Model
             Tags.CollectionChanged += TagsCollectionChanged;
 
             CreateTag(Color.Black, 0f);
-            CreateTag(Color.Red, 0.7f);
             CreateTag(Color.White, 1f);
+        }
+
+        public Gradient(List<GradientTag> tags) : base()
+        {
+            _tags = new ObservableCollection<GradientTag>();
+            Tags.CollectionChanged += TagsCollectionChanged;
+
+            foreach (var tag in tags)
+                Tags.Add(tag);
         }
 
         private void TagsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -62,14 +71,41 @@ namespace Dynamo.Model
             RaisePropertyChanged("Tags");
         }
 
+        public void TryUpdateTags()
+        {
+            float last = -1f;
+            foreach (var tag in Tags)
+            {
+                if (tag.Time < last)
+                {
+                    UpdateTags();
+                    return;
+                }
+                last = tag.Time;
+            }
+        }
+
+        private void UpdateTags()
+        {
+            var sorted = Tags.OrderBy(x => x.Time).ToList();
+            Tags.Clear();
+            foreach (var tag in sorted)
+                Tags.Add(tag);
+        }
+
         public void CreateTag(Color colour, float time)
         {
             var tag = new GradientTag(colour, time);
             Tags.Add(tag);
+            TryUpdateTags();
         }
 
         public Color Evaluate(float time)
         {
+            if (Tags.Count == 0) return Color.White;
+
+            if (time < Tags[0].Time)
+                return Tags[0].Colour;
             for (int i = 0; i < Tags.Count - 1; i++)
             {
                 if (Tags[i + 1].Time > time)
@@ -80,10 +116,10 @@ namespace Dynamo.Model
                     return BlendColours(Tags[i + 1].Colour, Tags[i].Colour, frac);
                 }
             }
-            return Color.Black;
+            return Tags[^1].Colour;
         }
 
-        Color BlendColours(Color colourA, Color colourB, float frac)
+        public static Color BlendColours(Color colourA, Color colourB, float frac)
         {
             var colA = colourA.ToPixel<Rgba32>();
             var colB = colourB.ToPixel<Rgba32>();
@@ -92,6 +128,21 @@ namespace Dynamo.Model
             float b = colA.B * frac + colB.B * (1f - frac);
             float a = colA.A * frac + colB.A * (1f - frac);
             return new Color(new Rgba32((byte)r, (byte)g, (byte)b, (byte)a));
+        }
+
+        public override string ToString()
+        {
+            return string.Join(",", Tags);
+        }
+
+        public static Gradient Parse(string value)
+        {
+            List<GradientTag> tags = new List<GradientTag>();
+            foreach (var tag in value.Split(','))
+            {
+                tags.Add(GradientTag.Parse(tag));
+            }
+            return new Gradient(tags);
         }
     }
 
@@ -129,6 +180,17 @@ namespace Dynamo.Model
         {
             Colour = colour;
             Time = time;
+        }
+
+        public override string ToString()
+        {
+            return $"{Time}:{Colour.ToHex()}";
+        }
+
+        public static GradientTag Parse(string value)
+        {
+            string[] args = value.Split(':');
+            return new GradientTag(Color.ParseHex(args[1]), float.Parse(args[0]));
         }
     }
 }

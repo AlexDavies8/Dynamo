@@ -132,6 +132,7 @@ namespace NodeGraph.Model
             ValueType = valueType;
             PropertyEditorType = editorType;
 
+            Exposable = exposable;
             Exposed = false;
 
             _fromAttribute = getValue != null;
