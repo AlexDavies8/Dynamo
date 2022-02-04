@@ -107,6 +107,9 @@ namespace Dynamo.Model
             writer.WriteAttributeString("Seed", Seed.ToString());
             writer.WriteAttributeString("Width", Width.ToString());
             writer.WriteAttributeString("Height", Height.ToString());
+            writer.WriteAttributeString("DensityX", DensityX.ToString());
+            writer.WriteAttributeString("DensityY", DensityY.ToString());
+            writer.WriteAttributeString("Randomness", Randomness.ToString());
 
             base.WriteXml(writer);
         }
@@ -116,6 +119,9 @@ namespace Dynamo.Model
             Seed = int.Parse(reader.GetAttribute("Seed"));
             Width = int.Parse(reader.GetAttribute("Width"));
             Height = int.Parse(reader.GetAttribute("Height"));
+            DensityX = float.Parse(reader.GetAttribute("DensityX"));
+            DensityY = float.Parse(reader.GetAttribute("DensityY"));
+            Randomness = float.Parse(reader.GetAttribute("Randomness"));
 
             base.ReadXml(reader);
         }

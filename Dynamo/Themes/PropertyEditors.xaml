@@ -58,6 +58,28 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style TargetType="editors:SavePathPropertyEditor">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="editors:SavePathPropertyEditor">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="30"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Text="{Binding Path=Value, Mode=TwoWay}" MinWidth="100"/>
+                        <Button Grid.Column="1" Margin="2 0 0 0" Content="...">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <i:CallMethodAction MethodName="BrowseForFile" TargetObject="{Binding RelativeSource={RelativeSource AncestorType={x:Type editors:SavePathPropertyEditor}}}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <Style TargetType="editors:EnumPropertyEditor">
         <Setter Property="Template">

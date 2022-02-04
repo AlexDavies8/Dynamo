@@ -3,14 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:docker="clr-namespace:WindowDocker.View;assembly=WindowDocker"
         xmlns:ctrl="clr-namespace:NodeGraph.Controls;assembly=NodeGraph"
         xmlns:local="clr-namespace:Dynamo"
         xmlns:ngv="clr-namespace:NodeGraph.View;assembly=NodeGraph"
         xmlns:v="clr-namespace:Dynamo.View"
         xmlns:pt="http://propertytools.org/wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title=" Dynamo" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -18,10 +17,9 @@
         </Grid.RowDefinitions>
         <Border BorderBrush="{StaticResource LozengeButtonColour}" BorderThickness="0 0 0 1">
             <DockPanel HorizontalAlignment="Stretch" Background="{StaticResource NodeBackgroundColour}">
-                <Button Style="{StaticResource AppbarButton}" DockPanel.Dock="Left">File</Button>
-                <Button Style="{StaticResource AppbarButton}" DockPanel.Dock="Left" Click="SaveButtonClick">Save</Button>
-                <Button Style="{StaticResource AppbarButton}" DockPanel.Dock="Left" Click="OpenButtonClick">Open</Button>
-                <Button Style="{StaticResource AppbarButton}" DockPanel.Dock="Left">Edit</Button>
+                <Menu Style="{StaticResource AppbarMenu}" DockPanel.Dock="Left" Name="FileMenu" Height="25"></Menu>
+                <Menu Style="{StaticResource AppbarMenu}" DockPanel.Dock="Left" Name="EditMenu" Height="25"></Menu>
+                <Menu Style="{StaticResource AppbarMenu}" DockPanel.Dock="Left" Name="AddMenu" Height="25"></Menu>
                 <CheckBox DockPanel.Dock="Right" HorizontalAlignment="Right" IsChecked="{Binding Path=AutoExecute, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}" VerticalAlignment="Center" Margin="6" Content="Auto Execute" Foreground="{StaticResource TextStrongColour}"/>
                 <Button Style="{StaticResource AppbarButton}" DockPanel.Dock="Right" HorizontalAlignment="Right" Click="Button_Click">Execute</Button>
             </DockPanel>

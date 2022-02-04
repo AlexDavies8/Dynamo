@@ -14,12 +14,9 @@ namespace NodeGraph.Model
 {
     public class Node : ModelBase
     {
-
         #region Fields
 
         public readonly Flowchart Owner;
-        protected FieldInfo _fieldInfo;
-        protected PropertyInfo _propertyInfo;
 
         #endregion
 

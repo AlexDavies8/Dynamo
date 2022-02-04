@@ -29,7 +29,7 @@ namespace NodeGraph.View
 
         #region Fields
 
-        private EditableTextBlock _partHeader; // TODO: Implement Editable Text Block
+        private EditableTextBlock _partHeader;
         private DispatcherTimer _clickTimer = new DispatcherTimer();
         private int _clickCount = 0;
 

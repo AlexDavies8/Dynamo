@@ -1,225 +1,245 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Comment CommentText="Example Nodes">
+    <Position X="4.934" Y="9.435" Height="0.291" Width="1.215" />
+  </Comment>
+  <Comment CommentText="Sticky Note Node doesn't need to be executed, so it inherits from Node instead">
+    <Position X="2.67" Y="4.673" Height="0.75" Width="1.7" />
+  </Comment>
+  <Comment CommentText="Node from NodeGraph library">
+    <Position X="2.382" Y="0.555" Height="0.56" Width="1.595" />
+  </Comment>
+  <Comment CommentText="PropertyEditors inherit from NodeGraph's PropertyEditor class">
+    <Position X="9.844" Y="1.222" Height="0.75" Width="1.7" />
+  </Comment>
+  <Comment CommentText="Custom Gradient Class">
+    <Position X="21.27" Y="9.087" Height="0.307" Width="1.7" />
+  </Comment>
+  <Comment CommentText="Static Classes">
+    <Position X="17.202" Y="6.004" Height="0.347" Width="0.983" />
+  </Comment>
+  <Comment CommentText="WPF Application/Window Classes">
+    <Position X="10.962" Y="9.884" Height="0.477" Width="1.7" />
+  </Comment>
+  <Comment CommentText="IValueConverter">
+    <Position X="15.75" Y="12" Height="0.327" Width="1.114" />
+  </Comment>
   <Class Name="Dynamo.Controls.PropertyEditors.ColourPropertyEditor">
-    <Position X="7.5" Y="11.75" Width="1.5" />
+    <Position X="11.25" Y="2.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAIAAAAgQAAAAAAAAAAAAAAAgAQAAAAA=</HashCode>
       <FileName>Controls\PropertyEditors\ColourPropertyEditor.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Dynamo.Controls.PropertyEditors.EnumPropertyEditor">
-    <Position X="12" Y="11.75" Width="1.5" />
+    <Position X="15" Y="2.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAIAAAAgQAAAAAAAAAAAAAAAgAAEAAAA=</HashCode>
       <FileName>Controls\PropertyEditors\EnumPropertyEditor.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Dynamo.Controls.PropertyEditors.FloatPropertyEditor">
-    <Position X="5.25" Y="11.75" Width="1.5" />
+    <Position X="9.25" Y="2.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAIAAAAgQAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
       <FileName>Controls\PropertyEditors\FloatPropertyEditor.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Dynamo.Controls.PropertyEditors.GradientPropertyEditor">
-    <Position X="14.25" Y="11.75" Width="1.5" />
+    <Position X="17" Y="2.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAIAAAAgQAAAAAAAAAAAAAAAgAQAAAAA=</HashCode>
       <FileName>Controls\PropertyEditors\GradientPropertyEditor.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Dynamo.Controls.PropertyEditors.IntPropertyEditor">
-    <Position X="9.75" Y="11.75" Width="1.5" />
+    <Position X="13.25" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAIAAAAgQAAAAAAAAAAAAAAAgAQAAAAA=</HashCode>
       <FileName>Controls\PropertyEditors\IntPropertyEditor.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Dynamo.Controls.PropertyEditors.OpenPathPropertyEditor">
-    <Position X="0.75" Y="11.75" Width="1.5" />
+    <Position X="5" Y="2.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAACAIAAAAgQAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
       <FileName>Controls\PropertyEditors\OpenPathPropertyEditor.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Dynamo.Controls.PropertyEditors.StringPropertyEditor">
-    <Position X="3" Y="11.75" Width="1.5" />
+    <Position X="7.25" Y="2.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAIAAAAgQAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
       <FileName>Controls\PropertyEditors\StringPropertyEditor.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Dynamo.Controls.SharpImage">
-    <Position X="69.75" Y="6.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAEAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Controls\SharpImage.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Dynamo.Converters.ColourConverter" BaseTypeListCollapsed="true">
-    <Position X="71.5" Y="9.75" Width="1.5" />
+  <Class Name="Dynamo.Converters.ColourConverter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17" Y="12.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Converters\ColourConverter.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="Dynamo.Converters.DoubleToStringConverter" BaseTypeListCollapsed="true">
-    <Position X="71.5" Y="11.25" Width="1.5" />
+  <Class Name="Dynamo.Converters.DoubleToStringConverter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.5" Y="13.25" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Converters\DoubleToStringConverter.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="Dynamo.Converters.EnumToStringConverter" BaseTypeListCollapsed="true">
-    <Position X="71.5" Y="12.75" Width="1.5" />
+  <Class Name="Dynamo.Converters.EnumToStringConverter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.75" Y="14" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAACAgAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
       <FileName>Converters\EnumToStringConverter.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="Dynamo.Converters.FloatToStringConverter" BaseTypeListCollapsed="true">
-    <Position X="71.5" Y="8.25" Width="1.5" />
+  <Class Name="Dynamo.Converters.FloatToStringConverter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14.5" Y="14" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Converters\FloatToStringConverter.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="Dynamo.Converters.ImageSharpToWpfConverter" BaseTypeListCollapsed="true">
-    <Position X="71.5" Y="6.75" Width="1.5" />
+  <Class Name="Dynamo.Converters.ImageSharpToWpfConverter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14.5" Y="12.5" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Converters\ImageSharpToWpfConverter.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="Dynamo.Converters.IntToStringConverter" BaseTypeListCollapsed="true">
-    <Position X="71.5" Y="5.25" Width="1.5" />
+  <Class Name="Dynamo.Converters.IntToStringConverter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14.5" Y="13.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Converters\IntToStringConverter.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="Dynamo.Model.BokehBlurNode">
-    <Position X="44.75" Y="5.25" Width="1.5" />
+  <Class Name="Dynamo.Model.BokehBlurNode" Collapsed="true">
+    <Position X="10.75" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAIAAAAAAAAAAQAAAAAAAQCEAAAAAAAAAAAgAABBAA=</HashCode>
       <FileName>Model\Nodes\BokehBlurNode.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Dynamo.Model.BoxBlurNode">
-    <Position X="54.25" Y="5.25" Width="1.5" />
+  <Class Name="Dynamo.Model.BoxBlurNode" Collapsed="true">
+    <Position X="13.25" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAIAAAAAAAAAAQAAAAAAAQCEAAAAAAAAAAAgAAAAAA=</HashCode>
       <FileName>Model\Nodes\BoxBlurNode.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Dynamo.Model.ColourNode">
-    <Position X="3" Y="5.25" Width="1.5" />
+  <Class Name="Dynamo.Model.ColourNode" Collapsed="true">
+    <Position X="2" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAABAAAAAQAAAAAAEQCAAAAAAAAAAAAgBAAAAA=</HashCode>
       <FileName>Model\Nodes\ColourNode.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Dynamo.Model.ColourPropertyNode">
-    <Position X="12.25" Y="5.25" Width="1.75" />
+  <Class Name="Dynamo.Model.ColourPropertyNode" Collapsed="true">
+    <Position X="9.25" Y="6.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAAAAAAAACAAAAAAAAAAAggBAAAAA=</HashCode>
       <FileName>Model\Nodes\ColourPropertyNode.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Dynamo.Model.ContrastNode">
-    <Position X="19.25" Y="5.25" Width="1.5" />
+  <Class Name="Dynamo.Model.ContrastNode" Collapsed="true">
+    <Position X="5.5" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAAAAAAAQCEAAAAAAAAAAAgAgAAAA=</HashCode>
       <FileName>Model\Nodes\ContrastNode.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Dynamo.Model.ExecutableNode">
-    <Position X="5.25" Y="0.75" Width="2" />
+    <Position X="0.5" Y="2" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAACAACAgAAAAQIAAAAwAACACAAAAgAAAEAgAAAAAA=</HashCode>
       <FileName>Model\Nodes\ExecutableNode.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Dynamo.Model.FloatPropertyNode">
-    <Position X="30.75" Y="5.25" Width="1.75" />
+  <Class Name="Dynamo.Model.FloatPropertyNode" Collapsed="true">
+    <Position X="5.75" Y="8.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAAEAAAAACAAAAAAAAAAAggAAAAAA=</HashCode>
       <FileName>Model\Nodes\FloatPropertyNode.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Dynamo.Model.GaussianBlurNode">
-    <Position X="37.75" Y="5.25" Width="1.75" />
+  <Class Name="Dynamo.Model.GaussianBlurNode" Collapsed="true">
+    <Position X="7.25" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAIAAAAAAAAAAQAAAAAAAQCEAAAAAAAAAAAgAAAAAA=</HashCode>
       <FileName>Model\Nodes\GaussianBlurNode.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Dynamo.Model.GradientMapNode">
-    <Position X="47" Y="5.25" Width="1.75" />
+  <Class Name="Dynamo.Model.GradientMapNode" Collapsed="true">
+    <Position X="11.25" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAABAAAQAAAAAAAQCEAAAAAAAAAAAgAAAAAA=</HashCode>
       <FileName>Model\Nodes\GradientMapNode.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Dynamo.Model.GradientPropertyNode">
-    <Position X="56.5" Y="5.25" Width="2" />
+  <Class Name="Dynamo.Model.GradientPropertyNode" Collapsed="true">
+    <Position X="13" Y="6.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAABAAAQAAAAAAAACAAAAAAAAAAAggAAAAAA=</HashCode>
       <FileName>Model\Nodes\GradientPropertyNode.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Dynamo.Model.HueShiftNode">
-    <Position X="5.25" Y="5.25" Width="1.5" />
+  <Class Name="Dynamo.Model.HueShiftNode" Collapsed="true">
+    <Position X="3.75" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAwAAAAAAAQCEAAAAAAAAAAAgAAAAAA=</HashCode>
       <FileName>Model\Nodes\HueShiftNode.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Dynamo.Model.ImageDataNode">
-    <Position X="14.75" Y="5.25" Width="1.5" />
+  <Class Name="Dynamo.Model.ImageDataNode" Collapsed="true">
+    <Position X="2" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAABAAAAAQAAAAAAEAAEAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Model\Nodes\ImageDataNode.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Dynamo.Model.ImageNode">
-    <Position X="21.5" Y="5.25" Width="1.5" />
+  <Class Name="Dynamo.Model.ImageNode" Collapsed="true">
+    <Position X="7.25" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAYAAAAAAAQCAAAAAAAAAAAAgAAAAAA=</HashCode>
       <FileName>Model\Nodes\ImageNode.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Dynamo.Model.KodachromeNode">
-    <Position X="26" Y="5.25" Width="1.75" />
+  <Class Name="Dynamo.Model.KodachromeNode" Collapsed="true">
+    <Position X="2" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAAAAAAAQAEAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Model\Nodes\KodachromeNode.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Dynamo.Model.LightnessNode">
-    <Position X="33.25" Y="5.25" Width="1.5" />
+  <Class Name="Dynamo.Model.LightnessNode" Collapsed="true">
+    <Position X="7.75" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAAAAAACQCEAAAAAAAAAAAgAAAAAA=</HashCode>
       <FileName>Model\Nodes\LightnessNode.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Dynamo.Model.LomagraphNode">
-    <Position X="40.25" Y="5.25" Width="1.5" />
+  <Class Name="Dynamo.Model.LomagraphNode" Collapsed="true">
+    <Position X="11.25" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAAAAAAAQAEAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Model\Nodes\LomagraphNode.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Dynamo.Model.MathNode">
-    <Position X="49.5" Y="5.25" Width="1.5" />
+    <Position X="5.75" Y="10.25" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
     <NestedTypes>
-      <Enum Name="Dynamo.Model.MathNode.ScalarOperation" Collapsed="true">
+      <Enum Name="Dynamo.Model.MathNode.ScalarOperation">
         <TypeIdentifier>
           <NewMemberFileName>Model\Nodes\MathNode.cs</NewMemberFileName>
         </TypeIdentifier>
@@ -230,85 +250,85 @@
       <FileName>Model\Nodes\MathNode.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Dynamo.Model.OilPaintNode">
-    <Position X="59.25" Y="5.25" Width="1.5" />
+  <Class Name="Dynamo.Model.OilPaintNode" Collapsed="true">
+    <Position X="12.5" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AABAAAAAAAAAAAQAAAAAAAQCEAAAAAABAAAAgAAAAAA=</HashCode>
       <FileName>Model\Nodes\OilPaintNode.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Dynamo.Model.OpacityNode">
-    <Position X="7.5" Y="5.25" Width="1.5" />
+  <Class Name="Dynamo.Model.OpacityNode" Collapsed="true">
+    <Position X="5.5" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAEAAAAAAAAAQAAAAAAAQCEAAAAAAAAAAAgAAAAAA=</HashCode>
       <FileName>Model\Nodes\OpacityNode.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Dynamo.Model.PolaroidNode">
-    <Position X="17" Y="5.25" Width="1.5" />
+  <Class Name="Dynamo.Model.PolaroidNode" Collapsed="true">
+    <Position X="3.75" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAAAAAAAQAEAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Model\Nodes\PolaroidNode.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Dynamo.Model.SaturationNode">
-    <Position X="23.75" Y="5.25" Width="1.5" />
+  <Class Name="Dynamo.Model.SaturationNode" Collapsed="true">
+    <Position X="9" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAQAAAAAAAAAAQAAAAAAAQCEAAAAAAAAAAAgAAAAAA=</HashCode>
       <FileName>Model\Nodes\SaturationNode.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Dynamo.Model.SaveImageNode">
-    <Position X="28.5" Y="5.25" Width="1.5" />
+  <Class Name="Dynamo.Model.SaveImageNode" Collapsed="true">
+    <Position X="4" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAYAAAAAAAACEAAAAAAAAAAAgAAAAAA=</HashCode>
       <FileName>Model\Nodes\SaveImageNode.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Dynamo.Model.SepiaNode">
-    <Position X="35.5" Y="5.25" Width="1.5" />
+  <Class Name="Dynamo.Model.SepiaNode" Collapsed="true">
+    <Position X="9.5" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAAAAAAAQAEAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Model\Nodes\SepiaNode.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Dynamo.Model.StickyNode">
-    <Position X="3" Y="2.25" Width="1.5" />
+    <Position X="2.75" Y="2" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAACAAAAAAAIAAAAiAAAAAA=</HashCode>
       <FileName>Model\Nodes\StickyNode.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Dynamo.Model.StringPropertyNode">
-    <Position X="51.75" Y="5.25" Width="1.75" />
+    <Position X="7.75" Y="10.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAAAAAAAACAAAAAAAAAAAgiAAAAAA=</HashCode>
       <FileName>Model\Nodes\StringPropertyNode.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Dynamo.Model.ValueNoiseNode">
-    <Position X="61.5" Y="5.25" Width="1.5" />
+  <Class Name="Dynamo.Model.ValueNoiseNode" Collapsed="true">
+    <Position X="14.25" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAABAAAAAQAAEAAAEQCAAAAAAAAAAAAgAAAAAA=</HashCode>
       <FileName>Model\Nodes\ValueNoiseNode.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Dynamo.Model.Gradient">
-    <Position X="0.5" Y="18" Width="2" />
+    <Position X="21.25" Y="9.75" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAEAAAAAAEAAEAAAgAAAACAAEAAAAAAAAAAACA=</HashCode>
+      <HashCode>AAAgAAAEQAAAAAEEAEAAAgAAABCAAEAAAAAAAAAAACA=</HashCode>
       <FileName>Model\Gradient.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Dynamo.Model.GradientTag">
-    <Position X="3.25" Y="18" Width="1.5" />
+    <Position X="21.25" Y="14" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAAAAAgAAAAAAAABAAAQA=</HashCode>
+      <HashCode>AAAgAAAAAAAgAAAEAAAAAAAAAAAAgAAAAAAAABAAAQA=</HashCode>
       <FileName>Model\Gradient.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Dynamo.Model.ModelBase">
-    <Position X="4.25" Y="15.5" Width="2" />
+    <Position X="19.75" Y="0.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAACAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Model\ModelBase.cs</FileName>
@@ -316,91 +336,104 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Dynamo.Model.PropertyPanel">
-    <Position X="5.5" Y="18" Width="1.5" />
+    <Position X="21.25" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAgAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
       <FileName>Model\PropertyPanel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Dynamo.Model.ViewportPanel">
-    <Position X="7.75" Y="18" Width="2" />
+    <Position X="21" Y="2.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAQiAAAAACAAAAAgAAAAAAIAAgAAAAAAAgAAAAA=</HashCode>
       <FileName>Model\ViewportPanel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Dynamo.Model.Nodes.OverlayNode">
-    <Position X="42.5" Y="5.25" Width="1.5" />
+    <Position X="4" Y="10.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AQAAEAAABAAAAEQAAAAAAAQCAAAAADAAAAAAgAAAAAA=</HashCode>
       <FileName>Model\Nodes\OverlayNode.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Dynamo.Model.Nodes.PositionTypeExtensions">
-    <Position X="68" Y="8.25" Width="1.5" />
+    <Position X="16.25" Y="9.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAACAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
       <FileName>Model\Nodes\PositionType.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Dynamo.Model.Nodes.ResizeImageNode">
-    <Position X="9.75" Y="5.25" Width="1.75" />
+    <Position X="2" Y="10.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAgAAAAAAAAEQAAAAIAAACEAAAAACAAAAAgAAAAEA=</HashCode>
       <FileName>Model\Nodes\ResizeImageNode.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Dynamo.View.GradientTagsContainer">
-    <Position X="64" Y="11.5" Width="1.5" />
+    <Position X="27.25" Y="10" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAADAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAQAAAA=</HashCode>
       <FileName>View\GradientTagsContainer.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Owner" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="Dynamo.View.GradientTagView">
-    <Position X="64" Y="7.25" Width="1.5" />
+    <Position X="24" Y="13.5" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>CAAAAASIAgAAAAAAIAAAAAAEABEAAAIBAAgBAAAAAAQ=</HashCode>
+      <HashCode>CAAAAISIAgAAAAAAIAAAAAQEABEAAAIBAAgBAAAAAAQ=</HashCode>
       <FileName>View\GradientTagView.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="Model" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="Dynamo.View.GradientView">
-    <Position X="65.75" Y="7.5" Width="1.5" />
+    <Position X="24" Y="9.75" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>BAAAAAAAAAAAAEAAAABAAAAAAAEAAgAAAAgAAAACAAQ=</HashCode>
+      <HashCode>BAAAAAAAAAAAAEEAAABAAAAAAAEAAgIAAAgAAAACAAQ=</HashCode>
       <FileName>View\GradientView.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="Model" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="Dynamo.View.PropertyPanelPropertiesContainer">
-    <Position X="73.75" Y="6.25" Width="1.5" />
+    <Position X="30.25" Y="6.25" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAhAAAAAAAAAAAAAAEAAAAAAAAAgAQAEAA=</HashCode>
       <FileName>View\PropertyPanelPropertiesContainer.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Dynamo.View.PropertyPanelView">
-    <Position X="73.75" Y="9.25" Width="1.5" />
+    <Position X="27.25" Y="6.25" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAEAAAAEAAAAAEAAAAIAEAAAAAAAAAAAAAIAAAA=</HashCode>
       <FileName>View\PropertyPanelView.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Dynamo.View.ViewportPanelView">
-    <Position X="75.5" Y="6.25" Width="1.5" />
+    <Position X="27.25" Y="3.25" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAEAAAAEAAAAAEAAAAIAEAAAAAAAAAAAAAIAAAA=</HashCode>
       <FileName>View\ViewportPanelView.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Dynamo.ViewModel.PropertyPanelViewModel">
-    <Position X="14" Y="18.25" Width="2" />
+    <Position X="24" Y="6.25" Width="2" />
     <TypeIdentifier>
       <HashCode>AgAAAAAACAAAAAAAAgAQAAAAAIABAAAAAAgAAAAAAIA=</HashCode>
       <FileName>ViewModel\PropertyPanelViewModel.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_model" />
+      <Field Name="View" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="Dynamo.ViewModel.ViewModelBase">
-    <Position X="12.75" Y="15.5" Width="2" />
+    <Position X="22.75" Y="0.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAACAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAIA=</HashCode>
       <FileName>ViewModel\ViewModelBase.cs</FileName>
@@ -408,35 +441,39 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Dynamo.ViewModel.ViewportPanelViewModel">
-    <Position X="11.25" Y="18.25" Width="2" />
+    <Position X="24" Y="3.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAABAAAAAAgAAAAAAIA=</HashCode>
       <FileName>ViewModel\ViewportPanelViewModel.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_model" />
+      <Field Name="View" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="Dynamo.App" Collapsed="true">
-    <Position X="64" Y="0.5" Width="1.5" />
+    <Position X="11" Y="10.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>App.xaml.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Dynamo.ExecutionManager">
-    <Position X="74" Y="1" Width="1.5" />
+    <Position X="16.25" Y="6.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAgAQACAABAABAAQwAAAAAAEAAAAAAIAAAAA=</HashCode>
       <FileName>ExecutionManager.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Dynamo.GlobalState">
-    <Position X="72.25" Y="1" Width="1.5" />
+    <Position X="18.5" Y="6.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAgAAAAAAAAQAAAAAIAAAAAQAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>GlobalState.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Dynamo.MainWindow" BaseTypeListCollapsed="true">
-    <Position X="64" Y="1.5" Width="1.5" />
+    <Position X="11" Y="11.5" Width="2.75" />
     <NestedTypes>
       <Class Name="Dynamo.MainWindow.PathTreeItem" Collapsed="true">
         <TypeIdentifier>
@@ -450,16 +487,16 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="NodeGraph.Model.PropertyEditor">
-    <Position X="7.5" Y="9.5" Width="1.5" />
+  <Class Name="NodeGraph.Model.PropertyEditor" Collapsed="true">
+    <Position X="11.75" Y="1.25" Width="1.5" />
     <TypeIdentifier />
   </Class>
-  <Class Name="NodeGraph.Model.Node">
-    <Position X="0.5" Y="1.25" Width="1.5" />
+  <Class Name="NodeGraph.Model.Node" Collapsed="true">
+    <Position X="0.75" Y="0.5" Width="1.5" />
     <TypeIdentifier />
   </Class>
   <Enum Name="Dynamo.Model.Nodes.PositionType">
-    <Position X="68" Y="6.75" Width="1.5" />
+    <Position X="18.5" Y="10" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAQAAABAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Model\Nodes\PositionType.cs</FileName>

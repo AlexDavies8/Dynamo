@@ -173,7 +173,11 @@ namespace NodeGraph.View
 			Point mousePosition = e.GetPosition(this);
 			_prevMousePosition = mousePosition;
 
-			if (!NodeGraphManager.IsNodeDragged && !NodeGraphManager.IsConnecting && !NodeGraphManager.IsSelecting)
+			if (Keyboard.IsKeyDown(Key.LeftAlt))
+            {
+				HandleStartDrag();
+            }
+			else if (!NodeGraphManager.IsNodeDragged && !NodeGraphManager.IsConnecting && !NodeGraphManager.IsSelecting)
             {
 				NodeGraphManager.BeginSelection(ViewModel.Model, ZoomAndPan.MatrixInv.Transform(mousePosition));
 				ViewModel.SelectionStartX = mousePosition.X;
@@ -202,6 +206,8 @@ namespace NodeGraph.View
 				mousePosition.Y - _prevMousePosition.Y
 			);
 
+			HandleEndDrag();
+
 			UpdateDragging(mousePosition, delta);
 
 			NodeGraphManager.EndConnection();
@@ -218,17 +224,9 @@ namespace NodeGraph.View
 			if (ViewModel == null)
 				return;
 
-			if (e.ChangedButton == MouseButton.Middle && e.ButtonState == MouseButtonState.Pressed)
+			if ((e.ChangedButton == MouseButton.Middle && e.ButtonState == MouseButtonState.Pressed))
             {
-				Keyboard.Focus(this);
-
-				if (!NodeGraphManager.IsDragging)
-				{
-					_isDraggingCanvas = true;
-					Mouse.Capture(this, CaptureMode.SubTree);
-
-					// TODO: Implement History
-				}
+				HandleStartDrag();
             }
 
 		}
@@ -242,17 +240,35 @@ namespace NodeGraph.View
 
 			if (e.ChangedButton == MouseButton.Middle && e.ButtonState == MouseButtonState.Released)
 			{
-				NodeGraphManager.EndConnection();
-				NodeGraphManager.EndDragNode();
-				NodeGraphManager.EndDragging();
+				HandleEndDrag();
+			}
+		}
 
-				if (_isDraggingCanvas)
-				{
-					_isDraggingCanvas = false;
-					Mouse.Capture(null);
+		private void HandleStartDrag()
+		{
+			Keyboard.Focus(this);
 
-					// TODO: Implement History
-				}
+			if (!NodeGraphManager.IsDragging)
+			{
+				_isDraggingCanvas = true;
+				Mouse.Capture(this, CaptureMode.SubTree);
+
+				// TODO: Implement History
+			}
+		}
+
+		private void HandleEndDrag()
+        {
+			NodeGraphManager.EndConnection();
+			NodeGraphManager.EndDragNode();
+			NodeGraphManager.EndDragging();
+
+			if (_isDraggingCanvas)
+			{
+				_isDraggingCanvas = false;
+				Mouse.Capture(null);
+
+				// TODO: Implement History
 			}
 		}
 
