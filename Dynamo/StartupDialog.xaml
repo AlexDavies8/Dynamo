@@ -1,0 +1,45 @@
+﻿<Window x:Class="Dynamo.StartupDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Dynamo"
+        mc:Ignorable="d"
+        Title="StartupDialog" Height="300" Width="500" ShowInTaskbar="False" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Topmost="True">
+    <Grid>
+        <Border CornerRadius="4">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0" Source="/alps-canvas.png" Stretch="UniformToFill"/>
+                <Rectangle Grid.Column="0" Height="160">
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
+                            <LinearGradientBrush.GradientStops>
+                                <GradientStop Color="#00212121" Offset="0"/>
+                                <GradientStop Color="#BB212121" Offset="0.4"/>
+                                <GradientStop Color="#BB212121" Offset="0.6"/>
+                                <GradientStop Color="#00212121" Offset="1"/>
+                            </LinearGradientBrush.GradientStops>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <TextBlock Grid.Column="0" Foreground="{StaticResource ForegroundStrongColour}" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rubik Medium">Dynamo</TextBlock>
+                <Grid Grid.Column="1" Background="{StaticResource BackgroundColour}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Button Grid.Row="0" Style="{StaticResource AppbarButton}" Click="NewProject">New Project</Button>
+                    <Button Grid.Row="1" Style="{StaticResource AppbarButton}" Click="OpenProject">Open Project</Button>
+                    <Button Grid.Row="3" Style="{StaticResource AppbarButton}" Click="ExitProgram">Exit</Button>
+                </Grid>
+            </Grid>
+        </Border>
+
+    </Grid>
+</Window>

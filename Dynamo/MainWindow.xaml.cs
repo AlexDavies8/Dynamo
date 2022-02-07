@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using Microsoft.Win32;
 using System.Linq;
+using System.Windows.Media.Effects;
 
 namespace Dynamo
 {
@@ -83,6 +84,29 @@ namespace Dynamo
 
             ExecutionManager.OnPostExecute += () => viewportPanel.RaisePropertyChanged("DisplayedNode");
             ExecutionManager.OnPostExecute += () => viewportPanel2.RaisePropertyChanged("DisplayedNode");
+
+            var startupWindow = new StartupDialog()
+            {
+                Owner = this
+            };
+
+            Opacity = 0.7;
+            Effect = new BlurEffect();
+
+            startupWindow.Closed += (sender, e) =>
+            {
+                Opacity = 1;
+                Effect = null;
+            };
+            startupWindow.NewProjectCallback += () => startupWindow.Close();
+            startupWindow.OpenProjectCallback += () =>
+            {
+                OpenButtonClick(null, null);
+                // Check if project actually opened
+                startupWindow.Close();
+            };
+
+            startupWindow.Show();
         }
 
         private ContextMenu BuildFlowchartContextMenu(BuildContextMenuArgs args)

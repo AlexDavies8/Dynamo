@@ -10,7 +10,7 @@
         xmlns:v="clr-namespace:Dynamo.View"
         xmlns:pt="http://propertytools.org/wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="900" Width="1600">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
