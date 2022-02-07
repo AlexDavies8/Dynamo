@@ -4,6 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -16,7 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="alps-canvas.png" />
+    <Content Include="icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,13 +28,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NodeGraph\NodeGraph.csproj" />
-    <ProjectReference Include="..\WindowDocker\WindowDocker.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="alps-canvas.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
   </ItemGroup>
 
 </Project>

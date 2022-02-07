@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows;
-using WindowDocker.Model;
 using Dynamo.Model;
 using System.Windows.Media;
 using NodeGraph;
@@ -54,6 +53,8 @@ namespace Dynamo
             set => ExecutionManager.AutoExecute = value;
         }
 
+        private string _projectPath;
+
         public MainWindow()
         {
             // TODO: Move to App.xaml.cs
@@ -82,6 +83,9 @@ namespace Dynamo
             ViewModel.ViewportPanelViewModel viewportPanelViewModel2 = new ViewModel.ViewportPanelViewModel(viewportPanel2);
             ViewportPanelViewModel2 = viewportPanelViewModel2;
 
+            BuidFileContextMenu();
+            BuildEditContextMenu();
+
             ExecutionManager.OnPostExecute += () => viewportPanel.RaisePropertyChanged("DisplayedNode");
             ExecutionManager.OnPostExecute += () => viewportPanel2.RaisePropertyChanged("DisplayedNode");
 
@@ -107,6 +111,54 @@ namespace Dynamo
             };
 
             startupWindow.Show();
+        }
+
+        private void BuidFileContextMenu()
+        {
+            MenuItem root = new MenuItem() { Header = "File" };
+
+            MenuItem newItem = new MenuItem() { Header = "New Project" };
+            newItem.Click += (sender, e) => NewFile();
+            root.Items.Add(newItem);
+
+            root.Items.Add(new Separator());
+
+            MenuItem openItem = new MenuItem() { Header = "Open Project"};
+            openItem.Click += (sender, e) => OpenFile();
+            root.Items.Add(openItem);
+
+            root.Items.Add(new Separator());
+
+            MenuItem saveItem = new MenuItem() { Header = "Save Project" };
+            saveItem.Click += (sender, e) => SaveFile(false);
+            root.Items.Add(saveItem);
+
+            MenuItem saveAsItem = new MenuItem() { Header = "Save Project As" };
+            saveAsItem.Click += (sender, e) => SaveFile(true);
+            root.Items.Add(saveAsItem);
+
+            root.Items.Add(new Separator());
+
+            MenuItem quitItem = new MenuItem() { Header = "Quit" };
+            quitItem.Click += (sender, e) => Close();
+            root.Items.Add(quitItem);
+
+            FileMenu.Items.Add(root);
+        }
+
+        private void BuildEditContextMenu()
+        {
+            MenuItem root = new MenuItem() { Header = "Edit" };
+
+            MenuItem openItem = new MenuItem() { Header = "Select All" };
+            openItem.Click += (sender, e) => NodeGraphManager.SelectAllNodes(FlowchartViewModel.Model);
+            root.Items.Add(openItem);
+
+            MenuItem saveItem = new MenuItem() { Header = "Deselect" };
+            saveItem.Click += (sender, e) => NodeGraphManager.DeselectAllNodes(FlowchartViewModel.Model);
+            root.Items.Add(saveItem);
+
+            EditMenu.Items.Add(root);
         }
 
         private ContextMenu BuildFlowchartContextMenu(BuildContextMenuArgs args)
@@ -209,22 +261,39 @@ namespace Dynamo
             ExecutionManager.ResolveDirtyNodes();
         }
 
-        private void SaveButtonClick(object sender, RoutedEventArgs e)
+        private void SaveFile(bool saveAs)
         {
+            if (!saveAs && _projectPath != null)
+            {
+                if (System.IO.Directory.Exists(System.IO.Path.GetDirectoryName(_projectPath)))
+                {
+                    NodeGraphManager.Serialize(_projectPath);
+                    Title = $" Dynamo ({System.IO.Path.GetFileNameWithoutExtension(_projectPath)})";
+                    return;
+                }
+            }
+
             SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.AddExtension = true;
+            saveFileDialog.Filter = "Dynamo Project (*.dynamo)|*.dynamo|All files (*.*)|*.*";
+            saveFileDialog.RestoreDirectory = true;
             if (saveFileDialog.ShowDialog() == true)
             {
                 var path = saveFileDialog.FileName;
                 if (System.IO.Directory.Exists(System.IO.Path.GetDirectoryName(path)))
                 {
                     NodeGraphManager.Serialize(path);
+                    Title = $" Dynamo ({System.IO.Path.GetFileNameWithoutExtension(path)})";
+                    _projectPath = path;
                 }
             }
         }
 
-        private void OpenButtonClick(object sender, RoutedEventArgs e)
+        private void OpenFile()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Dynamo Project (*.dynamo)|*.dynamo|All files (*.*)|*.*";
+            openFileDialog.RestoreDirectory = true;
             if (openFileDialog.ShowDialog() == true)
             {
                 var path = openFileDialog.FileName;
@@ -239,8 +308,26 @@ namespace Dynamo
                     ExecutionManager.ResolveDirtyNodes();
 
                     ExecutionManager.AutoExecute = temp;
+
+                    Title = $" Dynamo ({System.IO.Path.GetFileNameWithoutExtension(path)})";
+
+                    _projectPath = path;
                 }
             }
+        }
+
+        private void NewFile()
+        {
+            bool temp = ExecutionManager.AutoExecute;
+            ExecutionManager.AutoExecute = false;
+
+            NodeGraphManager.DestroyFlowchart(FlowchartViewModel.Model.Guid);
+
+            ExecutionManager.ResolveDirtyNodes();
+
+            ExecutionManager.AutoExecute = temp;
+
+            Title = $" Dynamo (Unnamed Project)";
         }
     }
 }

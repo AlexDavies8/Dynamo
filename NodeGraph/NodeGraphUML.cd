@@ -1,0 +1,265 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Comment CommentText="Models">
+    <Position X="6.289" Y="2.976" Height="0.32" Width="0.7" />
+  </Comment>
+  <Comment CommentText="ViewModels">
+    <Position X="8.941" Y="2.695" Height="0.366" Width="0.932" />
+  </Comment>
+  <Comment CommentText="Views">
+    <Position X="10.878" Y="0.942" Height="0.397" Width="0.7" />
+  </Comment>
+  <Class Name="NodeGraph.Model.Connector">
+    <Position X="6" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAQAAEAAAQCUAABAAAAAAAAggAAAAA=</HashCode>
+      <FileName>Model\Connector.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="Owner" />
+      <Property Name="ViewModel" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="NodeGraph.Model.Flowchart">
+    <Position X="6" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgABAAAAAAAAEQAAAAAAACEAAAAAAAAAAAgACAAAA=</HashCode>
+      <FileName>Model\Flowchart.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ViewModel" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="NodeGraph.Model.ModelBase">
+    <Position X="4.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAACgABABAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Model\ModelBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="NodeGraph.Model.Node">
+    <Position X="5.5" Y="10.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>BAAIAgiIABQAFEAUAAAAAAACECAgAAABAAAAwAAIYEA=</HashCode>
+      <FileName>Model\Node.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="Owner" />
+      <Property Name="ViewModel" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="NodeGraph.Model.NodeAttribute" Collapsed="true">
+    <Position X="18.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\NodeAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodeGraph.Model.OverrideStyleAttribute" Collapsed="true">
+    <Position X="18.25" Y="2.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Model\OverrideStyleAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodeGraph.Model.Port">
+    <Position X="5.25" Y="17" Width="2.25" />
+    <NestedTypes>
+      <Delegate Name="NodeGraph.Model.Port.PortValueChangedDelegate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Model\Port.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>ABAAIgiAIAQAAAEUAIAAQAQCMAAAAAgAAAAggACAkAA=</HashCode>
+      <FileName>Model\Port.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="Owner" />
+      <Property Name="ViewModel" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="NodeGraph.Model.PortAttribute" Collapsed="true">
+    <Position X="18.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAQAAkAA=</HashCode>
+      <FileName>Model\PortAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodeGraph.Model.PropertyEditor">
+    <Position X="18.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\PropertyEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodeGraph.View.ConnectorView">
+    <Position X="11.75" Y="9" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAIAAAgEAAEAEAAAAABAAAAAAA=</HashCode>
+      <FileName>View\ConnectorView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ViewModel" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="NodeGraph.View.ConnectorViewsContainer">
+    <Position X="15" Y="9.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>View\ConnectorViewsContainer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodeGraph.View.FlowchartView">
+    <Position X="11.75" Y="0.75" Width="2.75" />
+    <NestedTypes>
+      <Enum Name="NodeGraph.View.FlowchartView.MouseArea" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>View\FlowchartView.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AABCAABKYIBAIACAAAIACAAGVhcIAKEAIAAAAMACAAA=</HashCode>
+      <FileName>View\FlowchartView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ViewModel" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="NodeGraph.View.ZoomAndPan">
+    <Position X="14.75" Y="0.75" Width="1.75" />
+    <NestedTypes>
+      <Delegate Name="NodeGraph.View.ZoomAndPan.UpdateTransformDelegate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>View\FlowchartView.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAwOEAACAoAAIAAAAAAAAkAQAAAIAAAAAAAAA=</HashCode>
+      <FileName>View\FlowchartView.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodeGraph.View.NodeView">
+    <Position X="11.75" Y="12.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAApBAEAQABAEAAAABAAAAIFElGAEBAAQAQBBKIAACA=</HashCode>
+      <FileName>View\NodeView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ViewModel" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="NodeGraph.View.NodeViewsContainer">
+    <Position X="15" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>View\NodeViewsContainer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodeGraph.View.PortView">
+    <Position X="11.75" Y="19.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>ADBAAEBARABgACQQEAAAMAIIMAAkAGACAACYAAJAEAg=</HashCode>
+      <FileName>View\PortView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ViewModel" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="NodeGraph.View.PortViewsContainer">
+    <Position X="15" Y="20.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAhAAAAAAAAAAAAAAEAAAAAAAAAgAQAEAA=</HashCode>
+      <FileName>View\PortViewsContainer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodeGraph.View.ViewUtility">
+    <Position X="18.25" Y="3.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAIAAAAAQAAAAAAAAAAAIABAAAEAACAAAAAAAAAAA=</HashCode>
+      <FileName>View\ViewUtility.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodeGraph.ViewModel.ConnectorViewModel">
+    <Position X="8.5" Y="9.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAABAAAAAAgAAAAAAIA=</HashCode>
+      <FileName>ViewModel\ConnectorViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodeGraph.ViewModel.FlowchartViewModel">
+    <Position X="8.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQADBAAAAAAgACAgBABAAAAgQBAAAAAAggCAAAAIQ=</HashCode>
+      <FileName>ViewModel\FlowchartViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodeGraph.ViewModel.NodeViewModel">
+    <Position X="8.5" Y="12.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAEAAQAgEAABCAAAABAAAAAAgAAAAAAIA=</HashCode>
+      <FileName>ViewModel\NodeViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodeGraph.ViewModel.PortViewModel">
+    <Position X="8.5" Y="16.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAABAAAAAAgAAAAAAIA=</HashCode>
+      <FileName>ViewModel\PortViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NodeGraph.ViewModel.ViewModelBase">
+    <Position X="7.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>ViewModel\ViewModelBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="NodeGraph.NodeGraphManager">
+    <Position X="0.5" Y="3.5" Width="2.75" />
+    <NestedTypes>
+      <Delegate Name="NodeGraph.NodeGraphManager.NodeSelectionChangedDelegate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>NodeGraphManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>iAIwAAAAWYMQcUEIhA0YAAADAOBHoBASSAbECVyigBk=</HashCode>
+      <FileName>NodeGraphManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="Connectors" />
+      <Field Name="Flowcharts" />
+      <Field Name="Nodes" />
+      <Field Name="Ports" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="NodeGraph.XmlHelper">
+    <Position X="18.25" Y="6.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>XmlHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="NodeGraph.BuildContextMenuArgs">
+    <Position X="18.25" Y="9.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAEAAAAAAAAAAAAAAAAAIAAAAgAAAAAAAA=</HashCode>
+      <FileName>NodeGraphManager.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="NodeGraph.ModelType">
+    <Position X="18.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>NodeGraphManager.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
