@@ -17,6 +17,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="alps-canvas.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="icon.ico" />
   </ItemGroup>
 
@@ -28,6 +32,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NodeGraph\NodeGraph.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="alps-canvas.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

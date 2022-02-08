@@ -620,6 +620,8 @@ namespace NodeGraph
         {
             ObservableCollection<Guid> selected = GetSelectedNodeGuids(flowchart);
 
+            if (selected == null) return;
+
             foreach (var guid in selected)
             {
                 Node node = FindNode(guid);

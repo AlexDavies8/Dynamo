@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using Microsoft.Win32;
 using System.Linq;
 using System.Windows.Media.Effects;
+using System.Windows.Input;
 
 namespace Dynamo
 {
@@ -67,10 +68,6 @@ namespace Dynamo
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Flowchart flowchart = NodeGraphManager.CreateFlowchart(Guid.NewGuid());
-            FlowchartViewModel = flowchart.ViewModel;
-            NodeGraphManager.BuildFlowchartContextMenu = BuildFlowchartContextMenu;
-
             PropertyPanel propertyPanel = new PropertyPanel();
             ViewModel.PropertyPanelViewModel propertyPanelViewModel = new ViewModel.PropertyPanelViewModel(propertyPanel);
             PropertyPanelViewModel = propertyPanelViewModel;
@@ -102,12 +99,16 @@ namespace Dynamo
                 Opacity = 1;
                 Effect = null;
             };
-            startupWindow.NewProjectCallback += () => startupWindow.Close();
+            startupWindow.NewProjectCallback += () =>
+            {
+                NewFile();
+                startupWindow.Close();
+            };
             startupWindow.OpenProjectCallback += () =>
             {
-                OpenButtonClick(null, null);
-                // Check if project actually opened
-                startupWindow.Close();
+                OpenFile();
+                if (_projectPath != null)
+                    startupWindow.Close();
             };
 
             startupWindow.Show();
@@ -299,6 +300,7 @@ namespace Dynamo
                 var path = openFileDialog.FileName;
                 if (System.IO.File.Exists(path))
                 {
+                    Mouse.OverrideCursor = Cursors.Wait;
                     bool temp = ExecutionManager.AutoExecute;
                     ExecutionManager.AutoExecute = false;
 
@@ -311,6 +313,10 @@ namespace Dynamo
 
                     Title = $" Dynamo ({System.IO.Path.GetFileNameWithoutExtension(path)})";
 
+                    Mouse.OverrideCursor = null;
+
+                    Activate();
+
                     _projectPath = path;
                 }
             }
@@ -320,12 +326,23 @@ namespace Dynamo
         {
             bool temp = ExecutionManager.AutoExecute;
             ExecutionManager.AutoExecute = false;
+            Mouse.OverrideCursor = Cursors.Wait;
 
-            NodeGraphManager.DestroyFlowchart(FlowchartViewModel.Model.Guid);
+            if (FlowchartViewModel != null)
+            {
+                NodeGraphManager.DestroyFlowchart(FlowchartViewModel.Model.Guid);
 
-            ExecutionManager.ResolveDirtyNodes();
+                ExecutionManager.ResolveDirtyNodes();
+            }
+
+            Flowchart flowchart = NodeGraphManager.CreateFlowchart(Guid.NewGuid());
+            FlowchartViewModel = flowchart.ViewModel;
+            NodeGraphManager.BuildFlowchartContextMenu = BuildFlowchartContextMenu;
 
             ExecutionManager.AutoExecute = temp;
+            Mouse.OverrideCursor = null;
+
+            Activate();
 
             Title = $" Dynamo (Unnamed Project)";
         }

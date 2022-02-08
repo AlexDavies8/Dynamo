@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Dynamo"
         mc:Ignorable="d"
-        Title="StartupDialog" Height="300" Width="500" ShowInTaskbar="False" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Topmost="True">
+        Title="StartupDialog" Height="300" Width="500" ShowInTaskbar="False" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True">
     <Grid>
         <Border CornerRadius="4">
             <Grid>
@@ -27,17 +27,19 @@
                     </Rectangle.Fill>
                 </Rectangle>
                 <TextBlock Grid.Column="0" Foreground="{StaticResource ForegroundStrongColour}" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rubik Medium">Dynamo</TextBlock>
-                <Grid Grid.Column="1" Background="{StaticResource BackgroundColour}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="auto"/>
-                    </Grid.RowDefinitions>
-                    <Button Grid.Row="0" Style="{StaticResource AppbarButton}" Click="NewProject">New Project</Button>
-                    <Button Grid.Row="1" Style="{StaticResource AppbarButton}" Click="OpenProject">Open Project</Button>
-                    <Button Grid.Row="3" Style="{StaticResource AppbarButton}" Click="ExitProgram">Exit</Button>
-                </Grid>
+                <Border Grid.Column="1" Background="{StaticResource BackgroundColour}" Padding="4">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Button Grid.Row="0" Style="{StaticResource AppbarButton}" Click="NewProject">New Project</Button>
+                        <Button Grid.Row="1" Style="{StaticResource AppbarButton}" Click="OpenProject">Open Project</Button>
+                        <Button Grid.Row="3" Style="{StaticResource AppbarButton}" Click="ExitProgram">Exit</Button>
+                    </Grid>
+                </Border>
             </Grid>
         </Border>
 

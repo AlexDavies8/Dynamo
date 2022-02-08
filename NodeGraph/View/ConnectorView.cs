@@ -75,7 +75,6 @@ namespace NodeGraph.View
             c0.X += 100 * ratio;
             c1.X -= 100 * ratio;
 
-            // Copied from https://github.com/lifeisforu/NodeGraph/blob/master/View/ConnectorView.cs
             CurveData = string.Format("M{0},{1} C{0},{1} {2},{3} {4},{5} " +
                 "M{4},{5} C{4},{5} {6},{7} {8},{9}",
                 (int)start.X, (int)start.Y, // 0, 1
