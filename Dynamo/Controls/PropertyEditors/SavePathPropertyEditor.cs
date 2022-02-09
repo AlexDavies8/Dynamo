@@ -19,7 +19,7 @@ namespace Dynamo.Controls.PropertyEditors
             DependencyProperty.Register(
                 "Value",
                 typeof(string),
-                typeof(OpenPathPropertyEditor),
+                typeof(SavePathPropertyEditor),
                 new PropertyMetadata(
                     ""),
                 new ValidateValueCallback(IsValid));

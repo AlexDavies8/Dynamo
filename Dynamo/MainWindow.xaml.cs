@@ -55,6 +55,7 @@ namespace Dynamo
         }
 
         private string _projectPath;
+        private List<Assembly> _loadedAssemblies = new List<Assembly>();
 
         public MainWindow()
         {
@@ -112,6 +113,8 @@ namespace Dynamo
             };
 
             startupWindow.Show();
+
+            _loadedAssemblies.Add(Assembly.GetExecutingAssembly());
         }
 
         private void BuidFileContextMenu()
@@ -159,6 +162,12 @@ namespace Dynamo
             saveItem.Click += (sender, e) => NodeGraphManager.DeselectAllNodes(FlowchartViewModel.Model);
             root.Items.Add(saveItem);
 
+            root.Items.Add(new Separator());
+
+            MenuItem loadAssemblyItem = new MenuItem() { Header = "Load External Nodes" };
+            loadAssemblyItem.Click += (sender, e) => OpenAssembly();
+            root.Items.Add(loadAssemblyItem);
+
             EditMenu.Items.Add(root);
         }
 
@@ -176,42 +185,45 @@ namespace Dynamo
             Flowchart flowchart = args.Model as Flowchart;
 
             MenuItem addNodeItem = new MenuItem() { Header = "Add Node" };
-            Assembly assembly = Assembly.GetExecutingAssembly();
             PathTreeItem root = new PathTreeItem("Add Node", null);
-            foreach (Type type in assembly.GetTypes())
+            foreach (Assembly assembly in _loadedAssemblies)
             {
-                var nodeAttribute = type.GetCustomAttribute<NodeAttribute>();
-                if (nodeAttribute != null)
+                foreach (Type type in assembly.GetTypes())
                 {
-                    PathTreeItem curr = root;
-                    string[] pathArgs = nodeAttribute.Path.Split('/', StringSplitOptions.RemoveEmptyEntries);
-                    for (int i = 0; i < pathArgs.Length - 1; i++)
+                    var nodeAttribute = type.GetCustomAttribute<NodeAttribute>();
+                    if (nodeAttribute != null)
                     {
-                        PathTreeItem branch = new PathTreeItem(pathArgs[i], null);
-                        if (!curr.Children.ContainsKey(pathArgs[i]))
+                        PathTreeItem curr = root;
+                        string[] pathArgs = nodeAttribute.Path.Split('/', StringSplitOptions.RemoveEmptyEntries);
+                        for (int i = 0; i < pathArgs.Length - 1; i++)
                         {
-                            curr.Children.Add(pathArgs[i], branch);
-                            curr = branch;
+                            PathTreeItem branch = new PathTreeItem(pathArgs[i], null);
+                            if (!curr.Children.ContainsKey(pathArgs[i]))
+                            {
+                                curr.Children.Add(pathArgs[i], branch);
+                                curr = branch;
+                            }
+                            else
+                                curr = curr.Children[pathArgs[i]];
                         }
-                        else
-                            curr = curr.Children[pathArgs[i]];
-                    }
-                    curr.Children.Add(
-                        pathArgs[^1],
-                        new PathTreeItem(pathArgs[^1],
-                        () => {
-                            Node node = NodeGraphManager.CreateNode(
-                                pathArgs[^1],
-                                Guid.NewGuid(),
-                                flowchart,
-                                type,
-                                args.ModelSpaceMousePosition.X,
-                                args.ModelSpaceMousePosition.Y
-                                );
-                            if (node is ExecutableNode executableNode)
-                                ExecutionManager.MarkDirty(executableNode);
+                        curr.Children.Add(
+                            pathArgs[^1],
+                            new PathTreeItem(pathArgs[^1],
+                            () =>
+                            {
+                                Node node = NodeGraphManager.CreateNode(
+                                    pathArgs[^1],
+                                    Guid.NewGuid(),
+                                    flowchart,
+                                    type,
+                                    args.ModelSpaceMousePosition.X,
+                                    args.ModelSpaceMousePosition.Y
+                                    );
+                                if (node is ExecutableNode executableNode)
+                                    ExecutionManager.MarkDirty(executableNode);
                             }, nodeAttribute.Order)
-                        );
+                            );
+                    }
                 }
             }
 
@@ -318,6 +330,28 @@ namespace Dynamo
                     Activate();
 
                     _projectPath = path;
+                }
+            }
+        }
+
+        private void OpenAssembly()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Class Assembly (*.dll)|*.dll|All files (*.*)|*.*";
+            openFileDialog.RestoreDirectory = true;
+            if (openFileDialog.ShowDialog() == true)
+            {
+                var path = openFileDialog.FileName;
+                if (System.IO.File.Exists(path))
+                {
+                    try
+                    {
+                        _loadedAssemblies.Add(Assembly.LoadFrom(path));
+                    }
+                    catch (Exception ex)
+                    {
+                        // TODO: Error handling
+                    }
                 }
             }
         }
