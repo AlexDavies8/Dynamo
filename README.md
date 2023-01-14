@@ -6,6 +6,8 @@ It written with C# and WPF, and uses ImageSharp for all of the low-level image m
 - Has a public API for creating your own nodes
 - Automatic UI generation for custom nodes
 
+Note: This is still fairly buggy, and unlikely to be improved on. I'm planning on doing a full rewrite of this project at some point, probably in Rust.
+
 ![image](https://user-images.githubusercontent.com/52012013/212414498-1167bfe6-8536-4369-b778-08f1406eed4e.png)
 ![map](https://user-images.githubusercontent.com/52012013/212414968-0a08a92c-20ec-48c4-8f68-415f45c5931b.png)
 ![bricks](https://user-images.githubusercontent.com/52012013/212415719-e430e266-6ffc-4b14-bd0a-2ca2425ae994.png)
